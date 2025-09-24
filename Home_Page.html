@@ -1,59 +1,115 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LogElec - Home</title>
-    <link rel="stylesheet" href="style.css">
+    <title>LogElec</title>
+    <link rel="stylesheet" href="style.css"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script defer src="cabecalho.js"></script>
 </head>
 <body>
-    <header class="home-page_header">
-        <div class="container header">
-            
-            <!-- Logo --> 
-            <a href="#" class="logo"> 
-                <img src="Image/d32f9e0acb95709b033a34a6ab0bdc66aabecc7f.png" class="logo-img">
-                <span class="brand">LogElec</span>
-            </a>
+  <!--------------------------------- Header ---------------------------------------------->
+  <header class="topbar">
+    <div class="logo">
+      <img src="img/LOGO.png" alt="Logo LogElec" />
+      <span class="logotext">LogElec</span>
+    </div>
 
-            <!-- Barra de Pesquisa --> 
-            <form class="search" role="search">
-                <input id="search-input" type="search"
-                    placeholder="Procure por empresas ou tipo de resíduo"/>
-                <button type="submit" class="search-button">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                        <path d="M21 21l-4.35-4.35" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                        <circle cx="11" cy="11" r="6" stroke="currentColor" stroke-width="2" fill="none"/>
-                    </svg>
-                </button>
-            </form>
-            
-            <!-- Canto Direito -->
-            <nav class="header-actions">
-                <button class="btn-ghost">
-                    <!-- Ícone de Opções-->
-                    <svg width="22" height="16" viewBox="0 0 22 16" aria-hidden="true">
-                        <rect y="1" width="22" height="2" rx="1" />
-                        <rect y="7" width="22" height="2" rx="1" />
-                        <rect y="13" width="22" height="2" rx="1" />
-                    </svg>
-                </button>
+    <div class="search-bar">
+      <img src="img/Icon_Lupa.png"alt="lupa">
+      <input type="text" placeholder="Procure por empresas ou tipos de resíduo" />
+    </div>
 
-                <a href="login_html" class=" btn button-login">Login</a>
+    <div class="header-icons">
+      <span class="icon menu-icon" onclick="toggleMenu()">☰</span>
+      <a href="login_html" class=" btn button-login">Login</a>
+    <div class="dropdown" id="dropdown">
+      <a href="#">Mensagens</a>
+      <a href="#">Agendamentos de retirada</a>
+      <a href="#">Solicitações de empresas</a>
+      <a href="#">Cadastro de resíduos</a>
+    </div>
+  </header>
+  <!--------------------------------- Fim do Header ---------------------------------------------->
 
-                <button class="icon-btn">
-                    <!-- Ícone User-->
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                        stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                        <!-- Cabeça -->
-                        <circle cx="12" cy="7" r="4"/>
-                        <!-- Corpo -->
-                        <path d="M5.5 21c1.5-4 5-7 6.5-7s5 3 6.5 7"/>
-                    </svg>
-                </button>
-            </nav>
+  <!--------------------------------- Body ------------------------------------------------------->
+    <section class="hero">
+      <div class="hero-content">
+        <h1>Tecnologia Sustentável</h1>
+        <p>
+         A LogElec conecta empresas e pessoas para facilitar o descarte 
+         e a reciclagem de resíduos eletrônicos, promovendo um futuro mais verde.
+        </p>
+        <a href="#" class="button-Saiba-Mais">Saiba Mais</a>
+      </div>
+      <div class="hero-image">
+        <img src="img/LOGO.png" alt="Ilustração sobre sustentabilidade"/>
+      </div>
+    </section>
+    <!-- Escolhendo a empresa de descarte ou coleta -->
+    <section class="escolha-empresa">
+      <h2>Qual tipo de empresa você se enquadra?</h2>
+
+      <div class="company-options">
+        
+      </div>
+
+    </section>
+
+
+  <!--------------------------------- Fim do Body ---------------------------------------------->
+  
+  <!--------------------------------- Rodapé --------------------------------------------------->
+  <footer class="footer">
+    <div class="footer-container">
+      
+      <!-- Coluna Descubra -->
+      <div class="footer-section">
+        <h3>Descubra</h3>
+        <ul>
+          <li><a href="#">Descarte</a></li>
+          <li><a href="#">Coleta</a></li>
+          <li><a href="#">Cadastro de itens</a></li>
+        </ul>
+      </div>
+
+      <!-- Coluna Idioma -->
+      <div class="footer-section">
+        <h3>Idioma</h3>
+        <select>
+          <option selected>Português</option>
+          <option>Inglês</option>
+          <option>Espanhol</option>
+        </select>
+      </div>
+
+      <!-- Coluna Contato -->
+      <div class="footer-section">
+        <h3>Entre em contato conosco!</h3>
+        <form class="contact-form">
+          <input type="email" placeholder="Seu email aqui" required>
+          <button type="submit">Enviar</button>
+        </form>
+      </div>
+
+      <!-- Coluna Redes Sociais -->
+      <div class="footer-section">
+        <h3>Redes sociais</h3>
+        <div class="social-icons">
+          <a href="#"><i class="fab fa-facebook-f"></i></a>
+          <a href="#"><i class="fab fa-instagram"></i></a>
+          <a href="#"><i class="fab fa-twitter"></i></a>
+          <a href="#"><i class="fab fa-linkedin-in"></i></a>
         </div>
-     </header>
-    
+      </div>
+
+    </div>
+    <hr>
+  </footer>
+  <!--------------------------------- Fim do Rodapé ---------------------------------------------->
 </body>
 </html>
