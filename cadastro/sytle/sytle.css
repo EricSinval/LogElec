@@ -1,0 +1,122 @@
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background: #a4e2ad; /* cor neutra, pode trocar por uma imagem de fundo */
+  background-image: url("/imagem/fundo.png");
+  background-size: cover;
+ 
+  margin: 0;
+}
+
+/* reset */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;    
+  padding: 0 24px;
+}
+
+/* logos */
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo img {
+  width: 65px;
+  height: 62px;
+  object-fit: contain;
+}
+
+.logotext {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 600;  
+  font-size: 32px; /* reduzi para caber na barra */
+  color: #ffffff;   /* branco para contraste */
+}
+
+.header-icons {
+  display: flex;
+  align-items: center;
+  gap: 20px; 
+  font-size: 1.5rem;
+  color: white;
+}
+
+.header-icons img {
+  width: 75px; 
+  height: 75px;
+  object-fit: contain;
+  cursor: pointer;
+}
+
+/* container central */
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1; /* ocupa espaço abaixo da topbar */
+  width: 100%;
+}
+
+.card {
+  background: white;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+  max-width: 400px;
+  width: 100%;
+  text-align: center;
+}
+
+h2 {
+  margin-bottom: 10px;
+  font-size: 22px;
+}
+
+.login-link {
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  text-align: left;
+}
+
+label {
+  font-size: 14px;
+  margin-bottom: 3px;
+}
+
+input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.btn-enviar {
+  background: #1a8c7a;
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-top: 10px;
+}
+
+.btn-enviar:hover {
+  background: #167564;
+}

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>LogElec - Cadastro</title>
+  <link rel="stylesheet" href="/sytle/sytle.css">
+</head>
+<body>
+  <!-- Logo no canto superior esquerdo -->
+<header class="topbar">
+    <div class="logo">
+      <img src="/imagem/LOGO.png" alt="Logo LogElec" />
+      <span class="logotext">LogElec</span>
+    </div>
+<nav class="menu">
+   
+    </nav>
+</header>
+  <!-- Container central -->
+  <div class="container">
+    <div class="card">
+      <h2>Crie uma conta</h2>
+      <p class="login-link">Já possui uma? <a href="index.html">Clique aqui</a> para fazer o login</p>
+
+      <form id="cadastroForm">
+        <label>Nome/Razão Social</label>
+        <input type="text" name="nome" placeholder="Insira" required>
+
+        <label>CNPJ</label>
+        <input type="text" name="cnpj" placeholder="Insira" required>
+
+        <label>Endereço</label>
+        <input type="text" name="endereco" placeholder="Insira" required>
+
+        <label>Email</label>
+        <input type="email" name="email" placeholder="Insira" required>
+
+        <label>Senha</label>
+        <input type="password" name="senha" placeholder="Insira" required>
+
+        <button type="submit" class="btn-enviar">Enviar</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Popup -->
+  <div id="popup" class="popup hidden">
+    <div class="popup-content">
+      <p id="popup-message"></p>
+      <button onclick="closePopup()">OK</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
