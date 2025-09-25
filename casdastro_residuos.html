@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Cadastro de Resíduos - LogElec</title>
+  <link rel="stylesheet" href="/style.css/style.css">
+</head>
+<body>
+    <header class="topbar">
+    <div class="logo">
+      <img src="/imagens/LOGO.png" alt="Logo LogElec" />
+      <span class="logotext">LogElec</span>
+    </div>
+<nav class="menu">
+      <button>Itens Cadastrados</button> 
+    </nav>
+
+  <div class="header-icons">
+ <span class="icon menu-icon" onclick="toggleMenu()">☰</span>
+ <img src="/imagens/PERSON.png" alt="icon user-icon">
+</div>
+</header>
+  <div class="background">
+    <div class="overlay"></div>
+    <div class="container">
+      <h2>Cadastro de Resíduos</h2>
+      <p>Preencha os campos abaixo para cadastrar seus resíduos.</p>
+      <form id="cadastroResiduosForm">
+        <label for="tipo">Quais tipos de resíduos você vai descartar?</label>
+        <input type="text" id="tipo" name="tipo" placeholder="Ex: Plástico, Vidro..." required>
+
+        <label for="peso">Qual o peso total desses resíduos?</label>
+        <input type="text" id="peso" name="peso" placeholder="Ex: 15kg" required>
+
+        <label for="endereco">Qual endereço para retirada?</label>
+        <input type="text" id="endereco" name="endereco" placeholder="Rua, número, bairro..." required>
+
+        <label for="foto">Insira uma foto dos resíduos</label>
+        <input type="file" id="foto" name="foto" accept="image/*">
+
+        <button type="submit">Enviar</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
