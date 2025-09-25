@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>LogElec - Login</title>
+  <link rel="stylesheet" href="/style.css/sytle.css">
+</head>
+<body>
+  <div class="logo"> <img src="/imagens/Logo.png" alt="LogElec"> </div>
+
+  <div class="container">
+    <h2>Faça login<br>com sua conta</h2>
+    <p class="login-link">
+      Não tem conta? <a href="cadastro.html">Crie uma aqui</a>
+    </p>
+
+
+    <form id="loginForm">
+      <label>Email</label>
+      <input type="email" name="email" placeholder="Insira" required>
+
+      <label>Senha</label>
+      <input type="password" name="senha" placeholder="Insira" required>
+
+      <button type="submit">Enviar</button>
+    </form>
+  </div>
+
+  <div id="popup" class="popup hidden">
+    <div class="popup-content">
+      <p id="popup-message"></p>
+      <button onclick="closePopup()">OK</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

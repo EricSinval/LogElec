@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>LogElec - Cadastro</title>
+  <link rel="stylesheet" href="/style.css/sytle.css">
+</head>
+<body>
+  <div class="logo">
+    <img src="/imagens/Logo.png" alt="LogElec">
+  </div>
+
+  <div class="container">
+    <h2>Crie uma conta</h2>
+    <p class="login-link">Já possui uma? <a href="index.html">Clique aqui</a> para fazer o login</p>
+
+    <form id="cadastroForm">
+      <label>Nome/Razão Social</label>
+      <input type="text" name="nome" placeholder="Insira" required>
+
+      <label>CNPJ</label>
+      <input type="text" name="cnpj" placeholder="Insira" required>
+
+      <label>Endereço</label>
+      <input type="text" name="endereco" placeholder="Insira" required>
+
+      <label>Email</label>
+      <input type="email" name="email" placeholder="Insira" required>
+
+      <label>Senha</label>
+      <input type="password" name="senha" placeholder="Insira" required>
+
+      <button type="submit">Enviar</button>
+    </form>
+  </div>
+
+  <div id="popup" class="popup hidden">
+    <div class="popup-content">
+      <p id="popup-message"></p>
+      <button onclick="closePopup()">OK</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
