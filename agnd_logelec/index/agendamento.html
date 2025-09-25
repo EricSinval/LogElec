@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <link rel="stylesheet" href="stylescabecalio.css"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="/style-agendamentos/style.css">
+</head>
+<body>
+  <!-- Header -->
+  <header class="topbar">
+    <div class="logo">
+      <img src="/imagens/logo.png" alt="Logo LogElec" />
+      <span class="logotext">LogElec</span>
+    </div>
+<nav class="menu">
+      <button>Coletas agendadas</button>
+      <button>Histórico de coletas</button>
+      
+    </nav>
+
+  <div class="header-icons">
+ <span class="icon menu-icon" onclick="toggleMenu()">☰</span>
+ <img src="/imagens/person.png" alt="icon user-icon">
+</div>
+</header>
+
+  <!-- Conteúdo principal -->
+  <main class="container">
+    <h1 class="titulo">Agendamentos</h1>
+
+    <div class="layout">
+      <!-- Lista de empresas -->
+      <section class="empresas">
+        <div class="card">
+          <img src="/imagens/E-Waste.jpg" alt="E-WASTE" class="icon">
+          <div>
+            <h3>E-WASTE</h3>
+            <p>Tipos: Todos os tipos de resíduos eletrônicos.</p>
+            <p>Peso máx: 500Kg</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <img src="/imagens/EcoTech.jpg" alt="EcoTech" class="icon">
+          <div>
+            <h3>EcoTech</h3>
+            <p>Tipos: Desktops e laptops antigos e novos.</p>
+            <p>Peso máx: 1000Kg</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <img src="/imagens/Electronic.jpg" alt="Electronic Reuse" class="icon">
+          <div>
+            <h3>Electronic Reuse</h3>
+            <p>Tipos: Placas eletrônicas.</p>
+            <p>Peso máx: 500Kg</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <img src="/imagens/ElectronicRec.jpg" alt="Electronic Recycling" class="icon">
+          <div>
+            <h3>Electronic Recycling</h3>
+            <p>Tipos: Equipamentos de informática geral.</p>
+            <p>Peso máx: 500Kg</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Formulário de agendamento -->
+      <section class="form-agendamento">
+        <form id="form-coleta">
+          <label for="data" class="label-icon">
+            <img src="/imagens/Icon.png" alt="Ícone calendário" class="form-icon">
+            Data
+          </label>
+          <input type="date" id="data" name="data" required />
+
+          <label class="label-icon">
+        
+            Horários
+          </label>
+          <div class="horarios">
+            <div class="turno">
+              <span>Manhã</span>
+              <button type="button">09:00</button>
+              <button type="button">10:00</button>
+              <button type="button">11:00</button>
+              <button type="button">12:00</button>
+            </div>
+
+            <div class="turno">
+              <span>Tarde</span>
+              <button type="button">13:00</button>
+              <button type="button">14:00</button>
+              <button type="button">15:00</button>
+              <button type="button">16:00</button>
+              <button type="button">17:00</button>
+              <button type="button">18:00</button>
+            </div>
+
+            <div class="turno">
+              <span>Noite</span>
+              <button type="button">19:00</button>
+              <button type="button">20:00</button>
+              <button type="button">21:00</button>
+            </div>
+          </div>
+
+          <!-- Campo oculto para guardar o horário selecionado -->
+          <input type="hidden" id="horario" name="horario" />
+
+          <label for="cliente" class="label-icon">
+            
+            Cliente
+          </label>
+          <select id="cliente" name="cliente" required>
+            <option value="ewaste">E-WASTE</option>
+            <option value="ecotech">EcoTech</option>
+            <option value="reuse">Electronic Reuse</option>
+            <option value="recycling">Electronic Recycling</option>
+          </select>
+
+          <button type="submit" class="btn-agendar">Agendar</button>
+        </form>
+
+        <!-- Mensagem de retorno -->
+        <p id="mensagem-retorno" class="mensagem"></p>
+      </section>
+    </div>
+  </main>
+
+  <!-- Script -->
+  <script src="/script/form.js">
+ 
+  </script>
+</body>
+</html>
