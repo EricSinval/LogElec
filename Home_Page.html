@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LogElec</title>
-    <link rel="stylesheet" href="style.css"/>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <script defer src="cabecalho.js"></script>
 </head>
@@ -37,12 +37,13 @@
   <!--------------------------------- Fim do Header ---------------------------------------------->
 
   <!--------------------------------- Body ------------------------------------------------------->
+  <div class="main-container"> 
     <section class="hero">
       <div class="hero-content">
         <h1>Tecnologia Sustentável</h1>
         <p>
-         A LogElec conecta empresas e pessoas para facilitar o descarte 
-         e a reciclagem de resíduos eletrônicos, promovendo um futuro mais verde.
+        A LogElec conecta empresas e pessoas para facilitar o descarte 
+        e a reciclagem de resíduos eletrônicos, promovendo um futuro mais verde.
         </p>
         <a href="#" class="button-Saiba-Mais">Saiba Mais</a>
       </div>
@@ -54,12 +55,19 @@
     <section class="escolha-empresa">
       <h2>Qual tipo de empresa você se enquadra?</h2>
 
-      <div class="company-options">
-        
+      <div class="empresas">
+        <div class="empresa-card">
+          <p>Empresas que precisam descartar resíduos sólidos eletrônicos</p>
+          <a href="#" class="button-descarte">Preciso descartar!</a>
+        </div>
+          
+        <div class="empresa-card">
+          <p>Empresas que realizam coleta de resíduos eletrônicos para fins recicláveis</p>
+          <a href="#" class="button-coleta">Realizo coleta!</a>
+        </div>       
       </div>
-
     </section>
-
+  </div>  
 
   <!--------------------------------- Fim do Body ---------------------------------------------->
   
