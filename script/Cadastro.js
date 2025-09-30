@@ -37,7 +37,7 @@ document.getElementById("cadastroForm").addEventListener("submit", async functio
 
     try {
         // Faz requisição para API
-        const response = await fetch("http://localhost:8093/api/empresas", {
+        const response = await fetch("http://localhost:8094/api/empresas", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
