@@ -10,6 +10,12 @@ import org.springframework.stereotype.Component;
 import com.ads.LogElec.entity.Agendamento;
 import com.ads.LogElec.entity.StatusAgendamento;
 import com.ads.LogElec.repository.AgendamentoRepository;
+
+// ✅ NOVOS IMPORTS PARA RESÍDUOS
+import com.ads.LogElec.entity.Residuo;
+import com.ads.LogElec.entity.StatusResiduo;
+import com.ads.LogElec.repository.ResiduoRepository;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -21,6 +27,10 @@ public class DataLoader implements CommandLineRunner {
     
     @Autowired
     private AgendamentoRepository agendamentoRepository;
+    
+    // ✅ NOVA INJEÇÃO PARA RESÍDUOS
+    @Autowired
+    private ResiduoRepository residuoRepository;
 
     @Override
     public void run(String... args) throws Exception {
@@ -113,6 +123,54 @@ public class DataLoader implements CommandLineRunner {
             System.out.println("✅ Agendamentos de teste criados: " + agendamentoRepository.count());
         } else {
             System.out.println("ℹ️  Agendamentos já existem no banco: " + agendamentoRepository.count() + " agendamentos");
+        }
+        
+        // ✅ NOVA SEÇÃO: VERIFICAR SE JÁ EXISTEM RESÍDUOS
+        if (residuoRepository.count() == 0 && empresaRepository.count() > 0) {
+            System.out.println("🗑️ Criando resíduos de teste...");
+            
+            // Buscar empresa descartadora (Tech Solutions)
+            Empresa techSolutions = empresaRepository.findByCnpj("11.222.333/0001-44")
+                .orElseThrow(() -> new RuntimeException("Empresa Tech Solutions não encontrada"));
+            
+            // Resíduo 1 - Computadores e Monitores
+            Residuo residuo1 = new Residuo();
+            residuo1.setTipo("Computadores, Monitores");
+            residuo1.setPeso(150.5);
+            residuo1.setEnderecoRetirada("Av. Paulista, 1000 - São Paulo, SP");
+            residuo1.setEmpresa(techSolutions);
+            residuo1.setStatus(StatusResiduo.PENDENTE);
+            residuo1.setNome("Computadores Usados"); // Nome automático
+            residuo1.setDescricao("Computadores e monitores para descarte ambientalmente correto");
+            
+            // Resíduo 2 - Celulares e Tablets  
+            Residuo residuo2 = new Residuo();
+            residuo2.setTipo("Celulares, Tablets");
+            residuo2.setPeso(75.0);
+            residuo2.setEnderecoRetirada("Av. Paulista, 1000 - São Paulo, SP");
+            residuo2.setEmpresa(techSolutions);
+            residuo2.setStatus(StatusResiduo.PENDENTE);
+            residuo2.setNome("Dispositivos Móveis");
+            residuo2.setDescricao("Celulares e tablets antigos para reciclagem");
+            
+            // Resíduo 3 - Eletrodomésticos
+            Residuo residuo3 = new Residuo();
+            residuo3.setTipo("Geladeiras, Microondas");
+            residuo3.setPeso(200.0);
+            residuo3.setEnderecoRetirada("Rua das Flores, 500 - São Paulo, SP");
+            residuo3.setEmpresa(techSolutions);
+            residuo3.setStatus(StatusResiduo.PENDENTE);
+            residuo3.setNome("Eletrodomésticos");
+            residuo3.setDescricao("Eletrodomésticos em desuso para coleta especial");
+            
+            // Salvar resíduos
+            residuoRepository.save(residuo1);
+            residuoRepository.save(residuo2);
+            residuoRepository.save(residuo3);
+            
+            System.out.println("✅ Resíduos de teste criados: " + residuoRepository.count());
+        } else {
+            System.out.println("ℹ️  Resíduos já existem no banco: " + residuoRepository.count() + " resíduos");
         }
     }
 }

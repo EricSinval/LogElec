@@ -1,6 +1,6 @@
 package com.ads.LogElec.entity;
 
-public enum CategoriaResiduo {   // ← DEVE SER "enum"
+public enum CategoriaResiduo {
     INFORMATICA, 
     ELETRODOMESTICO, 
     TELEFONIA, 
