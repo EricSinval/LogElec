@@ -1,6 +1,7 @@
 package com.ads.LogElec.entity;
 
 import jakarta.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "residuos")
@@ -10,20 +11,39 @@ public class Residuo {
     private Long id;
     
     @Column(nullable = false)
-    private String nome; // "Computador", "Celular", "Monitor"
+    private String nome;
     
     private String descricao;
     
     @Enumerated(EnumType.STRING)
     private CategoriaResiduo categoria;
     
-    // Construtor
+    // ✅ NOVOS CAMPOS PARA O FORMULÁRIO
+    private Double peso; // em kg - "Qual o peso total?"
+    
+    private String enderecoRetirada; // "Qual endereço para retirada?"
+    
+    private String fotoUrl; // Para upload de imagem depois
+    
+    // ✅ RELACIONAMENTO COM EMPRESA (QUEM CADASTROU)
+    @ManyToOne
+    @JoinColumn(name = "empresa_id")
+    private Empresa empresa;
+    
+    private LocalDateTime dataCadastro;
+    
+    // Construtores
     public Residuo() {}
     
-    public Residuo(String nome, String descricao, CategoriaResiduo categoria) {
+    public Residuo(String nome, String descricao, CategoriaResiduo categoria, 
+                  Double peso, String enderecoRetirada, Empresa empresa) {
         this.nome = nome;
         this.descricao = descricao;
         this.categoria = categoria;
+        this.peso = peso;
+        this.enderecoRetirada = enderecoRetirada;
+        this.empresa = empresa;
+        this.dataCadastro = LocalDateTime.now();
     }
     
     // GETTERS E SETTERS
@@ -38,9 +58,19 @@ public class Residuo {
     
     public CategoriaResiduo getCategoria() { return categoria; }
     public void setCategoria(CategoriaResiduo categoria) { this.categoria = categoria; }
-}
-
-// ENUM para categorias
-enum CategoriaResiduo {
-    INFORMATICA, ELETRODOMESTICO, TELEFONIA, OUTROS
+    
+    public Double getPeso() { return peso; }
+    public void setPeso(Double peso) { this.peso = peso; }
+    
+    public String getEnderecoRetirada() { return enderecoRetirada; }
+    public void setEnderecoRetirada(String enderecoRetirada) { this.enderecoRetirada = enderecoRetirada; }
+    
+    public String getFotoUrl() { return fotoUrl; }
+    public void setFotoUrl(String fotoUrl) { this.fotoUrl = fotoUrl; }
+    
+    public Empresa getEmpresa() { return empresa; }
+    public void setEmpresa(Empresa empresa) { this.empresa = empresa; }
+    
+    public LocalDateTime getDataCadastro() { return dataCadastro; }
+    public void setDataCadastro(LocalDateTime dataCadastro) { this.dataCadastro = dataCadastro; }
 }
