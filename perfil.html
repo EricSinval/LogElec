@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>LogElec - Perfil</title>
+  <link rel="stylesheet" href="/perfil_style.css/perfil_style.css">
+</head>
+<body>
+
+  <header class="topbar">
+    <div class="logo">
+      <img src="/imagens/logo.png" alt="Logo LogElec" />
+      <span class="logotext">LogElec</span>
+    </div>
+<nav class="menu">
+   
+      
+    </nav>
+
+  <div class="header-icons">
+ <span class="icon menu-icon" onclick="toggleMenu()">☰</span>
+ <img src="/imagens/person.png" alt="icon user-icon">
+</div>
+</header>
+  <div class="logo"> 
+    <img src="/imagens/Logo.png" alt="Logo LogElec"> 
+  </div>
+
+
+  <div class="container">
+    <h2>Perfil</h2>
+
+    <form id="perfilForm">
+      <label for="nome">Nome de exibição</label>
+      <input type="text" id="nome" name="nome" placeholder="Insira" required>
+
+      <label for="email">Email</label>
+      <input type="email" id="email" name="email" placeholder="Insira" required>
+
+      <label for="senha">Senha</label>
+      <input type="password" id="senha" name="senha" placeholder="Insira" required>
+
+      <label for="foto">Foto de perfil</label>
+      <input type="file" id="foto" name="foto" accept="image/*">
+
+      <button type="submit">Atualizar</button>
+    </form>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
