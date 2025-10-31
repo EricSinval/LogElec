@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mensagens | LogElec</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../style_css/style_mensagens.css">
+  <link rel="stylesheet" href="../style_css/stylescabecalio.css">
+  <link rel="stylesheet" href="../style_css/style_HomePage.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="topbar">
+    <div class="logo">
+      <img src="../img/LOGO.png" alt="Logo LogElec" />
+      <span class="logotext">LogElec</span>
+    </div>
+
+    <div class="search-bar">
+      <img src="../img/Icon_Lupa.png"alt="lupa">
+      <input type="text" placeholder="Procure por empresas ou tipos de resíduo" />
+    </div>
+
+    <div class="header-icons">
+      <span class="icon menu-icon" onclick="toggleMenu()">☰</span>
+      <a href="Login_Page.html" class=" btn button-login">Login</a>
+    <div class="dropdown" id="dropdown">
+      <a href="#">Mensagens</a>
+      <a href="#">Agendamentos de retirada</a>
+      <a href="#">Solicitações de empresas</a>
+      <a href="CadastroResiduos.html">Cadastro de resíduos</a>
+    </div>
+  </header>
+
+    <!-- Wrapper do chat (flutuante no centro) -->
+    <div class="chat-wrapper">
+        <!-- Conteúdo principal -->
+        <main class="chat-container">
+            <!-- Sidebar com lista de conversas -->
+            <aside class="sidebar">
+                <h2>Mensagens</h2>
+                <ul class="chat-list">
+                    <li class="chat-item active">
+                        <img src="../img/E-Waste.png" alt="E-Waste">
+                        <div>
+                            <strong>E-WASTE</strong>
+                            <p>Boa tarde, ocorreu um imprevisto...</p>
+                        </div>
+                    </li>
+                    <li class="chat-item">
+                        <img src="../img/E-WASTE.png" alt="EcoTech">
+                        <div>
+                            <strong>ECOTECH</strong>
+                            <p>Sobre a coleta dos resíduos...</p>
+                        </div>
+                    </li>
+                    <li class="chat-item">
+                        <img src="../img/Electronic.png" alt="Electronic Recycling">
+                        <div>
+                            <strong>ELECTRONIC RECYCLING</strong>
+                            <p>Entrando em contato para lembrar...</p>
+                        </div>
+                    </li>
+                    <li class="chat-item">
+                        <img src="../img/E-WASTE.png" alt="Reuse">
+                        <div>
+                            <strong>REUSE</strong>
+                            <p>Grato, caso precise de outras coletas...</p>
+                        </div>
+                    </li>
+                </ul>
+            </aside>
+
+            <!-- Área da conversa -->
+            <section class="chat-box">
+                <div class="message received">
+                    <span class="sender">E-WASTE</span>
+                    <p>Boa tarde, ocorreu um imprevisto com um dos nossos transportes...</p>
+                </div>
+
+                <div class="message sent">
+                    <span class="sender">EU</span>
+                    <p>Sem problemas, não vai interferir nas nossas operações...</p>
+                    <img src="../img/foto_residuos.jpg" alt="Resíduos">
+                </div>
+
+                <div class="message received">
+                    <span class="sender">E-WASTE</span>
+                    <p>Perfeito, está da maneira correta para retirada. Agradecemos!</p>
+                </div>
+            </section>
+        </main>
+
+        <!-- Input de mensagem -->
+        <footer class="chat-input">
+            <input type="text" placeholder="Digite algo...">
+            <button>➤</button>
+        </footer>
+    </div>
+</body>
+</html>
