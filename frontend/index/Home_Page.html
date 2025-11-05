@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LogElec</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href= "../style_css/style_HomePage.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script defer src="/script/cabecalho.js"></script>
+</head>
+<body>
+  <!--------------------------------- Header ---------------------------------------------->
+  <header class="topbar">
+    <div class="logo">
+      <img src="../img/LOGO.png" alt="Logo LogElec" />
+      <span class="logotext">LogElec</span>
+    </div>
+
+    <div class="search-bar">
+      <img src="../img/Icon_Lupa.png"alt="lupa">
+      <input type="text" placeholder="Procure por empresas ou tipos de resíduo" />
+    </div>
+
+    <div class="header-icons">
+      <span class="icon menu-icon" onclick="toggleMenu()">☰</span>
+      <a href="Login_Page.html" class=" btn button-login">Login</a>
+    <div class="dropdown" id="dropdown">
+      <a href="#">Mensagens</a>
+      <a href="#">Agendamentos de retirada</a>
+      <a href="#">Solicitações de empresas</a>
+      <a href="CadastroResiduos.html">Cadastro de resíduos</a>
+    </div>
+  </header>
+  <!--------------------------------- Fim do Header ---------------------------------------------->
+
+  <!--------------------------------- Body ------------------------------------------------------->
+  <div class="main-container"> 
+    <section class="hero">
+      <div class="hero-content">
+        <h1>Tecnologia Sustentável</h1>
+        <p>
+        A LogElec conecta empresas e pessoas para facilitar o descarte 
+        e a reciclagem de resíduos eletrônicos, promovendo um futuro mais verde.
+        </p>
+        <a href="#" class="button-Saiba-Mais">Saiba Mais</a>
+      </div>
+      <div class="hero-image">
+        <img src="../img/Logo.png" alt="Ilustração sobre sustentabilidade"/>
+      </div>
+    </section>
+    <!-- Escolhendo a empresa de descarte ou coleta -->
+    <section class="escolha-empresa">
+      <h2>Qual tipo de empresa você se enquadra?</h2>
+
+      <div class="empresas">
+        <div class="empresa-card">
+          <p>Empresas que precisam descartar resíduos sólidos eletrônicos</p>
+          <a href="Cadastro_Page.html?tipo=DESCARTE" class="button-descarte">Preciso descartar!</a>
+        </div>
+          
+        <div class="empresa-card">
+          <p>Empresas que realizam coleta de resíduos eletrônicos para fins recicláveis</p>
+          <a href="Cadastro_Page.html?tipo=COLETA" class="button-coleta">Realizo coleta!</a>
+        </div>       
+      </div>
+    </section>
+  </div>  
+
+  <!--------------------------------- Fim do Body ---------------------------------------------->
+  
+  <!--------------------------------- Rodapé --------------------------------------------------->
+  <footer class="footer">
+    <div class="footer-container">
+      
+      <!-- Coluna Descubra -->
+      <div class="footer-section">
+        <h3>Descubra</h3>
+        <ul>
+          <li><a href="#">Descarte</a></li>
+          <li><a href="#">Coleta</a></li>
+          <li><a href="#">Cadastro de itens</a></li>
+        </ul>
+      </div>
+
+      <!-- Coluna Idioma -->
+      <div class="footer-section">
+        <h3>Idioma</h3>
+        <select>
+          <option selected>Português</option>
+          <option>Inglês</option>
+          <option>Espanhol</option>
+        </select>
+      </div>
+
+      <!-- Coluna Contato -->
+      <div class="footer-section">
+        <h3>Entre em contato conosco!</h3>
+        <form class="contact-form">
+          <input type="email" placeholder="Seu email aqui" required>
+          <button type="submit">Enviar</button>
+        </form>
+      </div>
+
+      <!-- Coluna Redes Sociais -->
+      <div class="footer-section">
+        <h3>Redes sociais</h3>
+        <div class="social-icons">
+          <a href="#"><i class="fab fa-facebook-f"></i></a>
+          <a href="#"><i class="fab fa-instagram"></i></a>
+          <a href="#"><i class="fab fa-twitter"></i></a>
+          <a href="#"><i class="fab fa-linkedin-in"></i></a>
+        </div>
+      </div>
+
+    </div>
+    <hr>
+  </footer>
+  <!--------------------------------- Fim do Rodapé ---------------------------------------------->
+</body>
+</html>

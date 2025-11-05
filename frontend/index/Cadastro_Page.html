@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>LogElec - Cadastro</title>
+  <link rel="stylesheet" href="../style_css/style_CadastroPage.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="logo">
+      <img src="../img/Logo.png" alt="Logo LogElec" />
+      <span class="logotext">LogElec</span>
+    </div>
+    <nav class="menu"></nav>
+  </header>
+
+  <div class="container">
+    <div class="card">
+      <h2>Crie uma conta</h2>
+      <p class="login-link">Já possui uma? <a href="Login_Page.html">Clique aqui</a> para fazer o login</p>
+
+      <!-- ✅ FORMULÁRIO SEM SELECT DE TIPO -->
+      <form id="formCadastro">
+        <input type="text" id="nomeRazao" name="nomeRazao" placeholder="Nome/Razão Social" required>
+        <input type="text" id="cnpj" name="cnpj" placeholder="CNPJ" required>
+        <input type="email" id="email" name="email" placeholder="E-mail" required>
+        <input type="password" id="senha" name="senha" placeholder="Senha" required>
+        <!-- ❌ SELECT REMOVIDO -->
+        <input type="text" id="endereco" name="endereco" placeholder="Endereço" required>
+        <input type="tel" id="telefone" name="telefone" placeholder="Telefone">
+        <button type="submit">Cadastrar</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="../script/Cadastro.js"></script>
+</body>
+</html>
