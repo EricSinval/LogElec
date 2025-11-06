@@ -24,7 +24,7 @@ async function cadastrarPostagem(event) {
     console.log('📤 Dados da postagem:', postagemData);
 
     try {
-        const response = await fetch('http://localhost:8081/api/postagens', {
+        const response = await fetch('http://localhost:8080/api/postagens', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

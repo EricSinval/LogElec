@@ -20,7 +20,7 @@ async function carregarPostagens() {
     console.log('📥 Carregando postagens...');
     
     try {
-        const response = await fetch('http://localhost:8081/api/postagens');
+        const response = await fetch('http://localhost:8080/api/postagens');
         
         if (response.ok) {
             todasPostagens = await response.json();

@@ -72,6 +72,17 @@
     		<version>8.0.33</version>
 		</dependency>
 
+		<dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-validation</artifactId>
+    </dependency>
+    
+    <!-- ✅ E ESTA TAMBÉM (para as anotações jakarta) -->
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-validation</artifactId>
+    </dependency>
+
 	</dependencies>
 
 	<build>
