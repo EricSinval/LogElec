@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   
+    <title>Agendamento | LogElec</title>
+      <link rel="icon" type="image/png" href="../img/LOGO.png">
+    <link rel="stylesheet" href="../style_css/agendamento.css"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script defer src="../script/Agendamento.js"></script>
+</head>
+<body>
+     <header class="topbar">
+    <div class="logo">
+      <img src="../img/Logo.png" alt="Logo LogElec" />
+      <span class="logotext">LogElec</span>
+    </div>
+
+<!--<div class="search-bar">
+      <img src="img/—Pngtree—magnifying glass icon_4681976.png"alt="lupa">
+      <input type="text" placeholder="Procure por empresas ou tipos de resíduo" />
+    </div> -->
+
+  <div class="header-icons">
+ <span class="icon menu-icon" onclick="toggleMenu()">☰</span>
+ <img src="../img/Icon_User.png" alt="icon user-icon">
+ <div class="dropdown" id="dropdown">
+  <a href="tela_mensagem.html">Mensagens</a>
+  <a href="coleta.html">Coletas agenbdadas</a>
+  <a href="historico.html">Historico de coleta</a>
+  <a href="CadastroResiduos.html">Cadastro de resíduos</a>
+  <a href="minhas_postagens.html">Minhas postagens</a>
+  <a href="Tela_perfil.html">Perfil</a>
+</div>
+</div>
+  </header>
+
+
+  <!-- Conteúdo principal -->
+  <main class="container">
+    <h1 class="titulo">Agendamentos</h1>
+
+    <div class="layout">
+      <!-- Lista de empresas -->
+      <section class="empresas">
+        <div class="card">
+          <img src="../img/E-waste.png "alt="E-waste" class="icon">
+          <div>
+            <h3>E-WASTE</h3>
+            <p>Tipos: Todos os tipos de resíduos eletrônicos.</p>
+            <p>Peso máx: 500Kg</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <img src="../img/Electronic.png "alt="Electronic" class="icon">
+          <div>
+            <h3>Electronic Reuse</h3>
+            <p>Tipos: Placas eletrônicas.</p>
+            <p>Peso máx: 500Kg</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <img src="../img/E-recyclers.png" alt="E-recyclers" class="icon">
+          <div>
+            <h3>E-recyclers</h3>
+            <p>Tipos: Equipamentos de informática geral.</p>
+            <p>Peso máx: 500Kg</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Formulário de agendamento -->
+      <section class="form-agendamento">
+        <form id="form-coleta">
+          <label for="data" class="label-icon">
+            <img src="/imagens/Icon.png" alt="Ícone calendário" class="form-icon">
+            Data
+          </label>
+          <input type="date" id="data" name="data" required />
+
+          <label class="label-icon">
+        
+            Horários
+          </label>
+          <div class="horarios">
+            <div class="turno">
+              <span>Manhã</span>
+              <button type="button">09:00</button>
+              <button type="button">10:00</button>
+              <button type="button">11:00</button>
+              <button type="button">12:00</button>
+            </div>
+
+            <div class="turno">
+              <span>Tarde</span>
+              <button type="button">13:00</button>
+              <button type="button">14:00</button>
+              <button type="button">15:00</button>
+              <button type="button">16:00</button>
+              <button type="button">17:00</button>
+              <button type="button">18:00</button>
+            </div>
+
+            <div class="turno">
+              <span>Noite</span>
+              <button type="button">19:00</button>
+              <button type="button">20:00</button>
+              <button type="button">21:00</button>
+            </div>
+          </div>
+
+          <!-- Campo oculto para guardar o horário selecionado -->
+          <input type="hidden" id="horario" name="horario" />
+
+          <label for="cliente" class="label-icon">
+            
+            Cliente
+          </label>
+          <select id="cliente" name="cliente" required>
+            <option value="ewaste">E-WASTE</option>
+            <option value="ecotech">EcoTech</option>
+            <option value="reuse">Electronic Reuse</option>
+            <option value="recycling">Electronic Recycling</option>
+          </select>
+
+          <button type="submit" class="btn-agendar">Agendar</button>
+        </form>
+
+        <!-- Mensagem de retorno -->
+        <p id="mensagem-retorno" class="mensagem"></p>
+      </section>
+    </div>
+  </main>
+
+  <!-- Script -->
+  <script src="../script/agendamento.js">
+ 
+  </script>
+</body>
+</html>
