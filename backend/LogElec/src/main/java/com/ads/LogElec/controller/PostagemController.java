@@ -71,6 +71,10 @@ public class PostagemController {
                 postagem.setFotoResiduos(body.get("fotoResiduos").toString());
                 System.out.println("[DEBUG] fotoResiduos set, length: " + postagem.getFotoResiduos().length());
             }
+            if (body.containsKey("fotoEmpresa") && body.get("fotoEmpresa") != null) {
+                postagem.setFotoEmpresa(body.get("fotoEmpresa").toString());
+                System.out.println("[DEBUG] fotoEmpresa set, length: " + postagem.getFotoEmpresa().length());
+            }
             if (body.containsKey("diasDisponibilidade") && body.get("diasDisponibilidade") != null) {
                 postagem.setDiasDisponibilidade(body.get("diasDisponibilidade").toString());
                 System.out.println("[DEBUG] diasDisponibilidade set to: " + postagem.getDiasDisponibilidade());

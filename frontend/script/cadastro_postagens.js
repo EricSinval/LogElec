@@ -28,18 +28,27 @@ async function cadastrarPostagem(event) {
         fotoBase64 = await converterImagemBase64(fotoInput.files[0]);
     }
 
+    // Montar payload de forma condicional por tipo de empresa
+    const isColeta = empresaLogada.tipo === 'COLETA';
     const postagemData = {
         titulo: nomeEmpresa,
         descricao: document.getElementById('descricao').value,
         tipoResiduo: document.getElementById('tipoResiduo').value,
         peso: parseFloat(document.getElementById('peso').value) || 0,
-        enderecoRetirada: document.getElementById('enderecoRetirada').value,
         diasDisponibilidade: diasSelecionados.join(','),
         horaInicio: horaInicio,
         horaFim: horaFim,
-        fotoResiduos: fotoBase64,
         empresa: { id: empresaLogada.id }
     };
+
+    if (isColeta) {
+        // COLETA: enviar fotoEmpresa; não enviar endereço de retirada
+        if (fotoBase64) postagemData.fotoEmpresa = fotoBase64;
+    } else {
+        // DESCARTE: enviar endereçoRetirada e fotoResiduos
+        postagemData.enderecoRetirada = document.getElementById('enderecoRetirada').value;
+        if (fotoBase64) postagemData.fotoResiduos = fotoBase64;
+    }
 
     console.log('📤 Dados da postagem:', postagemData);
 
@@ -100,6 +109,9 @@ function atualizarInterface() {
                 linkPostagens.href = 'postagens.html';
             }
     }
+    
+    // Ajustar campos exibidos e textos conforme tipo
+    configurarCamposPorTipo(empresaLogada.tipo);
 }
 
 function sair() {
@@ -141,3 +153,41 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log('✅ Event listener adicionado ao formulário de postagem');
     }
 });
+
+// Exibir/ocultar campos e ajustar labels conforme tipo de empresa
+function configurarCamposPorTipo(tipo) {
+    const isColeta = tipo === 'COLETA';
+
+    // Seletores de labels
+    const labelTipoResiduo = document.querySelector('label[for="tipoResiduo"]');
+    const labelPeso = document.querySelector('label[for="peso"]');
+    const labelFoto = document.querySelector('label[for="foto"]');
+    const labelEndereco = document.querySelector('label[for="enderecoRetirada"]');
+
+    const inputEndereco = document.getElementById('enderecoRetirada');
+
+    // Ajuste de textos
+    if (labelTipoResiduo) {
+        labelTipoResiduo.textContent = isColeta ? 'Tipos de resíduos que coletamos' : 'Tipos de resíduos que está descartando';
+    }
+    if (labelPeso) {
+        labelPeso.textContent = isColeta ? 'Peso máximo de resíduos (kg)' : 'Peso aproximado (kg)';
+    }
+    if (labelFoto) {
+        labelFoto.textContent = isColeta ? 'Foto da logo/foto da empresa' : 'Foto dos resíduos';
+    }
+    if (labelEndereco && inputEndereco) {
+        if (isColeta) {
+            // COLETA: esconder endereço e remover required
+            labelEndereco.style.display = 'none';
+            inputEndereco.style.display = 'none';
+            inputEndereco.required = false;
+            inputEndereco.value = '';
+        } else {
+            // DESCARTE: mostrar endereço e exigir preenchimento
+            labelEndereco.style.display = '';
+            inputEndereco.style.display = '';
+            inputEndereco.required = true;
+        }
+    }
+}
