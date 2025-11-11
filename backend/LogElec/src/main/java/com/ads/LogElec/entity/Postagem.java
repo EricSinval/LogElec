@@ -3,6 +3,8 @@ package com.ads.LogElec.entity;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
 @Table(name = "postagens")
@@ -32,11 +34,22 @@ public class Postagem {
     @Column(name = "endereco_retirada", columnDefinition = "TEXT")
     private String enderecoRetirada;
 
-    @Column(name = "foto_empresa")
+        @Column(name = "foto_empresa", columnDefinition = "LONGTEXT")
     private String fotoEmpresa;
 
-    @Column(name = "foto_residuos")
+        @Column(name = "foto_residuos", columnDefinition = "LONGTEXT")
     private String fotoResiduos;
+
+    @Column(name = "dias_disponibilidade", columnDefinition = "TEXT")
+    private String diasDisponibilidade;
+
+    @Column(name = "hora_inicio", columnDefinition = "TIME")
+    @JsonFormat(pattern = "HH:mm")
+    private LocalTime horaInicio;
+
+    @Column(name = "hora_fim", columnDefinition = "TIME")
+    @JsonFormat(pattern = "HH:mm")
+    private LocalTime horaFim;
 
     @Enumerated(EnumType.STRING)
     private StatusPostagem status = StatusPostagem.ABERTA;
@@ -94,6 +107,15 @@ public class Postagem {
 
     public String getFotoResiduos() { return fotoResiduos; }
     public void setFotoResiduos(String fotoResiduos) { this.fotoResiduos = fotoResiduos; }
+
+    public String getDiasDisponibilidade() { return diasDisponibilidade; }
+    public void setDiasDisponibilidade(String diasDisponibilidade) { this.diasDisponibilidade = diasDisponibilidade; }
+
+    public LocalTime getHoraInicio() { return horaInicio; }
+    public void setHoraInicio(LocalTime horaInicio) { this.horaInicio = horaInicio; }
+
+    public LocalTime getHoraFim() { return horaFim; }
+    public void setHoraFim(LocalTime horaFim) { this.horaFim = horaFim; }
 
     public StatusPostagem getStatus() { return status; }
     public void setStatus(StatusPostagem status) { this.status = status; }

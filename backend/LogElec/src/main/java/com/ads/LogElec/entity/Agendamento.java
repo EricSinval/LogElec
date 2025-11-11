@@ -2,8 +2,6 @@ package com.ads.LogElec.entity;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
-import java.time.LocalDate;
-import java.time.LocalTime;
 
 @Entity
 @Table(name = "agendamentos")
@@ -23,6 +21,14 @@ public class Agendamento {
     @ManyToOne
     @JoinColumn(name = "empresa_coletora_id")
     private Empresa empresaColetora;
+
+    @ManyToOne
+    @JoinColumn(name = "empresa_cliente_id")
+    private Empresa empresaCliente;
+
+    @ManyToOne
+    @JoinColumn(name = "empresa_prestadora_id")
+    private Empresa empresaPrestadora;
 
     @Column(name = "data_hora", nullable = false)
     private LocalDateTime dataHora;
@@ -54,31 +60,6 @@ public class Agendamento {
         this.updatedAt = LocalDateTime.now();
     }
 
-    // Métodos de conveniência para compatibilidade com código existente
-    public LocalDate getDataAgendamento() {
-        return dataHora != null ? dataHora.toLocalDate() : null;
-    }
-
-    public void setDataAgendamento(LocalDate dataAgendamento) {
-        if (this.dataHora == null && dataAgendamento != null) {
-            this.dataHora = LocalDateTime.of(dataAgendamento, LocalTime.of(0, 0));
-        } else if (dataAgendamento != null) {
-            this.dataHora = LocalDateTime.of(dataAgendamento, this.dataHora.toLocalTime());
-        }
-    }
-
-    public LocalTime getHoraAgendamento() {
-        return dataHora != null ? dataHora.toLocalTime() : null;
-    }
-
-    public void setHoraAgendamento(LocalTime horaAgendamento) {
-        if (this.dataHora == null && horaAgendamento != null) {
-            this.dataHora = LocalDateTime.of(LocalDate.now(), horaAgendamento);
-        } else if (horaAgendamento != null) {
-            this.dataHora = LocalDateTime.of(this.dataHora.toLocalDate(), horaAgendamento);
-        }
-    }
-
     // Getters e Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
@@ -91,6 +72,12 @@ public class Agendamento {
 
     public Empresa getEmpresaColetora() { return empresaColetora; }
     public void setEmpresaColetora(Empresa empresaColetora) { this.empresaColetora = empresaColetora; }
+
+    public Empresa getEmpresaCliente() { return empresaCliente; }
+    public void setEmpresaCliente(Empresa empresaCliente) { this.empresaCliente = empresaCliente; }
+
+    public Empresa getEmpresaPrestadora() { return empresaPrestadora; }
+    public void setEmpresaPrestadora(Empresa empresaPrestadora) { this.empresaPrestadora = empresaPrestadora; }
 
     public LocalDateTime getDataHora() { return dataHora; }
     public void setDataHora(LocalDateTime dataHora) { this.dataHora = dataHora; }
@@ -110,5 +97,22 @@ public class Agendamento {
     @PreUpdate
     public void preUpdate() {
         this.updatedAt = LocalDateTime.now();
+    }
+
+    // ✅ MÉTODOS DE CONVENIÊNCIA PARA O FRONTEND
+    public String getDataFormatada() {
+        return dataHora != null ? dataHora.toLocalDate().toString() : "";
+    }
+
+    public String getHoraFormatada() {
+        return dataHora != null ? dataHora.toLocalTime().toString() : "";
+    }
+
+    public boolean isPendente() {
+        return status == StatusAgendamento.AGENDADA;
+    }
+
+    public boolean podeCancelar() {
+        return status == StatusAgendamento.AGENDADA || status == StatusAgendamento.CONFIRMADA;
     }
 }

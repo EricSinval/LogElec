@@ -7,31 +7,21 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href= "../style_css/style_HomePage.css"/>
+    <link rel="stylesheet" href= "../style_css/style_home.css"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="../style_css/stylescabecalho.css">
     <script defer src="/script/cabecalho.js"></script>
 </head>
 <body>
   <!--------------------------------- Header ---------------------------------------------->
   <header class="topbar">
-    <div class="logo">
+    <a href="home.html" class="logo">
       <img src="../img/LOGO.png" alt="Logo LogElec" />
       <span class="logotext">LogElec</span>
-    </div>
-
-    <div class="search-bar">
-      <img src="../img/Icon_Lupa.png"alt="lupa">
-      <input type="text" placeholder="Procure por empresas ou tipos de resíduo" />
-    </div>
+    </a>
 
     <div class="header-icons">
-      <span class="icon menu-icon" onclick="toggleMenu()">☰</span>
-      <a href="Login_Page.html" class=" btn button-login">Login</a>
-    <div class="dropdown" id="dropdown">
-      <a href="#">Mensagens</a>
-      <a href="#">Agendamentos de retirada</a>
-      <a href="#">Solicitações de empresas</a>
-      <a href="CadastroResiduos.html">Cadastro de resíduos</a>
+      <a href="login.html" class="btn button-login">Login</a>
     </div>
   </header>
   <!--------------------------------- Fim do Header ---------------------------------------------->
@@ -45,7 +35,6 @@
         A LogElec conecta empresas e pessoas para facilitar o descarte 
         e a reciclagem de resíduos eletrônicos, promovendo um futuro mais verde.
         </p>
-        <a href="#" class="button-Saiba-Mais">Saiba Mais</a>
       </div>
       <div class="hero-image">
         <img src="../img/Logo.png" alt="Ilustração sobre sustentabilidade"/>
@@ -58,12 +47,12 @@
       <div class="empresas">
         <div class="empresa-card">
           <p>Empresas que precisam descartar resíduos sólidos eletrônicos</p>
-          <a href="Cadastro_Page.html?tipo=DESCARTE" class="button-descarte">Preciso descartar!</a>
+          <a href="cadastro.html?tipo=DESCARTE" class="button-descarte">Preciso descartar!</a>
         </div>
           
         <div class="empresa-card">
           <p>Empresas que realizam coleta de resíduos eletrônicos para fins recicláveis</p>
-          <a href="Cadastro_Page.html?tipo=COLETA" class="button-coleta">Realizo coleta!</a>
+          <a href="cadastro.html?tipo=COLETA" class="button-coleta">Realizo coleta!</a>
         </div>       
       </div>
     </section>

@@ -10,6 +10,9 @@ public class CadastroResiduoDTO {
     private String endereco;
     private MultipartFile foto;
     private Long empresaId;
+    private String diasDisponibilidade;
+    private String horaInicio;
+    private String horaFim;
     
     // Construtores
     public CadastroResiduoDTO() {}

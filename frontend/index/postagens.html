@@ -8,18 +8,21 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-  <link rel="stylesheet" href="../style_css/style_PostagemColeta.css"/>
-  <script defer src="../script/PostagemColeta.js"></script>
+  <link rel="stylesheet" href="../style_css/style_postagens.css"/>
+  <link rel="stylesheet" href="../style_css/styles_popup.css">  
+  <script src="../script/ui_popup.js"></script>
+  <script defer src="../script/cabecalho.js"></script>
+  <script defer src="../script/postagens.js"></script>
 </head>
 <body>
   <!-- ==========================
        CABEÇALHO
   =========================== -->
   <header class="topbar">
-    <div class="logo">
+    <a href="postagens.html" class="logo">
       <img src="../img/Logo.png" alt="Logo LogElec" />
       <span class="logotext">LogElec</span>
-    </div>
+    </a>
 
     <div class="search-bar">
       <img src="../img/Icon_Lupa.png" alt="lupa">
@@ -30,10 +33,9 @@
       <span class="icon menu-icon" onclick="toggleMenu()">☰</span>
       <img src="../img/Icon_User.png" alt="icon user-icon">
       <div class="dropdown" id="dropdown">
-        <a href="#">Mensagens</a>
         <a href="#">Agendamentos de Coleta</a>
-        <a href="#">Solicitações de empresas</a>
-        <a href="CadastroResiduos.html">Cadastro de resíduos</a>
+        <a href="cadastro_postagens.html">Cadastro de postagens</a>
+        <a href="#" onclick="sair()">Sair</a>
       </div>
     </div>
   </header>
@@ -42,65 +44,14 @@
        CONTEÚDO PRINCIPAL
   =========================== -->
   <main class="content">
-    <h1>Seja bem vindo (nome)</h1>
-    <p class="subtitle">
+    <h1 id="tituloPostagens">Seja bem vindo <span id="nomeUsuario"></span></h1>
+    <p class="subtitle" id="subtituloPostagens">
       Empresas que buscam realizar o descarte correto de seus resíduos eletrônicos.
     </p>
 
-    <!-- Grid de cards -->
-    <section class="cards">
-      <div class="card">
-        <img src="../img/Placa mãe.jpg" alt="E-Waste">
-        <h3>NOME DA EMPRESA</h3>
-        <p>Tipos de resíduos: Placas eletronicas<br> 
-          Peso max: 348kg<br>
-          Localização: Rua Santa Mônica N2398, Bairro Limoeiro, SP<br>
-          </p>
-          </div>
-      <div class="card">
-        <img src="../img/Placa mãe.jpg" alt="E-Waste">
-        <h3>NOME DA EMPRESA</h3>
-        <p>Tipos de resíduos: Placas eletronicas<br> 
-          Peso max: 348kg<br>
-          Localização: Rua Santa Mônica N2398, Bairro Limoeiro, SP<br>
-        </p>
-      </div>
-
-      <div class="card">
-       <img src="../img/Placa mãe.jpg" alt="E-Waste">
-        <h3>NOME DA EMPRESA</h3>
-        <p>Tipos de resíduos: Placas eletronicas<br> 
-          Peso max: 348kg<br>
-          Localização: Rua Santa Mônica N2398, Bairro Limoeiro, SP<br>
-        </p>
-      </div>
-
-      <div class="card">
-      <img src="../img/Placa mãe.jpg" alt="E-Waste">
-        <h3>NOME DA EMPRESA</h3>
-        <p>Tipos de resíduos: Placas eletronicas<br> 
-          Peso max: 348kg<br>
-          Localização: Rua Santa Mônica N2398, Bairro Limoeiro, SP<br>
-        </p>
-      </div>
-
-      <div class="card">
-        <img src="../img/Placa mãe.jpg" alt="E-Waste">
-        <h3>NOME DA EMPRESA</h3>
-        <p>Tipos de resíduos: Placas eletronicas<br> 
-          Peso max: 348kg<br>
-          Localização: Rua Santa Mônica N2398, Bairro Limoeiro, SP<br>
-        </p>
-      </div>
-
-      <div class="card">
-       <img src="../img/Placa mãe.jpg" alt="E-Waste">
-        <h3>NOME DA EMPRESA</h3>
-        <p>Tipos de resíduos: Placas eletronicas<br> 
-          Peso max: 348kg<br>
-          Localização: Rua Santa Mônica N2398, Bairro Limoeiro, SP<br>
-        </p>
-      </div>
+    <!-- Grid de cards dinâmico -->
+    <section class="cards" id="listaPostagens">
+      <!-- Os cards serão carregados dinamicamente via JavaScript -->
     </section>
   </main>
 

@@ -1,0 +1,316 @@
+/* ============================
+   RESET GLOBAL
+============================ */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #f8f1de;
+  min-height: 100vh;
+}
+
+/* ============================
+   CABEÇALHO
+============================ */
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: 93px;
+  background: linear-gradient(90deg, rgb(46, 145, 103) 15%, #082F1F 30%);
+  padding: 0 24px;
+  position: relative;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo img {
+  width: 65px;
+  height: 62px;
+  object-fit: contain;
+}
+
+.logotext {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 600;
+  font-size: 48px;
+  color: #224619;
+}
+
+.header-icons {
+  display: flex;
+  align-items: center;
+  gap: 0px;
+  position: relative;
+  font-size: 1.5rem;
+}
+
+.icon {
+  font-size: 1.3rem;
+  cursor: pointer;
+  color: white;
+}
+
+.header-icons img {
+  width: auto;
+  height: 100px;
+  object-fit: contain;
+  cursor: pointer;
+}
+
+/* Dropdown */
+.dropdown {
+  display: none;
+  flex-direction: column;
+  position: absolute;
+  top: 75px;
+  right: 80px;
+  background: #0F726C;
+  border-radius: 10px;
+  box-shadow: 0px 0px 24px 0px #00000040;
+  min-width: 200px;
+  z-index: 99;
+}
+
+.dropdown a {
+  padding: 14px 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 14px;
+  font-family: 'Roboto', sans-serif;
+  color: white;
+  text-decoration: none;
+  transition: background 0.2s ease;
+}
+
+.dropdown a:last-child {
+  border-bottom: none;
+}
+
+.dropdown a:hover {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+/* ============================
+   LAYOUT PRINCIPAL
+============================ */
+.agendamento-wrapper {
+  display: flex;
+  min-height: calc(100vh - 93px);
+  background-color: #f8f1de;
+}
+
+/* SIDEBAR - LATERAL ESQUERDA */
+.sidebar {
+  width: 320px;
+  background: #fff;
+  border-right: 1px solid #ddd;
+  padding: 20px;
+  overflow-y: auto;
+  box-shadow: 2px 0 6px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar h2 {
+  font-size: 1.3rem;
+  color: #333;
+  margin-bottom: 20px;
+  text-align: center;
+  border-bottom: 2px solid #0F726C;
+  padding-bottom: 10px;
+}
+
+.lista-postagens {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.postagem-card {
+  background: #f9f9f9;
+  border: 2px solid #e0e0e0;
+  border-radius: 10px;
+  padding: 15px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.postagem-card:hover {
+  border-color: #0F726C;
+  background: #f0f8f7;
+  box-shadow: 0 4px 8px rgba(15, 114, 108, 0.2);
+}
+
+.postagem-card.ativo {
+  border-color: #0F726C;
+  background: #e8f5f4;
+}
+
+.postagem-card h4 {
+  color: #333;
+  font-size: 0.95rem;
+  margin-bottom: 8px;
+}
+
+.postagem-card p {
+  color: #666;
+  font-size: 0.85rem;
+  margin: 4px 0;
+}
+
+/* CONTEÚDO PRINCIPAL */
+.agendamento-content {
+  flex: 1;
+  padding: 40px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.agendamento-content h1 {
+  font-size: 2rem;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.subtitle {
+  font-size: 1rem;
+  color: #666;
+  margin-bottom: 30px;
+}
+
+.postagem-selecionada {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 30px;
+  min-height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.postagem-selecionada.ativo {
+  background: #e8f5f4;
+  border-color: #0F726C;
+}
+
+.postagem-info h3 {
+  color: #0F726C;
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+}
+
+.postagem-info p {
+  color: #666;
+  margin: 5px 0;
+}
+
+/* SELETORES */
+.seletores-container {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 30px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.seletores-container label {
+  display: block;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 8px;
+  margin-top: 20px;
+}
+
+.seletores-container label:first-of-type {
+  margin-top: 0;
+}
+
+.seletores-container select {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+  margin-bottom: 20px;
+  background: #fff;
+  color: #333;
+  cursor: pointer;
+}
+
+.seletores-container select:focus {
+  outline: none;
+  border-color: #0F726C;
+  box-shadow: 0 0 0 3px rgba(15, 114, 108, 0.1);
+}
+
+/* BOTÕES */
+.btn-confirmar,
+.btn-cancelar {
+  width: 48%;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: background 0.3s ease;
+  margin-top: 20px;
+}
+
+.btn-confirmar {
+  background: #0F726C;
+  color: white;
+  float: left;
+}
+
+.btn-confirmar:hover {
+  background: #0a5450;
+}
+
+.btn-cancelar {
+  background: #6c757d;
+  color: white;
+  float: right;
+}
+
+.btn-cancelar:hover {
+  background: #545b62;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .agendamento-wrapper {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid #ddd;
+    max-height: 300px;
+  }
+
+  .agendamento-content {
+    padding: 20px;
+  }
+
+  .agendamento-content h1 {
+    font-size: 1.5rem;
+  }
+
+  .btn-confirmar,
+  .btn-cancelar {
+    width: 100%;
+    float: none;
+    margin: 10px 0;
+  }
+}

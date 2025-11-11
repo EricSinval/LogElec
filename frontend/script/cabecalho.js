@@ -7,3 +7,14 @@ function toggleMenu() {
         dropdown.style.display = "flex";
     }
 }
+
+// Logout function available from the header dropdown
+function sair() {
+    // Remove stored company info and redirect to login
+    try {
+        localStorage.removeItem('empresaLogada');
+    } catch (e) {
+        console.warn('Erro ao limpar localStorage:', e);
+    }
+    window.location.href = 'login.html';
+}

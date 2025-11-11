@@ -3,8 +3,12 @@ body {
   background: #a4e2ad; /* cor neutra, pode trocar por uma imagem de fundo */
   background-image: url("../img/fundo.png");
   background-size: cover;
- 
+  
   margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
 }
 
 /* reset */
@@ -62,7 +66,6 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  flex: 1; /* ocupa espaço abaixo da topbar */
   width: 100%;
 }
 
@@ -106,8 +109,25 @@ input {
   box-sizing: border-box;
 }
 
+button[type="submit"] {
+  background: #0F726C;
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  margin-top: 15px;
+  transition: background 0.3s ease;
+}
+
+button[type="submit"]:hover {
+  background: #0a5450;
+}
+
 .btn-enviar {
-  background: #1a8c7a;
+  background: #0F726C;
   color: white;
   border: none;
   padding: 12px;
@@ -118,5 +138,5 @@ input {
 }
 
 .btn-enviar:hover {
-  background: #167564;
+  background: #0a5450;
 }

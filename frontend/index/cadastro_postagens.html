@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Cadastrar Postagem - LogElec</title>
+  <link rel="stylesheet" href="../style_css/style_cadastro_postagens.css">
+  <link rel="stylesheet" href="../style_css/styles_popup.css">
+  <link rel="stylesheet" href="../style_css/stylescabecalho.css">
+  <script defer src="../script/cabecalho.js"></script>
+</head>
+<body>
+    <header class="topbar">
+      <a href="postagens.html" class="logo">
+        <img src="../img/Logo.png" alt="Logo LogElec" />
+        <span class="logotext">LogElec</span>
+      </a>
+      <!-- nav button removed: navigation moved to dropdown -->
+
+      <div class="header-icons">
+        <span class="icon menu-icon" onclick="toggleMenu()">☰</span>
+        <img src="../img/Icon_User.png" alt="icon user-icon">
+        <div class="dropdown" id="dropdown">
+          <a href="#">Agendamentos de Coleta</a>
+          <!-- Postagens link label will be updated by cadastro_postagens.js based on empresaLogada.tipo -->
+          <a id="linkPostagensTipo" href="postagens.html">Postagens</a>
+          <a href="#" onclick="sair()">Sair</a>
+        </div>
+      </div>
+    </header>
+
+    <div class="background">
+      <div class="overlay"></div>
+      <div class="container">
+        <h2>Cadastro postagens</h2>
+        <p>Preencha os dados para criar uma postagem</p>
+        
+        <!-- ✅ FORMULÁRIO COM IDs CORRETOS PARA INTEGRAÇÃO -->
+        <form id="formCadastroPostagem">
+          <!-- Nome Empresa preenchido automaticamente -->
+          <label for="nomeEmpresa">Nome Empresa</label>
+          <input type="text" id="nomeEmpresa" name="nomeEmpresa" disabled>
+
+          <label for="descricao">Descrição</label>
+          <textarea id="descricao" name="descricao" placeholder="Descreva os resíduos ou serviço de coleta..." required></textarea>
+
+          <label for="tipoResiduo">Tipo de Resíduo</label>
+          <input type="text" id="tipoResiduo" name="tipoResiduo" placeholder="Ex: Placas Eletrônicas, Cabos, etc.">
+
+          <label for="peso">Peso Aproximado (kg)</label>
+          <input type="number" id="peso" name="peso" step="0.01" placeholder="0.00">
+
+          <label for="enderecoRetirada">Endereço para Retirada/Coleta</label>
+          <input type="text" id="enderecoRetirada" name="enderecoRetirada" placeholder="Endereço completo" required>
+
+          <label for="foto">Foto (da empresa ou dos resíduos)</label>
+          <input type="file" id="foto" name="foto" accept="image/*" required>
+
+          <label for="diasDisponibilidade">Dias de Disponibilidade</label>
+          <div id="diasDisponibilidade" style="display: flex; gap: 10px; flex-wrap: wrap;">
+            <label style="flex: 1; min-width: 80px; display: flex; align-items: center;">
+              <input type="checkbox" name="dia" value="SEGUNDA"> Segunda
+            </label>
+            <label style="flex: 1; min-width: 80px; display: flex; align-items: center;">
+              <input type="checkbox" name="dia" value="TERCA"> Terça
+            </label>
+            <label style="flex: 1; min-width: 80px; display: flex; align-items: center;">
+              <input type="checkbox" name="dia" value="QUARTA"> Quarta
+            </label>
+            <label style="flex: 1; min-width: 80px; display: flex; align-items: center;">
+              <input type="checkbox" name="dia" value="QUINTA"> Quinta
+            </label>
+            <label style="flex: 1; min-width: 80px; display: flex; align-items: center;">
+              <input type="checkbox" name="dia" value="SEXTA"> Sexta
+            </label>
+            <label style="flex: 1; min-width: 80px; display: flex; align-items: center;">
+              <input type="checkbox" name="dia" value="SABADO"> Sábado
+            </label>
+            <label style="flex: 1; min-width: 80px; display: flex; align-items: center;">
+              <input type="checkbox" name="dia" value="DOMINGO"> Domingo
+            </label>
+          </div>
+
+          <label for="horaInicio">Hora de Início</label>
+          <input type="time" id="horaInicio" name="horaInicio">
+
+          <label for="horaFim">Hora de Término</label>
+          <input type="time" id="horaFim" name="horaFim">
+
+          <button type="submit">Cadastrar Postagem</button>
+        </form>
+      </div>
+    </div>
+
+  <script src="../script/ui_popup.js"></script>
+  <script src="../script/cadastro_postagens.js"></script>
+</body>
+</html>

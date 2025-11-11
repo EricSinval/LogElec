@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agendamento - LogElec</title>
+  <link rel="stylesheet" href="../style_css/style_agendamento.css">
+  <link rel="stylesheet" href="../style_css/styles_popup.css">
+  <link rel="stylesheet" href="../style_css/stylescabecalho.css">
+  <script defer src="../script/cabecalho.js"></script>
+</head>
+<body>
+  <!-- HEADER -->
+  <header class="topbar">
+    <a href="postagens.html" class="logo">
+      <img src="../img/Logo.png" alt="Logo LogElec" />
+      <span class="logotext">LogElec</span>
+    </a>
+    <div class="header-icons">
+      <span class="icon menu-icon" onclick="toggleMenu()">☰</span>
+      <img src="../img/Icon_User.png" alt="icon user-icon">
+      <div class="dropdown" id="dropdown">
+        <a href="#">Agendamentos de Coleta</a>
+        <a id="linkPostagensTipo" href="postagens.html">Postagens</a>
+        <a href="#" onclick="sair()">Sair</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN CONTENT -->
+  <div class="agendamento-wrapper">
+    <!-- LATERAL ESQUERDA - CLIENTES -->
+    <aside class="sidebar">
+      <h2>Clientes</h2>
+      <div id="listaPostagens" class="lista-postagens">
+        <!-- Postagens ativas serão carregadas aqui -->
+      </div>
+    </aside>
+
+    <!-- CONTEÚDO PRINCIPAL - SELETOR DE AGENDAMENTO -->
+    <main class="agendamento-content">
+      <h1>Verificar Disponibilidade</h1>
+      <p class="subtitle">Selecione um cliente e um horário para agendar</p>
+
+      <div id="postagemSelecionada" class="postagem-selecionada">
+        <p style="text-align: center; color: #999;">Clique em uma postagem para verificar disponibilidade</p>
+      </div>
+
+      <div id="seletoresContainer" class="seletores-container" style="display: none;">
+        <label for="diaSelecionado">Dia de Agendamento</label>
+        <select id="diaSelecionado">
+          <option value="">-- Selecione um dia --</option>
+        </select>
+
+        <label for="horarioSelecionado">Horário de Agendamento</label>
+        <select id="horarioSelecionado">
+          <option value="">-- Selecione um horário --</option>
+        </select>
+
+        <button onclick="confirmarAgendamento()" class="btn-confirmar">Confirmar Agendamento</button>
+        <button onclick="cancelarAgendamento()" class="btn-cancelar">Cancelar</button>
+      </div>
+    </main>
+  </div>
+
+  <script src="../script/ui_popup.js"></script>
+  <script src="../script/agendamento.js"></script>
+</body>
+</html>

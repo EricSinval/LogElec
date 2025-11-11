@@ -15,8 +15,11 @@ function configurarCadastro() {
     console.log('📋 Tipo da URL:', tipo);
     
     if (!tipo) {
-        alert('❌ Tipo de empresa não definido! Volte pela homepage e clique em um dos botões.');
-        window.location.href = 'Home_Page.html';
+        showPopup('Tipo de empresa não definido! Selecione um tipo de empresa na próxima página.', {
+            buttons: [
+                { text: 'Voltar', onClick: () => { window.location.href = 'home.html'; } }
+            ]
+        });
         return;
     }
     
@@ -25,7 +28,7 @@ function configurarCadastro() {
     
     if (!formCadastro) {
         console.error('💥 ERRO: Formulário não encontrado!');
-        alert('Erro: Formulário não carregado. Recarregue a página.');
+        showPopup('Erro: Formulário não carregado. Recarregue a página.', { type: 'error' });
         return;
     }
     
@@ -333,23 +336,25 @@ async function executarCadastro(tipo) {
         if (response.ok) {
             const empresa = JSON.parse(responseText);
             console.log('✅ Empresa cadastrada com sucesso:', empresa);
-            alert('🎉 Empresa cadastrada com sucesso!');
-            window.location.href = 'Login_Page.html';
+            showPopup('🎉 Empresa cadastrada com sucesso!', {
+                type: 'success',
+                buttons: [ { text: 'Ir para login', onClick: () => { window.location.href = 'login.html'; } } ]
+            });
         } else {
             console.error('❌ Erro no cadastro:', responseText);
             
             // ✅ TRATAMENTO MELHORADO PARA ERROS DO BACKEND
             if (responseText.includes('•')) {
                 // Se o backend retornou múltiplos erros
-                alert('❌ Erros no cadastro:\n' + responseText.replace(/•/g, '\n•'));
+                showPopup('❌ Erros no cadastro:\n' + responseText.replace(/•/g, '\n•'), { type: 'error' });
             } else {
                 // Erro simples
-                alert('❌ Erro no cadastro: ' + responseText);
+                showPopup('❌ Erro no cadastro: ' + responseText, { type: 'error' });
             }
         }
     } catch (error) {
         console.error('💥 Erro de conexão:', error);
-        alert('🌐 Erro de conexão com o servidor. Verifique se o backend está rodando.');
+    showPopup('🌐 Erro de conexão com o servidor. Verifique se o backend está rodando.', { type: 'error' });
     } finally {
         // Restaurar botão
         btnSubmit.textContent = originalText;

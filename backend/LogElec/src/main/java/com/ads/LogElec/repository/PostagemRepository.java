@@ -12,4 +12,5 @@ public interface PostagemRepository extends JpaRepository<Postagem, Long> {
     List<Postagem> findByStatus(StatusPostagem status);
     List<Postagem> findByTipoResiduoContainingIgnoreCase(String tipoResiduo);
     List<Postagem> findByEmpresaTipo(com.ads.LogElec.entity.TipoEmpresa tipo);
+    List<Postagem> findByEmpresaAndStatus(com.ads.LogElec.entity.Empresa empresa, StatusPostagem status);
 }

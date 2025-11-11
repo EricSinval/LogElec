@@ -7,18 +7,38 @@ async function cadastrarPostagem(event) {
     
     const empresaLogada = JSON.parse(localStorage.getItem('empresaLogada'));
     if (!empresaLogada) {
-        alert('⚠️ Você precisa fazer login primeiro!');
-        window.location.href = 'Login_Page.html';
+        showPopup('⚠️ Você precisa fazer login primeiro!', { type: 'info', buttons: [ { text: 'Ir para login', onClick: () => { window.location.href = 'login.html'; } } ] });
         return;
     }
 
+    // Nome da empresa sempre do localStorage
+    const nomeEmpresa = empresaLogada.nomeRazao || empresaLogada.nome;
+    document.getElementById('nomeEmpresa').value = nomeEmpresa;
+
+    // Coletar dias selecionados
+    const diasCheckboxes = document.querySelectorAll('input[name="dia"]:checked');
+    const diasSelecionados = Array.from(diasCheckboxes).map(cb => cb.value);
+    const horaInicio = document.getElementById('horaInicio').value;
+    const horaFim = document.getElementById('horaFim').value;
+
+    // Converter imagem para Base64
+    let fotoBase64 = null;
+    const fotoInput = document.getElementById('foto');
+    if (fotoInput.files && fotoInput.files[0]) {
+        fotoBase64 = await converterImagemBase64(fotoInput.files[0]);
+    }
+
     const postagemData = {
-        titulo: document.getElementById('titulo').value,
+        titulo: nomeEmpresa,
         descricao: document.getElementById('descricao').value,
         tipoResiduo: document.getElementById('tipoResiduo').value,
         peso: parseFloat(document.getElementById('peso').value) || 0,
         enderecoRetirada: document.getElementById('enderecoRetirada').value,
-        empresa: { id: empresaLogada.id } // Apenas o ID da empresa
+        diasDisponibilidade: diasSelecionados.join(','),
+        horaInicio: horaInicio,
+        horaFim: horaFim,
+        fotoResiduos: fotoBase64,
+        empresa: { id: empresaLogada.id }
     };
 
     console.log('📤 Dados da postagem:', postagemData);
@@ -37,16 +57,15 @@ async function cadastrarPostagem(event) {
         if (response.ok) {
             const postagem = await response.json();
             console.log('✅ Postagem cadastrada:', postagem);
-            alert('🎉 Postagem cadastrada com sucesso!');
-            window.location.href = 'Postagens_Page.html';
+            showPopup('🎉 Postagem cadastrada com sucesso!', { type: 'success', buttons: [ { text: 'Ver postagens', onClick: () => { window.location.href = 'postagens.html'; } } ] });
         } else {
             const error = await response.text();
             console.error('❌ Erro no cadastro:', error);
-            alert('❌ Erro ao cadastrar postagem: ' + error);
+            showPopup('❌ Erro ao cadastrar postagem: ' + error, { type: 'error' });
         }
     } catch (error) {
         console.error('💥 Erro de conexão:', error);
-        alert('🌐 Erro de conexão com o servidor.');
+        showPopup('🌐 Erro de conexão com o servidor.', { type: 'error' });
     }
 }
 
@@ -70,12 +89,35 @@ function atualizarInterface() {
                 subtitulo.textContent = 'Cadastre sua disponibilidade para coleta de resíduos';
             }
         }
+
+            // Atualizar link do dropdown para mostrar o tipo de postagens relevantes
+            const linkPostagens = document.getElementById('linkPostagensTipo');
+            if (linkPostagens) {
+                // Se a empresa for DESCARTE, mostramos 'Postagens coleta' (ou seja, empresas que coletam)
+                // Se a empresa for COLETA, mostramos 'Postagens descarte'
+                const label = empresaLogada.tipo === 'DESCARTE' ? 'Postagens coleta' : 'Postagens descarte';
+                linkPostagens.textContent = label;
+                linkPostagens.href = 'postagens.html';
+            }
     }
 }
 
 function sair() {
     localStorage.removeItem('empresaLogada');
-    window.location.href = 'Login_Page.html';
+    window.location.href = 'login.html';
+}
+
+// Converter imagem para Base64
+function converterImagemBase64(arquivo) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => {
+            console.log('📸 Imagem convertida para Base64, tamanho:', reader.result.length, 'caracteres');
+            resolve(reader.result);
+        };
+        reader.onerror = reject;
+        reader.readAsDataURL(arquivo);
+    });
 }
 
 // Inicialização
@@ -84,12 +126,14 @@ document.addEventListener('DOMContentLoaded', function() {
     
     const empresaLogada = JSON.parse(localStorage.getItem('empresaLogada'));
     if (!empresaLogada) {
-        alert('⚠️ Você precisa fazer login primeiro!');
-        window.location.href = 'Login_Page.html';
+        showPopup('⚠️ Você precisa fazer login primeiro!', { type: 'info', buttons: [ { text: 'Ir para login', onClick: () => { window.location.href = 'login.html'; } } ] });
         return;
     }
-    
     atualizarInterface();
+    // Preencher campo nomeEmpresa
+    const nomeEmpresa = empresaLogada.nomeRazao || empresaLogada.nome;
+    const nomeEmpresaInput = document.getElementById('nomeEmpresa');
+    if (nomeEmpresaInput) nomeEmpresaInput.value = nomeEmpresa;
     
     const formPostagem = document.getElementById('formCadastroPostagem');
     if (formPostagem) {
