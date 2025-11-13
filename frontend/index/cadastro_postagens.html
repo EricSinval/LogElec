@@ -3,6 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <title>Cadastrar Postagem - LogElec</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../style_css/style_cadastro_postagens.css">
   <link rel="stylesheet" href="../style_css/styles_popup.css">
   <link rel="stylesheet" href="../style_css/stylescabecalho.css">
@@ -36,24 +39,38 @@
         
         <!-- ✅ FORMULÁRIO COM IDs CORRETOS PARA INTEGRAÇÃO -->
         <form id="formCadastroPostagem">
+          <!-- Seção: Informações Básicas -->
+          <div class="section-heading">📋 Informações Básicas</div>
+
           <!-- Nome Empresa preenchido automaticamente -->
           <label for="nomeEmpresa">Nome Empresa</label>
           <input type="text" id="nomeEmpresa" name="nomeEmpresa" disabled>
 
           <label for="descricao">Descrição</label>
           <textarea id="descricao" name="descricao" placeholder="Descreva os resíduos ou serviço de coleta..." required></textarea>
+          <small class="hint" id="hintDescricao"></small>
 
           <label for="tipoResiduo">Tipo de Resíduo</label>
           <input type="text" id="tipoResiduo" name="tipoResiduo" placeholder="Ex: Placas Eletrônicas, Cabos, etc.">
+          <small class="hint" id="hintTipoResiduo"></small>
 
           <label for="peso">Peso Aproximado (kg)</label>
           <input type="number" id="peso" name="peso" step="0.01" placeholder="0.00">
+          <small class="hint" id="hintPeso"></small>
 
           <label for="enderecoRetirada">Endereço para Retirada/Coleta</label>
           <input type="text" id="enderecoRetirada" name="enderecoRetirada" placeholder="Endereço completo" required>
+          <small class="hint" id="hintEndereco"></small>
 
           <label for="foto">Foto (da empresa ou dos resíduos)</label>
           <input type="file" id="foto" name="foto" accept="image/*" required>
+          <small class="hint" id="hintFoto"></small>
+          <div id="imagePreviewContainer" style="display:none;">
+            <img id="imagePreview" alt="Preview da imagem" />
+          </div>
+
+          <!-- Seção: Disponibilidade -->
+          <div class="section-heading">🗓️ Disponibilidade</div>
 
           <label for="diasDisponibilidade">Dias de Disponibilidade</label>
           <div id="diasDisponibilidade" style="display: flex; gap: 10px; flex-wrap: wrap;">
@@ -85,6 +102,7 @@
 
           <label for="horaFim">Hora de Término</label>
           <input type="time" id="horaFim" name="horaFim">
+          <small class="hint" id="hintHorario"></small>
 
           <button type="submit">Cadastrar Postagem</button>
         </form>

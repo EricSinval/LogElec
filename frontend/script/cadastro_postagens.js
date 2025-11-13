@@ -152,6 +152,9 @@ document.addEventListener('DOMContentLoaded', function() {
         formPostagem.addEventListener('submit', cadastrarPostagem);
         console.log('✅ Event listener adicionado ao formulário de postagem');
     }
+    
+    // Configurar preview de imagem
+    setupImagePreview();
 });
 
 // Exibir/ocultar campos e ajustar labels conforme tipo de empresa
@@ -189,5 +192,60 @@ function configurarCamposPorTipo(tipo) {
             inputEndereco.style.display = '';
             inputEndereco.required = true;
         }
+    }
+    
+    // Configurar micro-dicas contextuais
+    configurarMicroDicas(isColeta);
+}
+
+// Configurar micro-dicas (hints) baseadas no tipo de empresa
+function configurarMicroDicas(isColeta) {
+    const hintDescricao = document.getElementById('hintDescricao');
+    const hintTipoResiduo = document.getElementById('hintTipoResiduo');
+    const hintPeso = document.getElementById('hintPeso');
+    const hintEndereco = document.getElementById('hintEndereco');
+    const hintFoto = document.getElementById('hintFoto');
+    const hintHorario = document.getElementById('hintHorario');
+    
+    if (isColeta) {
+        if (hintDescricao) hintDescricao.textContent = 'Explique quais tipos de resíduos você coleta e como funciona o serviço.';
+        if (hintTipoResiduo) hintTipoResiduo.textContent = 'Liste os principais tipos de resíduos eletrônicos que sua empresa coleta.';
+        if (hintPeso) hintPeso.textContent = 'Indique o peso máximo que sua empresa consegue coletar por vez.';
+        if (hintEndereco) hintEndereco.style.display = 'none';
+        if (hintFoto) hintFoto.textContent = 'Envie uma foto da sua empresa ou logo para identificação.';
+        if (hintHorario) hintHorario.textContent = 'Defina os dias e horários em que sua empresa está disponível para realizar coletas.';
+    } else {
+        if (hintDescricao) hintDescricao.textContent = 'Descreva os resíduos que você deseja descartar e seu estado.';
+        if (hintTipoResiduo) hintTipoResiduo.textContent = 'Especifique o tipo de resíduo eletrônico (ex: computadores, cabos, baterias).';
+        if (hintPeso) hintPeso.textContent = 'Informe o peso aproximado do material a ser descartado.';
+        if (hintEndereco) {
+            hintEndereco.style.display = '';
+            hintEndereco.textContent = 'Informe o endereço completo onde os resíduos podem ser retirados.';
+        }
+        if (hintFoto) hintFoto.textContent = 'Envie uma foto dos resíduos para que empresas de coleta visualizem.';
+        if (hintHorario) hintHorario.textContent = 'Indique os dias e horários em que empresas podem retirar os resíduos.';
+    }
+}
+
+// Preview de imagem ao selecionar arquivo
+function setupImagePreview() {
+    const fotoInput = document.getElementById('foto');
+    const previewContainer = document.getElementById('imagePreviewContainer');
+    const previewImg = document.getElementById('imagePreview');
+    
+    if (fotoInput && previewContainer && previewImg) {
+        fotoInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file && file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    previewImg.src = event.target.result;
+                    previewContainer.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            } else {
+                previewContainer.style.display = 'none';
+            }
+        });
     }
 }
