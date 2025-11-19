@@ -85,4 +85,64 @@ public class EmpresaController {
         return empresa.map(ResponseEntity::ok)
                     .orElse(ResponseEntity.notFound().build());
     }
+
+    // ✅ ATUALIZAR DADOS DA EMPRESA (PERFIL)
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateEmpresa(@PathVariable Long id, @RequestBody java.util.Map<String, Object> dadosAtualizados) {
+        try {
+            System.out.println("📥 Recebendo atualização de empresa ID: " + id);
+            System.out.println("📋 Dados recebidos: " + dadosAtualizados);
+            
+            Optional<Empresa> empresaOpt = empresaRepository.findById(id);
+            if (!empresaOpt.isPresent()) {
+                return ResponseEntity.notFound().build();
+            }
+            
+            Empresa empresa = empresaOpt.get();
+            
+            // Atualizar campos permitidos
+            if (dadosAtualizados.containsKey("email")) {
+                String novoEmail = (String) dadosAtualizados.get("email");
+                // Verificar se o email não está sendo usado por outra empresa
+                Optional<Empresa> emailExistente = empresaRepository.findByEmail(novoEmail);
+                if (emailExistente.isPresent() && !emailExistente.get().getId().equals(id)) {
+                    return ResponseEntity.badRequest().body("Email já está em uso por outra empresa");
+                }
+                empresa.setEmail(novoEmail);
+            }
+            
+            if (dadosAtualizados.containsKey("telefone")) {
+                empresa.setTelefone((String) dadosAtualizados.get("telefone"));
+            }
+            
+            if (dadosAtualizados.containsKey("endereco")) {
+                empresa.setEndereco((String) dadosAtualizados.get("endereco"));
+            }
+            
+            // Verificar se há alteração de senha
+            if (dadosAtualizados.containsKey("senhaAtual") && dadosAtualizados.containsKey("novaSenha")) {
+                String senhaAtual = (String) dadosAtualizados.get("senhaAtual");
+                String novaSenha = (String) dadosAtualizados.get("novaSenha");
+                
+                // Verificar senha atual
+                if (!empresaService.verificarSenha(empresa, senhaAtual)) {
+                    return ResponseEntity.badRequest().body("Senha atual incorreta");
+                }
+                
+                // Atualizar senha usando o service para hash correto
+                empresaService.atualizarSenha(empresa, novaSenha);
+            }
+            
+            // Salvar empresa atualizada
+            Empresa empresaAtualizada = empresaRepository.save(empresa);
+            System.out.println("✅ Empresa atualizada com sucesso: " + empresaAtualizada.getId());
+            
+            return ResponseEntity.ok(empresaAtualizada);
+            
+        } catch (Exception e) {
+            System.out.println("💥 Erro ao atualizar empresa: " + e.getMessage());
+            e.printStackTrace();
+            return ResponseEntity.status(500).body("Erro ao atualizar empresa: " + e.getMessage());
+        }
+    }
 }

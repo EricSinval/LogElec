@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Meu Perfil - LogElec</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../style_css/style_perfil.css">
+  <link rel="stylesheet" href="../style_css/styles_popup.css">
+  <link rel="stylesheet" href="../style_css/stylescabecalho.css">
+  <script defer src="../script/cabecalho.js"></script>
+</head>
+<body>
+    <header class="topbar">
+      <a href="postagens.html" class="logo">
+        <img src="../img/Logo.png" alt="Logo LogElec" />
+        <span class="logotext">LogElec</span>
+      </a>
+
+      <div class="header-icons">
+        <span class="icon menu-icon" onclick="toggleMenu()">☰</span>
+        <img src="../img/Icon_User.png" alt="icon user-icon" onclick="window.location.href='perfil.html'">
+        <div class="dropdown" id="dropdown">
+          <a href="agendamento.html">Agendamentos de Coleta</a>
+          <a id="linkPostagensTipo" href="postagens.html">Postagens</a>
+          <a href="cadastro_postagens.html">Cadastro de postagens</a>
+          <a href="perfil.html">Meu Perfil</a>
+          <a href="#" onclick="sair()">Sair</a>
+        </div>
+      </div>
+    </header>
+
+    <div class="background">
+      <div class="overlay"></div>
+      <div class="container">
+        <div class="header-section">
+          <h2>👤 Meu Perfil</h2>
+          <p>Visualize e edite suas informações cadastrais</p>
+        </div>
+        
+        <form id="formPerfil">
+          <!-- Seção: Dados da Empresa -->
+          <div class="section-heading">🏢 Dados da Empresa</div>
+
+          <label for="nomeRazao">Nome/Razão Social</label>
+          <input type="text" id="nomeRazao" name="nomeRazao" disabled>
+
+          <label for="tipo">Tipo de Empresa</label>
+          <input type="text" id="tipo" name="tipo" disabled>
+
+          <label for="cnpj">CNPJ</label>
+          <input type="text" id="cnpj" name="cnpj" disabled>
+
+          <!-- Seção: Contato -->
+          <div class="section-heading">📞 Informações de Contato</div>
+
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" disabled>
+
+          <label for="telefone">Telefone</label>
+          <input type="tel" id="telefone" name="telefone" placeholder="(00) 00000-0000" disabled>
+
+          <!-- Seção: Endereço -->
+          <div class="section-heading">📍 Endereço</div>
+
+          <label for="endereco">Endereço Completo</label>
+          <textarea id="endereco" name="endereco" rows="3" placeholder="Ex: Rua ABC, 123 - Bairro, Cidade - Estado, CEP 12345-678" disabled></textarea>
+
+          <!-- Seção: Segurança -->
+          <div class="section-heading">🔒 Segurança</div>
+
+          <div id="passwordSection">
+            <label for="senhaAtual">Senha Atual</label>
+            <input type="password" id="senhaAtual" name="senhaAtual" placeholder="Digite sua senha atual" disabled>
+
+            <label for="novaSenha">Nova Senha</label>
+            <input type="password" id="novaSenha" name="novaSenha" placeholder="Digite a nova senha (mín. 6 caracteres)" disabled>
+
+            <label for="confirmarSenha">Confirmar Nova Senha</label>
+            <input type="password" id="confirmarSenha" name="confirmarSenha" placeholder="Confirme a nova senha" disabled>
+            <small class="hint">Deixe em branco se não quiser alterar a senha.</small>
+          </div>
+
+          <!-- Botões de ação -->
+          <div class="button-group">
+            <button type="button" id="btnEditar" class="btn-secondary">✏️ Editar Perfil</button>
+            <button type="submit" id="btnSalvar" class="btn-primary" style="display:none;">💾 Salvar Alterações</button>
+            <button type="button" id="btnCancelar" class="btn-secondary" style="display:none;">❌ Cancelar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+  <script src="../script/ui_popup.js"></script>
+  <script src="../script/perfil.js"></script>
+</body>
+</html>

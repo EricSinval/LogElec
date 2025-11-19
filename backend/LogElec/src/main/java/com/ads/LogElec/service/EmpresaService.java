@@ -66,4 +66,18 @@ public class EmpresaService {
         
         return empresaRepository.save(empresa);
     }
+
+    // ✅ VERIFICAR SENHA (para autenticação e alteração)
+    public boolean verificarSenha(Empresa empresa, String senhaFornecida) {
+        return passwordEncoder.matches(senhaFornecida, empresa.getSenha());
+    }
+
+    // ✅ ATUALIZAR SENHA
+    public void atualizarSenha(Empresa empresa, String novaSenha) {
+        if (novaSenha.length() < 6) {
+            throw new RuntimeException("Senha deve ter no mínimo 6 caracteres");
+        }
+        String senhaHash = passwordEncoder.encode(novaSenha);
+        empresa.setSenha(senhaHash);
+    }
 }
