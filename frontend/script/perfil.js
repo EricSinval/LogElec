@@ -1,5 +1,5 @@
 // perfil.js - Gerenciamento da página de perfil do usuário
-console.log('👤 Perfil.js carregado!');
+console.log('Perfil.js carregado!');
 
 let empresaOriginal = null;
 let modoEdicao = false;
@@ -15,7 +15,7 @@ function carregarDadosUsuario() {
     const empresaLogada = JSON.parse(localStorage.getItem('empresaLogada'));
     
     if (!empresaLogada) {
-        showPopup('⚠️ Você precisa fazer login primeiro!', { 
+        showPopup('Você precisa fazer login primeiro!', { 
             type: 'info', 
             buttons: [{ 
                 text: 'Ir para login', 
@@ -36,7 +36,7 @@ function carregarDadosUsuario() {
     document.getElementById('telefone').value = formatarTelefone(empresaLogada.telefone || '');
     document.getElementById('endereco').value = empresaLogada.endereco || '';
 
-    console.log('✅ Dados do usuário carregados:', empresaLogada);
+    console.log('Dados do usuário carregados:', empresaLogada);
 }
 
 // Formatar CNPJ
@@ -74,7 +74,7 @@ function ativarModoEdicao() {
     document.getElementById('btnSalvar').style.display = 'inline-block';
     document.getElementById('btnCancelar').style.display = 'inline-block';
 
-    console.log('✏️ Modo de edição ativado');
+    console.log('Modo de edição ativado');
 }
 
 // Cancelar edição
@@ -101,7 +101,7 @@ function cancelarEdicao() {
     document.getElementById('btnSalvar').style.display = 'none';
     document.getElementById('btnCancelar').style.display = 'none';
 
-    console.log('❌ Edição cancelada');
+    console.log('Edição cancelada');
 }
 
 // Salvar alterações
@@ -121,7 +121,7 @@ async function salvarAlteracoes(event) {
 
     // Validar campos obrigatórios
     if (!dadosAtualizados.email) {
-        showPopup('⚠️ O email é obrigatório!', { type: 'error' });
+        showPopup('O email é obrigatório!', { type: 'error' });
         return;
     }
 

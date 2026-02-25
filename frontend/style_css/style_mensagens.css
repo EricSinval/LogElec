@@ -1,0 +1,179 @@
+:root {
+  --primary: #0F726C;
+  --primary-600: #0c5e59;
+  --bg: #f3f4f6;
+  --panel: #ffffff;
+  --text: #1f2937;
+  --muted: #6b7280;
+  --border: #e5e7eb;
+}
+
+body {
+  margin: 0;
+  font-family: 'Roboto', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+.mensagens-layout {
+  height: calc(100vh - 93px);
+  display: grid;
+  grid-template-columns: 340px 1fr;
+}
+
+.painel-contatos {
+  background: var(--panel);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+}
+
+.titulo-painel {
+  padding: 16px;
+  font-size: 20px;
+  font-weight: 700;
+  border-bottom: 1px solid var(--border);
+}
+
+.lista-contatos {
+  overflow-y: auto;
+  flex: 1;
+}
+
+.contato-item {
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+  background: #fff;
+}
+
+.contato-item:hover {
+  background: #f9fafb;
+}
+
+.contato-item.ativo {
+  background: #e8f5f4;
+  border-left: 4px solid var(--primary);
+  padding-left: 12px;
+}
+
+.contato-nome {
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.contato-ultima {
+  color: var(--muted);
+  font-size: 13px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.painel-conversa {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.cabecalho-conversa {
+  background: #fff;
+  border-bottom: 1px solid var(--border);
+  padding: 14px 18px;
+}
+
+.cabecalho-conversa h2 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.cabecalho-conversa p {
+  margin: 4px 0 0;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.lista-mensagens {
+  flex: 1;
+  overflow-y: auto;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.msg {
+  max-width: 70%;
+  padding: 10px 12px;
+  border-radius: 12px;
+  line-height: 1.35;
+  font-size: 14px;
+  word-break: break-word;
+}
+
+.msg.recebida {
+  align-self: flex-start;
+  background: #fff;
+  border: 1px solid var(--border);
+}
+
+.msg.enviada {
+  align-self: flex-end;
+  background: #d9f1ee;
+  border: 1px solid #b8e1dc;
+}
+
+.msg-hora {
+  margin-top: 4px;
+  display: block;
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.area-envio {
+  background: #fff;
+  border-top: 1px solid var(--border);
+  padding: 12px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 10px;
+}
+
+.area-envio input {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 14px;
+}
+
+.area-envio button {
+  border: none;
+  border-radius: 8px;
+  padding: 10px 16px;
+  background: var(--primary);
+  color: white;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.area-envio button:hover {
+  background: var(--primary-600);
+}
+
+.vazio,
+.estado-inicial {
+  color: var(--muted);
+  padding: 16px;
+}
+
+@media (max-width: 900px) {
+  .mensagens-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .painel-contatos {
+    max-height: 35vh;
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+  }
+}

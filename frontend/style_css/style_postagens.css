@@ -19,10 +19,10 @@ body {
 .topbar {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
   width: 100%;    
   height: 93px;        
-  background: linear-gradient(90deg, rgb(46, 145, 103) 15%, #082F1F 30%);
+  background: linear-gradient(90deg, #0F726C 15%, #0c5e59 30%);
   padding: 0 24px;
   position: relative;
 }
@@ -44,19 +44,21 @@ body {
   font-family: 'Roboto', sans-serif;
   font-weight: 600;  
   font-size: 48px;
-  color: #224619;
+  color: #F3F4F6;
 }
 
 /* Barra de busca */
 .search-bar {
   display: flex;
   align-items: center;
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: rgba(255, 255, 255, 0.14);
   padding: 8px 12px;
   border-radius: 8px;
   width: 432px;
   height: 47px;
-  margin: 0 auto;
+  margin-left: auto;
+  margin-right: 20px;
+  flex-shrink: 0;
 }
 
 .search-bar img {
@@ -70,14 +72,14 @@ body {
   width: 100%;
   border: none;
   background: transparent;
-  color: white;
+  color: #F3F4F6;
   font-family: 'Roboto', sans-serif;
   font-size: 16px;
   padding-left: 10px;
 }
 
 .search-bar input::placeholder {
-  color: #e5e5e5;
+  color: #D1D5DB;
 }
 
 /* Ícones do cabeçalho */
@@ -92,7 +94,7 @@ position: relative;
 .icon {
   font-size: 1.3rem;
   cursor: pointer;
-  color: white;
+  color: #E5E7EB;
 }
 
 .header-icons img {
@@ -121,9 +123,13 @@ object-fit: contain; /* Garante que a imagem não seja cortada e mantenha suas p
   border-bottom: 1px solid rgba(255, 255, 255, 0.1); 
   font-size: 14px; 
   font-family: 'Roboto', sans-serif;
-  color: white;
+  color: #E5E7EB;
   text-decoration: none;
   transition: background 0.2s ease;
+}
+
+.dropdown a:hover {
+  background: rgba(255, 255, 255, 0.12);
 }
 
 .dropdown a:last-child {
@@ -209,7 +215,7 @@ h1 {
    RODAPÉ
 ============================ */
 .footer {
-  background: linear-gradient(135deg, #009688, #00796b);
+  background: linear-gradient(135deg, #0F726C, #0c5e59);
   color: white;
   padding: 40px 60px;
 }
@@ -298,7 +304,7 @@ h1 {
 
 .social-icons a:hover {
   background: white;
-  color: #00796b;
+  color: #0F726C;
 }
 
 .footer hr {
@@ -375,9 +381,9 @@ h1 {
 
 .filtros button {
     padding: 10px 20px;
-    border: 2px solid #2e9167;
+    border: 2px solid #0F726C;
     background: white;
-    color: #2e9167;
+    color: #0F726C;
     border-radius: 25px;
     cursor: pointer;
     font-family: 'Roboto', sans-serif;
@@ -386,12 +392,12 @@ h1 {
 }
 
 .filtros button.filtro-ativo {
-    background: #2e9167;
+  background: #0F726C;
     color: white;
 }
 
 .filtros button:hover {
-    background: #247a55;
+  background: #0c5e59;
     color: white;
 }
 
@@ -400,8 +406,7 @@ h1 {
 ============================ */
 .card {
     width: 325px;
-    height: auto;
-    min-height: 445px;
+  height: 560px;
     background: #FFFFFF;
     border: 1px solid #D9D9D9;
     border-radius: 20px;
@@ -447,6 +452,7 @@ h1 {
 .card-content {
     flex: 1;
     text-align: left;
+  overflow: hidden;
 }
 
 .card-content p {
@@ -458,11 +464,37 @@ h1 {
     margin: 5px 0;
 }
 
+  .card-content .descricao-resumo {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
 .status {
     padding: 4px 8px;
     border-radius: 12px;
     font-size: 0.8rem;
     font-weight: 500;
+  display: inline-block;
+}
+
+.status-linha {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.localizacao-resumo {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .status.aberta {
@@ -471,8 +503,8 @@ h1 {
 }
 
 .status.cancelada {
-    background: #f8d7da;
-    color: #721c24;
+  background: #fde7e3;
+  color: #b54732;
 }
 
 .status.finalizada {
@@ -507,12 +539,12 @@ h1 {
 }
 
 .btn-agendar {
-    background: #2e9167;
+  background: #0F726C;
     color: white;
 }
 
 .btn-agendar:hover {
-    background: #247a55;
+  background: #0c5e59;
 }
 
 /* ============================
@@ -532,7 +564,7 @@ h1 {
 
 .btn-nova-postagem {
     padding: 12px 24px;
-    background: #2e9167;
+    background: #0F726C;
     color: white;
     text-decoration: none;
     border-radius: 8px;
@@ -541,14 +573,14 @@ h1 {
 }
 
 .btn-nova-postagem:hover {
-    background: #247a55;
+  background: #0c5e59;
 }
 
 /* ============================
    DETALHES DA POSTAGEM NO POPUP
 ============================ */
 .detalhes-postagem h3 {
-    color: #2e9167;
+  color: #0F726C;
     margin-bottom: 15px;
 }
 
@@ -594,10 +626,10 @@ h1 {
 }
 
 .detalhes-postagem h3 {
-    color: #2e9167;
+  color: #0F726C;
     margin-bottom: 20px;
     text-align: center;
-    border-bottom: 2px solid #2e9167;
+    border-bottom: 2px solid #0F726C;
     padding-bottom: 10px;
 }
 
@@ -606,11 +638,11 @@ h1 {
     padding: 15px;
     background: #f8f9fa;
     border-radius: 8px;
-    border-left: 4px solid #2e9167;
+    border-left: 4px solid #0F726C;
 }
 
 .detalhes-section h4 {
-    color: #2e9167;
+    color: #0F726C;
     margin-bottom: 10px;
     display: flex;
     align-items: center;
@@ -709,4 +741,191 @@ h1 {
     .subtitle {
         font-size: 0.9rem;
     }
+}
+
+/* ============================
+   POPUP DE AGENDAMENTO
+============================ */
+.popup-agendamento {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.popup-agendamento.hidden {
+  display: none;
+}
+
+.popup-agendamento-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+}
+
+.popup-agendamento-content {
+  position: relative;
+  background: white;
+  border-radius: 16px;
+  padding: 32px;
+  max-width: 600px;
+  width: 90%;
+  max-height: 85vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  z-index: 10000;
+}
+
+.popup-close-btn {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: transparent;
+  border: none;
+  font-size: 28px;
+  color: #999;
+  cursor: pointer;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+}
+
+.popup-close-btn:hover {
+  background: #f0f0f0;
+  color: #333;
+}
+
+.popup-agendamento-content h2 {
+  font-size: 1.8rem;
+  color: #333;
+  margin-bottom: 8px;
+}
+
+.popup-agendamento-content .subtitle {
+  color: #666;
+  margin-bottom: 24px;
+}
+
+.postagem-agendamento-info {
+  background: #f9f9f9;
+  border: 2px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 24px;
+}
+
+.postagem-agendamento-info h3 {
+  color: #0F726C;
+  font-size: 1.3rem;
+  margin-bottom: 12px;
+}
+
+.postagem-agendamento-info p {
+  margin: 8px 0;
+  color: #555;
+  line-height: 1.6;
+}
+
+.postagem-agendamento-info strong {
+  color: #333;
+}
+
+.seletores-agendamento {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.seletores-agendamento .form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.seletores-agendamento label {
+  font-size: 15px;
+  font-weight: 600;
+  color: #333;
+}
+
+.seletores-agendamento select {
+  padding: 12px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 14px;
+  background: white;
+  cursor: pointer;
+  transition: border-color 0.3s ease;
+}
+
+.seletores-agendamento select:hover {
+  border-color: #0F726C;
+}
+
+.seletores-agendamento select:focus {
+  outline: none;
+  border-color: #0F726C;
+  box-shadow: 0 0 0 3px rgba(15, 114, 108, 0.1);
+}
+
+.button-group {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.button-group button {
+  flex: 1;
+  padding: 14px 20px;
+  border: none;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-confirmar {
+  background: #0F726C;
+  color: white;
+}
+
+.btn-confirmar:hover {
+  background: #0c5e59;
+  box-shadow: 0 4px 12px rgba(15, 114, 108, 0.3);
+  transform: translateY(-2px);
+}
+
+.btn-cancelar {
+  background: #e5e7eb;
+  color: #374151;
+}
+
+.btn-cancelar:hover {
+  background: #d1d5db;
+}
+
+/* Responsivo para popup */
+@media (max-width: 768px) {
+  .popup-agendamento-content {
+    padding: 24px;
+    width: 95%;
+  }
+  
+  .button-group {
+    flex-direction: column;
+  }
 }

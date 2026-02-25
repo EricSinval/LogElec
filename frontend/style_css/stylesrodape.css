@@ -10,7 +10,7 @@
   }
   
   .footer {
-    background: linear-gradient(135deg, #009688, #00796b);
+    background: linear-gradient(135deg, #0F726C, #0c5e59);
     color: white;
     padding: 40px 60px;
   }
@@ -99,7 +99,7 @@
   
   .social-icons a:hover {
     background: white;
-    color: #00796b;
+    color: #0F726C;
   }
   
   .footer hr {

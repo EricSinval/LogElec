@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/mensagens")
@@ -30,14 +31,61 @@ public class MensagemController {
         return mensagemService.findByEmpresaId(empresaId);
     }
 
+    @GetMapping("/contatos-confirmados/{empresaId}")
+    public ResponseEntity<?> getContatosConfirmados(@PathVariable Long empresaId) {
+        try {
+            return ResponseEntity.ok(mensagemService.listarContatosConfirmados(empresaId));
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/conversa")
+    public ResponseEntity<?> getConversaEntreEmpresas(@RequestParam Long empresaAId, @RequestParam Long empresaBId) {
+        try {
+            List<Mensagem> conversa = mensagemService.findConversaEntreEmpresas(empresaAId, empresaBId);
+            return ResponseEntity.ok(conversa);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(403).body(e.getMessage());
+        }
+    }
+
     @GetMapping("/nao-lidas/{empresaId}")
     public List<Mensagem> getMensagensNaoLidas(@PathVariable Long empresaId) {
         return mensagemService.findMensagensNaoLidas(empresaId);
     }
 
     @PostMapping
-    public Mensagem createMensagem(@RequestBody Mensagem mensagem) {
-        return mensagemService.save(mensagem);
+    public ResponseEntity<?> createMensagem(@RequestBody Mensagem mensagem) {
+        try {
+            Long remetenteId = mensagem.getEmpresaRemetente() != null ? mensagem.getEmpresaRemetente().getId() : null;
+            Long destinatarioId = mensagem.getEmpresaDestinatario() != null ? mensagem.getEmpresaDestinatario().getId() : null;
+
+            if (remetenteId == null || destinatarioId == null) {
+                return ResponseEntity.badRequest().body("Remetente e destinatário são obrigatórios");
+            }
+
+            Mensagem enviada = mensagemService.enviarMensagem(remetenteId, destinatarioId, mensagem.getConteudo());
+            return ResponseEntity.ok(enviada);
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PostMapping("/enviar")
+    public ResponseEntity<?> enviarMensagem(@RequestBody Map<String, Object> body) {
+        try {
+            Long remetenteId = Long.valueOf(String.valueOf(body.get("remetenteId")));
+            Long destinatarioId = Long.valueOf(String.valueOf(body.get("destinatarioId")));
+            String conteudo = body.get("conteudo") == null ? "" : String.valueOf(body.get("conteudo"));
+
+            Mensagem mensagem = mensagemService.enviarMensagem(remetenteId, destinatarioId, conteudo);
+            return ResponseEntity.ok(mensagem);
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body("Erro interno ao enviar mensagem");
+        }
     }
 
     @PutMapping("/{id}/ler")

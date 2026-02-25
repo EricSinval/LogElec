@@ -10,7 +10,8 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
   <link rel="stylesheet" href="../style_css/style_postagens.css"/>
   <link rel="stylesheet" href="../style_css/styles_popup.css">  
-  <script src="../script/ui_popup.js"></script>
+  <script src="../script/popup.js"></script>
+  <script defer src="../script/search_utils.js"></script>
   <script defer src="../script/cabecalho.js"></script>
   <script defer src="../script/postagens.js"></script>
 </head>
@@ -33,8 +34,10 @@
       <span class="icon menu-icon" onclick="toggleMenu()">☰</span>
       <img src="../img/Icon_User.png" alt="icon user-icon" onclick="window.location.href='perfil.html'" style="cursor:pointer;">
       <div class="dropdown" id="dropdown">
-        <a href="#">Agendamentos de Coleta</a>
+        <a id="linkPostagensTipo" href="postagens.html">Postagens</a>
         <a href="cadastro_postagens.html">Cadastro de postagens</a>
+        <a href="editar_postagens.html">Editar Postagens</a>
+        <a href="mensagens.html">Mensagens</a>
         <a href="perfil.html">Meu Perfil</a>
         <a href="#" onclick="sair()">Sair</a>
       </div>
@@ -105,5 +108,44 @@
     </div>
     <hr>
   </footer>
+
+  <!-- POPUP DE AGENDAMENTO -->
+  <div id="popupAgendamento" class="popup-agendamento hidden">
+    <div class="popup-agendamento-overlay" onclick="fecharPopupAgendamento()"></div>
+    <div class="popup-agendamento-content">
+      <button class="popup-close-btn" onclick="fecharPopupAgendamento()">✕</button>
+      
+      <h2>Verificar Disponibilidade</h2>
+      <p class="subtitle">Selecione um horário para agendamento</p>
+
+      <!-- Informações da Postagem Selecionada -->
+      <div id="postagemAgendamentoInfo" class="postagem-agendamento-info">
+        <!-- Será preenchido dinamicamente -->
+      </div>
+
+      <!-- Seletores de Dia e Horário -->
+      <div id="seletoresAgendamento" class="seletores-agendamento" style="display: none;">
+        <div class="form-group">
+          <label for="diaAgendamento">Dia de Agendamento</label>
+          <select id="diaAgendamento">
+            <option value="">-- Selecione um dia --</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="horarioAgendamento">Horário de Agendamento</label>
+          <select id="horarioAgendamento">
+            <option value="">-- Selecione um horário --</option>
+          </select>
+        </div>
+
+        <div class="button-group">
+          <button onclick="confirmarAgendamentoPopup()" class="btn-confirmar">Confirmar Agendamento</button>
+          <button onclick="fecharPopupAgendamento()" class="btn-cancelar">Cancelar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </body>
 </html>

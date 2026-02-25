@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mensagens - LogElec</title>
+  <link rel="stylesheet" href="../style_css/style_mensagens.css">
+  <link rel="stylesheet" href="../style_css/styles_popup.css">
+  <link rel="stylesheet" href="../style_css/stylescabecalho.css">
+  <script defer src="../script/cabecalho.js"></script>
+  <script defer src="../script/mensagens.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <a href="postagens.html" class="logo">
+      <img src="../img/Logo.png" alt="Logo LogElec" />
+      <span class="logotext">LogElec</span>
+    </a>
+
+    <div class="header-icons">
+      <span class="icon menu-icon" onclick="toggleMenu()">☰</span>
+      <img src="../img/Icon_User.png" alt="icon user-icon" onclick="window.location.href='perfil.html'" style="cursor:pointer;">
+      <div class="dropdown" id="dropdown">
+        <a id="linkPostagensTipo" href="postagens.html">Postagens</a>
+        <a href="cadastro_postagens.html">Cadastro de Postagens</a>
+        <a href="editar_postagens.html">Editar Postagens</a>
+        <a href="mensagens.html">Mensagens</a>
+        <a href="perfil.html">Meu Perfil</a>
+        <a href="#" onclick="sair()">Sair</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="mensagens-layout">
+    <aside class="painel-contatos">
+      <div class="titulo-painel">Contatos</div>
+      <div id="listaContatos" class="lista-contatos">
+        <p class="vazio">Carregando contatos...</p>
+      </div>
+    </aside>
+
+    <section class="painel-conversa">
+      <div id="cabecalhoConversa" class="cabecalho-conversa">
+        <h2>Selecione um contato</h2>
+        <p>As mensagens só ficam disponíveis após agendamento confirmado.</p>
+      </div>
+
+      <div id="listaMensagens" class="lista-mensagens">
+        <div class="estado-inicial">Escolha um contato à esquerda para iniciar a conversa.</div>
+      </div>
+
+      <form id="formMensagem" class="area-envio" style="display:none;">
+        <input id="inputMensagem" type="text" maxlength="1000" placeholder="Digite sua mensagem..." required>
+        <button type="submit">Enviar</button>
+      </form>
+    </section>
+  </main>
+
+  <script src="../script/popup.js"></script>
+</body>
+</html>

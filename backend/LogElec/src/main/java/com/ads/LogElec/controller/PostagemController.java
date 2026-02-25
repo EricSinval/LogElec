@@ -1,7 +1,9 @@
 package com.ads.LogElec.controller;
 
 import com.ads.LogElec.entity.Postagem;
+import com.ads.LogElec.entity.StatusPostagem;
 import com.ads.LogElec.service.PostagemService;
+import java.math.BigDecimal;
 import java.time.LocalTime;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +28,17 @@ public class PostagemController {
                 + ", horaInicio=" + p.getHoraInicio()
                 + ", horaFim=" + p.getHoraFim()));
         return lista;
+    }
+
+    // Endpoint de busca flexível
+    @GetMapping("/search")
+    public List<Postagem> buscarPostagens(@RequestParam(name = "q", required = false) String termo) {
+        if (termo == null || termo.trim().isEmpty()) {
+            return postagemService.findAll();
+        }
+        List<Postagem> resultados = postagemService.buscarPorTermo(termo);
+        System.out.println("[DEBUG] Busca por termo: '" + termo + "' retornou " + resultados.size() + " resultados");
+        return resultados;
     }
 
     @GetMapping("/{id}")
@@ -117,22 +130,71 @@ public class PostagemController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Postagem> updatePostagem(@PathVariable Long id, @RequestBody Postagem postagemDetails) {
+    public ResponseEntity<?> updatePostagem(@PathVariable Long id, @RequestBody Map<String, Object> body) {
         try {
+            Postagem postagemDetails = new Postagem();
+
+            if (body.containsKey("titulo") && body.get("titulo") != null) {
+                postagemDetails.setTitulo(body.get("titulo").toString());
+            }
+            if (body.containsKey("descricao") && body.get("descricao") != null) {
+                postagemDetails.setDescricao(body.get("descricao").toString());
+            }
+            if (body.containsKey("tipoResiduo") && body.get("tipoResiduo") != null) {
+                postagemDetails.setTipoResiduo(body.get("tipoResiduo").toString());
+            }
+            if (body.containsKey("peso") && body.get("peso") != null && !body.get("peso").toString().isBlank()) {
+                postagemDetails.setPeso(new BigDecimal(body.get("peso").toString()));
+            }
+            if (body.containsKey("maxPesoColeta") && body.get("maxPesoColeta") != null && !body.get("maxPesoColeta").toString().isBlank()) {
+                postagemDetails.setMaxPesoColeta(new BigDecimal(body.get("maxPesoColeta").toString()));
+            }
+            if (body.containsKey("enderecoRetirada") && body.get("enderecoRetirada") != null) {
+                postagemDetails.setEnderecoRetirada(body.get("enderecoRetirada").toString());
+            }
+            if (body.containsKey("fotoEmpresa") && body.get("fotoEmpresa") != null && !body.get("fotoEmpresa").toString().isBlank()) {
+                postagemDetails.setFotoEmpresa(body.get("fotoEmpresa").toString());
+            }
+            if (body.containsKey("fotoResiduos") && body.get("fotoResiduos") != null && !body.get("fotoResiduos").toString().isBlank()) {
+                postagemDetails.setFotoResiduos(body.get("fotoResiduos").toString());
+            }
+            if (body.containsKey("diasDisponibilidade") && body.get("diasDisponibilidade") != null) {
+                postagemDetails.setDiasDisponibilidade(body.get("diasDisponibilidade").toString());
+            }
+            if (body.containsKey("horaInicio") && body.get("horaInicio") != null) {
+                String valor = body.get("horaInicio").toString();
+                if (!valor.isBlank()) {
+                    postagemDetails.setHoraInicio(LocalTime.parse(valor));
+                }
+            }
+            if (body.containsKey("horaFim") && body.get("horaFim") != null) {
+                String valor = body.get("horaFim").toString();
+                if (!valor.isBlank()) {
+                    postagemDetails.setHoraFim(LocalTime.parse(valor));
+                }
+            }
+            if (body.containsKey("status") && body.get("status") != null && !body.get("status").toString().isBlank()) {
+                postagemDetails.setStatus(StatusPostagem.valueOf(body.get("status").toString().toUpperCase()));
+            }
+
             Postagem updatedPostagem = postagemService.update(id, postagemDetails);
             return ResponseEntity.ok(updatedPostagem);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body("Dados inválidos para atualização: " + e.getMessage());
         } catch (RuntimeException e) {
             return ResponseEntity.notFound().build();
         }
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletePostagem(@PathVariable Long id) {
+    public ResponseEntity<?> deletePostagem(@PathVariable Long id) {
         try {
             postagemService.deleteById(id);
             return ResponseEntity.noContent().build();
         } catch (RuntimeException e) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body("Erro ao excluir postagem");
         }
     }
 }

@@ -1,52 +1,100 @@
 // Cadastro.js - Versão Atualizada com Validações
-console.log('🎯 Cadastro.js carregado! Vamos configurar...');
+console.log('Cadastro.js carregado! Vamos configurar...');
+
+let tipoSelecionado = null;
 
 // Aguarda a página carregar COMPLETAMENTE
 window.addEventListener('load', function() {
-    console.log('🏁 Página totalmente carregada, iniciando configuração...');
+    console.log('Página totalmente carregada, iniciando configuração...');
     configurarCadastro();
 });
 
 function configurarCadastro() {
-    console.log('🔧 Configurando cadastro...');
+    console.log('Configurando cadastro...');
     
     const urlParams = new URLSearchParams(window.location.search);
     const tipo = urlParams.get('tipo');
-    console.log('📋 Tipo da URL:', tipo);
-    
-    if (!tipo) {
-        showPopup('Tipo de empresa não definido! Selecione um tipo de empresa na próxima página.', {
-            buttons: [
-                { text: 'Voltar', onClick: () => { window.location.href = 'home.html'; } }
-            ]
-        });
-        return;
-    }
+    console.log('Tipo da URL:', tipo);
     
     const formCadastro = document.getElementById('formCadastro');
-    console.log('🔍 Formulário encontrado:', formCadastro);
+    console.log('Formulário encontrado:', formCadastro);
     
     if (!formCadastro) {
-        console.error('💥 ERRO: Formulário não encontrado!');
+        console.error('ERRO: Formulário não encontrado!');
         showPopup('Erro: Formulário não carregado. Recarregue a página.', { type: 'error' });
         return;
     }
     
-    // ✅ CONFIGURAR VALIDAÇÕES EM TEMPO REAL
+    // CONFIGURAR VALIDAÇÕES EM TEMPO REAL
     configurarValidacoesEmTempoReal();
-    atualizarInterface(tipo);
+    configurarTipoSelector(tipo);
+    atualizarInterface(tipoSelecionado);
     
     formCadastro.addEventListener('submit', function(event) {
         event.preventDefault();
-        console.log('✅ Formulário submetido! Executando cadastro...');
+        console.log('Formulário submetido! Executando cadastro...');
+
+        if (formCadastro.dataset.submitting === 'true') {
+            return;
+        }
         
-        // ✅ VALIDAÇÃO FINAL ANTES DE ENVIAR
+        // VALIDAÇÃO FINAL ANTES DE ENVIAR
+        if (!tipoSelecionado) {
+            mostrarErroTipo();
+            return;
+        }
+
         if (validarFormulario()) {
-            executarCadastro(tipo);
+            executarCadastro(tipoSelecionado, formCadastro);
         }
     });
     
-    console.log('🎉 Cadastro configurado com sucesso!');
+    console.log('Cadastro configurado com sucesso!');
+}
+
+function configurarTipoSelector(tipoInicial) {
+    const selector = document.getElementById('tipoSelector');
+    if (!selector) {
+        return;
+    }
+
+    const botoes = selector.querySelectorAll('.tipo-btn');
+    botoes.forEach((botao) => {
+        botao.addEventListener('click', () => {
+            const tipo = botao.getAttribute('data-tipo');
+            selecionarTipo(tipo);
+        });
+    });
+
+    if (tipoInicial === 'DESCARTE' || tipoInicial === 'COLETA') {
+        selecionarTipo(tipoInicial);
+    }
+}
+
+function selecionarTipo(tipo) {
+    tipoSelecionado = tipo;
+    const botoes = document.querySelectorAll('.tipo-btn');
+    botoes.forEach((botao) => {
+        const ativo = botao.getAttribute('data-tipo') === tipo;
+        botao.classList.toggle('is-active', ativo);
+        botao.setAttribute('aria-pressed', ativo ? 'true' : 'false');
+    });
+    limparErroTipo();
+    atualizarInterface(tipo);
+}
+
+function mostrarErroTipo() {
+    const tipoError = document.getElementById('tipoError');
+    if (tipoError) {
+        tipoError.textContent = 'Selecione o tipo de empresa.';
+    }
+}
+
+function limparErroTipo() {
+    const tipoError = document.getElementById('tipoError');
+    if (tipoError) {
+        tipoError.textContent = '';
+    }
 }
 
 // ✅ CONFIGURAR VALIDAÇÕES EM TEMPO REAL
@@ -94,7 +142,7 @@ function validarEmail() {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     
     if (email && !emailRegex.test(email)) {
-        emailError.textContent = '❌ Email inválido. Use o formato: exemplo@dominio.com';
+        emailError.textContent = 'Email inválido. Use o formato: exemplo@dominio.com';
         emailInput.style.borderColor = '#e74c3c';
         return false;
     }
@@ -118,7 +166,7 @@ function validarNome() {
     const nomeError = document.getElementById('nomeError') || criarElementoErro(nomeInput, 'nomeError');
     
     if (nome && (nome.length < 2 || nome.length > 255)) {
-        nomeError.textContent = '❌ Nome deve ter entre 2 e 255 caracteres';
+        nomeError.textContent = 'Nome deve ter entre 2 e 255 caracteres';
         nomeInput.style.borderColor = '#e74c3c';
         return false;
     }
@@ -142,7 +190,7 @@ function validarSenha() {
     const senhaError = document.getElementById('senhaError') || criarElementoErro(senhaInput, 'senhaError');
     
     if (senha && senha.length < 6) {
-        senhaError.textContent = '❌ Senha deve ter no mínimo 6 caracteres';
+        senhaError.textContent = 'Senha deve ter no mínimo 6 caracteres';
         senhaInput.style.borderColor = '#e74c3c';
         return false;
     }
@@ -166,7 +214,7 @@ function validarCNPJ() {
     const cnpjError = document.getElementById('cnpjError') || criarElementoErro(cnpjInput, 'cnpjError');
     
     if (cnpj && cnpj.length !== 14) {
-        cnpjError.textContent = '❌ CNPJ deve ter 14 dígitos';
+        cnpjError.textContent = 'CNPJ deve ter 14 dígitos';
         cnpjInput.style.borderColor = '#e74c3c';
         return false;
     }
@@ -212,7 +260,7 @@ function validarTelefone() {
     if (telefone && telefone.trim() !== '') {
         const telefoneRegex = /^\(\d{2}\)\s\d{4,5}-\d{4}$/;
         if (!telefoneRegex.test(telefone)) {
-            telefoneError.textContent = '❌ Telefone inválido. Use: (11) 99999-9999';
+            telefoneError.textContent = 'Telefone inválido. Use: (11) 99999-9999';
             telefoneInput.style.borderColor = '#e74c3c';
             return false;
         }
@@ -258,7 +306,7 @@ function validarFormulario() {
     for (const campo of camposObrigatorios) {
         const input = document.getElementById(campo.id);
         if (!input || !input.value.trim()) {
-            criarElementoErro(input, `${campo.id}Error`).textContent = `❌ ${campo.nome} é obrigatório`;
+            criarElementoErro(input, `${campo.id}Error`).textContent = `${campo.nome} é obrigatório`;
             input.style.borderColor = '#e74c3c';
             formularioValido = false;
             if (!primeiroCampoInvalido) primeiroCampoInvalido = input;
@@ -297,9 +345,55 @@ function criarElementoErro(input, id) {
     return errorElement;
 }
 
-// ✅ ATUALIZAR A FUNÇÃO executarCadastro PARA LIDAR COM NOVAS RESPOSTAS
-async function executarCadastro(tipo) {
-    console.log('🚀 Executando cadastro...');
+// FUNÇÃO PARA FAZER LOGIN AUTOMÁTICO APÓS CADASTRO
+async function fazerLoginAutomatico(email, senha) {
+    console.log('Iniciando login automático...');
+    
+    try {
+        const loginData = {
+            email: email,
+            senha: senha
+        };
+        
+        const response = await fetch('http://localhost:8080/api/auth/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(loginData)
+        });
+        
+        console.log('Status resposta login:', response.status);
+        
+        if (response.ok) {
+            const empresa = await response.json();
+            console.log('Login automático bem-sucedido:', empresa);
+            
+            // Salvar empresa no localStorage
+            localStorage.setItem('empresaLogada', JSON.stringify(empresa));
+            
+            // Redirecionar para postagens.html (dashboard)
+            window.location.href = 'postagens.html';
+            return true;
+        } else {
+            const error = await response.text();
+            console.error('Erro no login automático:', error);
+            // Se falhar, ir para login
+            window.location.href = 'login.html';
+            return false;
+        }
+    } catch (error) {
+        console.error('Erro na conexão do login automático:', error);
+        window.location.href = 'login.html';
+        return false;
+    }
+}
+
+// ATUALIZAR A FUNÇÃO executarCadastro PARA LIDAR COM NOVAS RESPOSTAS
+async function executarCadastro(tipo, formCadastro) {
+    console.log('Executando cadastro...');
+
+    if (formCadastro) {
+        formCadastro.dataset.submitting = 'true';
+    }
     
     // Coletar dados do formulário
     const empresaData = {
@@ -312,16 +406,20 @@ async function executarCadastro(tipo) {
         telefone: document.getElementById('telefone').value
     };
     
-    console.log('📤 Dados enviados:', { ...empresaData, senha: '***' }); // Não logar senha
+    console.log('Dados enviados:', { ...empresaData, senha: '***' }); // Não logar senha
     
     // Mostrar loading
-    const btnSubmit = document.querySelector('button[type="submit"]');
-    const originalText = btnSubmit.textContent;
-    btnSubmit.textContent = 'Cadastrando...';
-    btnSubmit.disabled = true;
+    const btnSubmit = formCadastro
+        ? formCadastro.querySelector('button[type="submit"]')
+        : document.querySelector('button[type="submit"]');
+    const originalText = btnSubmit ? btnSubmit.textContent : 'Cadastrar';
+    if (btnSubmit) {
+        btnSubmit.textContent = 'Cadastrando...';
+        btnSubmit.disabled = true;
+    }
     
     try {
-        console.log('🌐 Enviando requisição para o servidor...');
+        console.log('Enviando requisição para o servidor...');
         const response = await fetch('http://localhost:8080/api/empresas', {
             method: 'POST',
             headers: {
@@ -330,59 +428,75 @@ async function executarCadastro(tipo) {
             body: JSON.stringify(empresaData)
         });
         
-        console.log('📥 Status da resposta:', response.status);
+        console.log('Status da resposta:', response.status);
         const responseText = await response.text();
         
         if (response.ok) {
             const empresa = JSON.parse(responseText);
-            console.log('✅ Empresa cadastrada com sucesso:', empresa);
-            showPopup('🎉 Empresa cadastrada com sucesso!', {
+            console.log('Empresa cadastrada com sucesso:', empresa);
+            showPopup('Empresa cadastrada com sucesso!', {
                 type: 'success',
-                buttons: [ { text: 'Ir para login', onClick: () => { window.location.href = 'login.html'; } } ]
+                buttons: []
             });
-        } else {
-            console.error('❌ Erro no cadastro:', responseText);
             
-            // ✅ TRATAMENTO MELHORADO PARA ERROS DO BACKEND
+            // ✅ FAZER LOGIN AUTOMÁTICO APÓS CADASTRO
+            setTimeout(() => {
+                fazerLoginAutomatico(empresaData.email, empresaData.senha);
+            }, 1500);
+        } else {
+            console.error('Erro no cadastro:', responseText);
+            
+            // TRATAMENTO MELHORADO PARA ERROS DO BACKEND
             if (responseText.includes('•')) {
                 // Se o backend retornou múltiplos erros
-                showPopup('❌ Erros no cadastro:\n' + responseText.replace(/•/g, '\n•'), { type: 'error' });
+                showPopup('Erros no cadastro:\n' + responseText.replace(/•/g, '\n•'), { type: 'error' });
             } else {
                 // Erro simples
-                showPopup('❌ Erro no cadastro: ' + responseText, { type: 'error' });
+                showPopup('Erro no cadastro: ' + responseText, { type: 'error' });
             }
         }
     } catch (error) {
-        console.error('💥 Erro de conexão:', error);
-    showPopup('🌐 Erro de conexão com o servidor. Verifique se o backend está rodando.', { type: 'error' });
+        console.error('Erro de conexão:', error);
+    showPopup('Erro de conexão com o servidor. Verifique se o backend está rodando.', { type: 'error' });
     } finally {
+        if (formCadastro) {
+            formCadastro.dataset.submitting = 'false';
+        }
         // Restaurar botão
-        btnSubmit.textContent = originalText;
-        btnSubmit.disabled = false;
+        if (btnSubmit) {
+            btnSubmit.textContent = originalText;
+            btnSubmit.disabled = false;
+        }
     }
 }
 
 // ... (as funções atualizarInterface e outras permanecem iguais)
 function atualizarInterface(tipo) {
-    console.log('🎨 Atualizando interface para tipo:', tipo);
+    console.log('Atualizando interface para tipo:', tipo);
     
     const titulo = document.querySelector('h2');
     if (titulo) {
-        const tipoTexto = tipo === 'DESCARTE' ? 'Descarte' : 'Coleta';
-        titulo.textContent = `Cadastro - Empresa de ${tipoTexto}`;
+        if (tipo === 'DESCARTE' || tipo === 'COLETA') {
+            const tipoTexto = tipo === 'DESCARTE' ? 'Descarte' : 'Coleta';
+            titulo.textContent = `Cadastro - Empresa de ${tipoTexto}`;
+        } else {
+            titulo.textContent = 'Cadastro - Escolha o tipo de empresa';
+        }
     }
     
     const subtitulo = document.querySelector('.login-link');
     if (subtitulo) {
         const textoDescricao = tipo === 'DESCARTE' 
             ? 'Cadastre-se para descartar seus resíduos eletrônicos' 
-            : 'Cadastre-se para coletar resíduos eletrônicos';
-        subtitulo.innerHTML = `${textoDescricao}<br>Já possui uma conta? <a href="Login_Page.html">Clique aqui</a> para fazer o login`;
+            : tipo === 'COLETA'
+            ? 'Cadastre-se para coletar resíduos eletrônicos'
+            : 'Selecione o tipo de empresa para continuar';
+        subtitulo.innerHTML = `${textoDescricao}<br>Já possui uma conta? <a href="login.html">Clique aqui</a> para fazer o login`;
     }
 }
 
 // Fallback: se a página já estiver carregada
 if (document.readyState === 'complete') {
-    console.log('⚡ Página já carregada, iniciando diretamente...');
+    console.log('Página já carregada, iniciando diretamente...');
     configurarCadastro();
 }

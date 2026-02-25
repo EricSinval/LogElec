@@ -6,10 +6,10 @@
 .topbar {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+  justify-content: space-between;
     width: 100%;    
     height: 93px;        
-    background: linear-gradient(90deg, rgb(46, 145, 103) 15%, #082F1F 30%);
+    background: linear-gradient(90deg, #0F726C 15%, #0c5e59 30%);
     position: relative;
     padding: 0 24px;
 }
@@ -47,14 +47,14 @@
   line-height: 36px;
   letter-spacing: 0;
 
-  color: #224619;
+  color: #F3F4F6;
 }
 
 /* Search bar - Busca */
 .search-bar {
 display: flex;
 align-items: center;
-background-color: rgba(255, 255, 255, 0.1);
+background-color: rgba(255, 255, 255, 0.14);
 padding: 8px 12px;
 border-radius: 8px;
 width: 432px;
@@ -89,12 +89,12 @@ margin-right: 10px; /* Mantém o espaçamento à direita */
   flex: 1; /* Permite que o campo de texto se expanda */
   border: none;
   background: transparent;
-  color: white;
+  color: #F3F4F6;
   padding-left: 10px;
 }
 
 .search-bar input::placeholder {
-  color: #e5e5e5;
+  color: #D1D5DB;
 }
 
 /* Icons */
@@ -109,7 +109,7 @@ position: relative;
 .icon {
   font-size: 1.3rem;
   cursor: pointer;
-  color: white;
+  color: #E5E7EB;
 }
 
 .header-icons img {
@@ -141,11 +141,15 @@ object-fit: contain; /* Garante que a imagem não seja cortada e mantenha suas p
 
   padding: 14px 16px;
   
-  color: white;
+  color: #E5E7EB;
   text-decoration: none;
   transition: background 0.2s ease;
   font-family: 'Roboto', sans-serif;
 
+}
+
+.dropdown a:hover {
+  background: rgba(255, 255, 255, 0.12);
 }
 
 /* Remove a borda do último item para não ter uma linha extra no final */
@@ -155,7 +159,7 @@ object-fit: contain; /* Garante que a imagem não seja cortada e mantenha suas p
 
 /* Estilos gerais do rodapé */
 footer {
-  background-color: #035252;
+  background-color: #0F726C;
   color: #fff;
   padding: 40px 20px;
   font-family: 'Roboto', sans-serif;
@@ -222,7 +226,7 @@ footer {
 }
 
 .contact-form button {
-  background-color: #2b7a7a;
+  background-color: #0F726C;
   color: #fff;
   border: none;
   padding: 10px 20px;
@@ -232,7 +236,7 @@ footer {
 }
 
 .contact-form button:hover {
-  background-color: #1a5c5c;
+  background-color: #0c5e59;
 }
 
 /* Seleção de idioma */
@@ -259,5 +263,5 @@ footer {
 }
 
 .social-icons a:hover {
-  background-color: #2b7a7a;
+  background-color: #0F726C;
 }

@@ -15,6 +15,15 @@
       <p class="login-link">Já possui uma? <a href="login.html">Clique aqui</a> para fazer o login</p>
 
       <form id="formCadastro">
+        <div class="tipo-selector" id="tipoSelector">
+          <p class="tipo-label">Tipo de empresa</p>
+          <div class="tipo-opcoes" role="group" aria-label="Tipo de empresa">
+            <button type="button" class="tipo-btn" data-tipo="DESCARTE" aria-pressed="false">Descarte</button>
+            <button type="button" class="tipo-btn" data-tipo="COLETA" aria-pressed="false">Coleta</button>
+          </div>
+          <div class="tipo-erro" id="tipoError"></div>
+        </div>
+
         <input type="text" id="nomeRazao" name="nomeRazao" placeholder="Nome/Razão Social" required>
         <input type="text" id="cnpj" name="cnpj" placeholder="CNPJ" required>
         <input type="email" id="email" name="email" placeholder="E-mail" required>
@@ -27,7 +36,7 @@
     </div>
   </div>
 
-  <script src="../script/ui_popup.js"></script>
+  <script src="../script/popup.js"></script>
   <script src="../script/cadastro.js"></script>
 </body>
 </html>

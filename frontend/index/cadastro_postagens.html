@@ -17,16 +17,16 @@
         <img src="../img/Logo.png" alt="Logo LogElec" />
         <span class="logotext">LogElec</span>
       </a>
-      <!-- nav button removed: navigation moved to dropdown -->
 
       <div class="header-icons">
         <span class="icon menu-icon" onclick="toggleMenu()">☰</span>
         <img src="../img/Icon_User.png" alt="icon user-icon" onclick="window.location.href='perfil.html'" style="cursor:pointer;">
         <div class="dropdown" id="dropdown">
-          <a href="#">Agendamentos de Coleta</a>
           <!-- Postagens link label will be updated by cadastro_postagens.js based on empresaLogada.tipo -->
           <a id="linkPostagensTipo" href="postagens.html">Postagens</a>
           <a href="cadastro_postagens.html">Cadastro de postagens</a>
+          <a href="editar_postagens.html">Editar Postagens</a>
+          <a href="mensagens.html">Mensagens</a>
           <a href="perfil.html">Meu Perfil</a>
           <a href="#" onclick="sair()">Sair</a>
         </div>
@@ -42,7 +42,7 @@
         <!-- ✅ FORMULÁRIO COM IDs CORRETOS PARA INTEGRAÇÃO -->
         <form id="formCadastroPostagem">
           <!-- Seção: Informações Básicas -->
-          <div class="section-heading">📋 Informações Básicas</div>
+          <div class="section-heading">Informações Básicas</div>
 
           <!-- Nome Empresa preenchido automaticamente -->
           <label for="nomeEmpresa">Nome Empresa</label>
@@ -72,9 +72,8 @@
           </div>
 
           <!-- Seção: Disponibilidade -->
-          <div class="section-heading">🗓️ Disponibilidade</div>
+          <div class="section-heading">Disponibilidade</div>
 
-          <label for="diasDisponibilidade">Dias de Disponibilidade</label>
           <div id="diasDisponibilidade" style="display: flex; gap: 10px; flex-wrap: wrap;">
             <label style="flex: 1; min-width: 80px; display: flex; align-items: center;">
               <input type="checkbox" name="dia" value="SEGUNDA"> Segunda
@@ -111,7 +110,7 @@
       </div>
     </div>
 
-  <script src="../script/ui_popup.js"></script>
+  <script src="../script/popup.js"></script>
   <script src="../script/cadastro_postagens.js"></script>
 </body>
 </html>

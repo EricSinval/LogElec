@@ -101,7 +101,14 @@ public class Empresa {
      * Valida se todos os campos obrigatórios estão preenchidos corretamente
      */
     public boolean isValido() {
-        return isNomeValido() && isCnpjValido() && isEmailValido() && isSenhaValida() && isEnderecoValido();
+        return isNomeValido() && isCnpjValido() && isEmailValido() && isSenhaValida() && isEnderecoValido() && isTipoValido();
+    }
+
+    /**
+     * Valida o tipo de empresa (não pode ser null)
+     */
+    public boolean isTipoValido() {
+        return tipo != null;
     }
 
     /**
@@ -210,6 +217,9 @@ public class Empresa {
         }
         if (!isEnderecoValido()) {
             erros.append("• Endereço é obrigatório. ");
+        }
+        if (!isTipoValido()) {
+            erros.append("• Tipo de empresa é obrigatório (COLETA ou DESCARTE). ");
         }
         if (!isTelefoneValido()) {
             erros.append("• Telefone inválido. Use o formato: (11) 99999-9999. ");

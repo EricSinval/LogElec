@@ -1,5 +1,5 @@
 // agendamento.js - Gerenciamento da página de agendamentos
-console.log('📅 Agendamento.js carregado!');
+console.log('Agendamento.js carregado!');
 
 let postagemSelecionada = null;
 let todasPostagens = [];
@@ -16,7 +16,7 @@ function carregarPostagemDoURL() {
     const postagemId = params.get('id');
     
     if (postagemId) {
-        console.log('📍 Postagem ID da URL:', postagemId);
+        console.log('Postagem ID da URL:', postagemId);
         // Será carregada após obter as postagens
     }
 }
@@ -25,7 +25,7 @@ function carregarPostagemDoURL() {
 async function carregarPostagens() {
     const empresaLogada = JSON.parse(localStorage.getItem('empresaLogada'));
     if (!empresaLogada) {
-        showPopup('⚠️ Você precisa fazer login primeiro!', { 
+        showPopup('Você precisa fazer login primeiro!', { 
             type: 'info', 
             buttons: [{ 
                 text: 'Ir para login', 
@@ -41,7 +41,7 @@ async function carregarPostagens() {
             const postagens = await response.json();
             // Carregar todas as postagens (será filtrado na UI quando necessário)
             todasPostagens = postagens;
-            console.log('✅ Postagens carregadas:', todasPostagens);
+            console.log('Postagens carregadas:', todasPostagens);
             exibirPostagensNaSidebar();
 
             // Se veio de um clique em "Verificar disponibilidade", carregar postagem específica
@@ -57,8 +57,8 @@ async function carregarPostagens() {
             }
         }
     } catch (error) {
-        console.error('💥 Erro ao carregar postagens:', error);
-        showPopup('❌ Erro ao carregar postagens', { type: 'error' });
+        console.error('Erro ao carregar postagens:', error);
+        showPopup('Erro ao carregar postagens', { type: 'error' });
     }
 }
 
@@ -113,7 +113,7 @@ function selecionarPostagemById(id) {
         })
         .catch(err => {
             console.error('Erro ao buscar postagem detalhada:', err);
-            showPopup('❌ Não foi possível carregar a postagem selecionada', { type: 'error' });
+            showPopup('Não foi possível carregar a postagem selecionada', { type: 'error' });
         });
 }
 
@@ -263,20 +263,20 @@ function confirmarAgendamento() {
     const horarioSelecionado = document.getElementById('horarioSelecionado').value;
     
     if (!diaSelecionado || !horarioSelecionado || !postagemSelecionada) {
-        showPopup('⚠️ Selecione um dia e horário', { type: 'info' });
+        showPopup('Selecione um dia e horário', { type: 'info' });
         return;
     }
 
     // Converter dia da semana selecionado em uma data próxima (YYYY-MM-DD)
     const dataAgendamentoDate = getNextDateForDay(diaSelecionado, horarioSelecionado);
     if (!dataAgendamentoDate) {
-        showPopup('⚠️ Não foi possível calcular a data de agendamento', { type: 'error' });
+        showPopup('Não foi possível calcular a data de agendamento', { type: 'error' });
         return;
     }
 
     const empresaLogada = JSON.parse(localStorage.getItem('empresaLogada'));
     if (!empresaLogada) {
-        showPopup('⚠️ Você precisa fazer login primeiro!', { type: 'info' });
+        showPopup('Você precisa fazer login primeiro!', { type: 'info' });
         return;
     }
 
@@ -310,7 +310,7 @@ function confirmarAgendamento() {
     })
     .then(data => {
         console.log('Agendamento criado:', data);
-        showPopup(`✅ Agendamento confirmado para ${diaSelecionado} às ${horarioSelecionado}!`, { 
+        showPopup(`Agendamento confirmado para ${diaSelecionado} às ${horarioSelecionado}!`, { 
             type: 'success',
             buttons: [
                 {
@@ -324,7 +324,7 @@ function confirmarAgendamento() {
         // Mostrar mensagem detalhada retornada pelo backend (se houver)
         console.error('Erro ao criar agendamento:', err);
         const mensagem = err && err.message ? err.message : 'Erro ao criar agendamento';
-        showPopup(`❌ ${mensagem}`, { type: 'error' });
+        showPopup(`${mensagem}`, { type: 'error' });
     });
 }
 
@@ -379,7 +379,7 @@ function toggleMenu() {
 
 // Inicialização
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('📅 Página de agendamento inicializada');
+    console.log('Página de agendamento inicializada');
     
     const empresaLogada = JSON.parse(localStorage.getItem('empresaLogada'));
     if (!empresaLogada) {

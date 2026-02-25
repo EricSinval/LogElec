@@ -1,9 +1,25 @@
 // CadastroPostagens.js - Gerenciamento do cadastro de postagens
-console.log('📝 CadastroPostagens.js carregado!');
+console.log('CadastroPostagens.js carregado!');
 
 async function cadastrarPostagem(event) {
     event.preventDefault();
-    console.log('📝 Iniciando cadastro de postagem...');
+    console.log('Iniciando cadastro de postagem...');
+
+    const formPostagem = document.getElementById('formCadastroPostagem');
+    const submitButton = formPostagem ? formPostagem.querySelector('button[type="submit"]') : null;
+
+    if (formPostagem && formPostagem.dataset.submitting === 'true') {
+        return;
+    }
+
+    if (formPostagem) {
+        formPostagem.dataset.submitting = 'true';
+    }
+
+    if (submitButton) {
+        submitButton.disabled = true;
+        submitButton.textContent = 'Salvando...';
+    }
     
     const empresaLogada = JSON.parse(localStorage.getItem('empresaLogada'));
     if (!empresaLogada) {
@@ -50,7 +66,7 @@ async function cadastrarPostagem(event) {
         if (fotoBase64) postagemData.fotoResiduos = fotoBase64;
     }
 
-    console.log('📤 Dados da postagem:', postagemData);
+    console.log('Dados da postagem:', postagemData);
 
     try {
         const response = await fetch('http://localhost:8080/api/postagens', {
@@ -61,20 +77,28 @@ async function cadastrarPostagem(event) {
             body: JSON.stringify(postagemData)
         });
         
-        console.log('📥 Status da resposta:', response.status);
+        console.log('Status da resposta:', response.status);
         
         if (response.ok) {
             const postagem = await response.json();
-            console.log('✅ Postagem cadastrada:', postagem);
-            showPopup('🎉 Postagem cadastrada com sucesso!', { type: 'success', buttons: [ { text: 'Ver postagens', onClick: () => { window.location.href = 'postagens.html'; } } ] });
+            console.log('Postagem cadastrada:', postagem);
+            showPopup('Postagem cadastrada com sucesso!', { type: 'success', buttons: [ { text: 'Ver postagens', onClick: () => { window.location.href = 'postagens.html'; } } ] });
         } else {
             const error = await response.text();
-            console.error('❌ Erro no cadastro:', error);
-            showPopup('❌ Erro ao cadastrar postagem: ' + error, { type: 'error' });
+            console.error('Erro no cadastro:', error);
+            showPopup('Erro ao cadastrar postagem: ' + error, { type: 'error' });
         }
     } catch (error) {
-        console.error('💥 Erro de conexão:', error);
-        showPopup('🌐 Erro de conexão com o servidor.', { type: 'error' });
+        console.error('Erro de conexão:', error);
+        showPopup('Erro de conexão com o servidor.', { type: 'error' });
+    } finally {
+        if (formPostagem) {
+            formPostagem.dataset.submitting = 'false';
+        }
+        if (submitButton) {
+            submitButton.disabled = false;
+            submitButton.textContent = 'Cadastrar postagem';
+        }
     }
 }
 
@@ -86,7 +110,7 @@ function atualizarInterface() {
     
     if (empresaLogada && userInfoElement) {
         userInfoElement.innerHTML = `
-            <span>👋 Olá, ${empresaLogada.nome}</span>
+            <span>Olá, ${empresaLogada.nome}</span>
             <span class="tipo-empresa">(${empresaLogada.tipo === 'DESCARTE' ? 'Descarte' : 'Coleta'})</span>
         `;
         
@@ -102,10 +126,7 @@ function atualizarInterface() {
             // Atualizar link do dropdown para mostrar o tipo de postagens relevantes
             const linkPostagens = document.getElementById('linkPostagensTipo');
             if (linkPostagens) {
-                // Se a empresa for DESCARTE, mostramos 'Postagens coleta' (ou seja, empresas que coletam)
-                // Se a empresa for COLETA, mostramos 'Postagens descarte'
-                const label = empresaLogada.tipo === 'DESCARTE' ? 'Postagens coleta' : 'Postagens descarte';
-                linkPostagens.textContent = label;
+                linkPostagens.textContent = 'Postagens';
                 linkPostagens.href = 'postagens.html';
             }
     }
@@ -124,7 +145,7 @@ function converterImagemBase64(arquivo) {
     return new Promise((resolve, reject) => {
         const reader = new FileReader();
         reader.onload = () => {
-            console.log('📸 Imagem convertida para Base64, tamanho:', reader.result.length, 'caracteres');
+            console.log('Imagem convertida para Base64, tamanho:', reader.result.length, 'caracteres');
             resolve(reader.result);
         };
         reader.onerror = reject;
@@ -134,11 +155,11 @@ function converterImagemBase64(arquivo) {
 
 // Inicialização
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('📝 Página de cadastro de postagens inicializada');
+    console.log('Página de cadastro de postagens inicializada');
     
     const empresaLogada = JSON.parse(localStorage.getItem('empresaLogada'));
     if (!empresaLogada) {
-        showPopup('⚠️ Você precisa fazer login primeiro!', { type: 'info', buttons: [ { text: 'Ir para login', onClick: () => { window.location.href = 'login.html'; } } ] });
+        showPopup('Você precisa fazer login primeiro!', { type: 'info', buttons: [ { text: 'Ir para login', onClick: () => { window.location.href = 'login.html'; } } ] });
         return;
     }
     atualizarInterface();
@@ -150,7 +171,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const formPostagem = document.getElementById('formCadastroPostagem');
     if (formPostagem) {
         formPostagem.addEventListener('submit', cadastrarPostagem);
-        console.log('✅ Event listener adicionado ao formulário de postagem');
+        console.log('Event listener adicionado ao formulário de postagem');
     }
     
     // Configurar preview de imagem
