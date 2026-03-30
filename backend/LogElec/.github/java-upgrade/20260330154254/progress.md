@@ -50,7 +50,7 @@
   - **Status**: ✅ Completed
   - **Changes Made**:
     - Updated `<java.version>` in `pom.xml` from `21` to `25`
-    - Maven wrapper 3.9.11 retained — verified compatible with JDK 25 (BUILD SUCCESS); Maven 4.x upgrade deferred as unnecessary
+    - Maven wrapper 3.9.11 retained — verified compatible with JDK 25 (BUILD SUCCESS); Maven 4.x upgrade skipped as unnecessary
   - **Review Code Changes**:
     - Sufficiency: ✅ All required changes present (java.version updated; wrapper upgrade not needed)
     - Necessity: ✅ All changes necessary
@@ -63,15 +63,27 @@
     - Result: ✅ Compilation SUCCESS (javac release 25, 28 main + 1 test source files)
     - Notes: Pre-existing warnings only — duplicate validation dep, mysql deprecated groupId, PostagemController unchecked cast; sun.misc.Unsafe warning from Maven's Guice dependency (not source code)
   - **Deferred Work**: None
-  - **Commit**:
+  - **Commit**: 9bd9009 - Step 3: Upgrade Java to 25 - Compile: SUCCESS
 
 ---
 
 - **Step 4: Final Validation**
-  - **Status**: 🔘 Not Started
+  - **Status**: ✅ Completed
   - **Changes Made**:
+    - Verified `java.version=25` in `pom.xml`
+    - All TODOs resolved; no deferred work from previous steps
+    - Full test suite passed with JDK 25
   - **Review Code Changes**:
+    - Sufficiency: ✅ All required changes present
+    - Necessity: ✅ All changes necessary
+      - Functional Behavior: ✅ Preserved — all business logic and API contracts maintained
+      - Security Controls: ✅ Preserved — authentication, authorization, password handling unchanged
   - **Verification**:
+    - Command: `.\mvnw.cmd clean test`
+    - JDK: `C:\Users\Nicolas\.jdk\jdk-25`
+    - Build tool: `.\mvnw.cmd` (Maven 3.9.11 via wrapper)
+    - Result: ✅ Compilation SUCCESS | ✅ Tests: 1/1 passed (100% pass rate, matches baseline)
+    - Notes: Same non-blocking Mockito/ByteBuddy dynamic agent warnings as baseline — not Java 25 regressions
   - **Deferred Work**: None
   - **Commit**:
 
@@ -81,3 +93,4 @@
 
 - Baseline: 1/1 tests passed with JDK 21 and Maven 3.9.11. Acceptance criteria: >= 1/1 tests must pass after upgrade.
 - Maven 4.0.0 is still RC-5 (not stable); Maven 3.9.11 successfully compiles Java 25 bytecode — wrapper upgrade skipped.
+- Upgrade success criteria fully met: Java 25 target, compilation clean, 100% test pass rate.

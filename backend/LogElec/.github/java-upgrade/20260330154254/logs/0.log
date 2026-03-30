@@ -546,3 +546,279 @@
   "message": "Event 'upgradeStepStarted' reported!\nSession ID: 20260330154254,\nSession Dir: c:\\Users\\Nicolas\\Documents\\USCS\\PE\\LogElec\\backend\\LogElec\\.github\\java-upgrade\\20260330154254"
 }}).
 2026-03-30T15:57:59.251Z [INFO] ----------------------invoked appmod-report-event----------------------
+2026-03-30T16:16:59.646Z [INFO] ---------------------prepare appmod-report-event----------------------
+2026-03-30T16:16:59.646Z [INFO] [Tool.prepareInvocation]({name: appmod-report-event, input: {
+  "event": "buildCompleted",
+  "phase": "execute",
+  "projectPath": "c:\\Users\\Nicolas\\Documents\\USCS\\PE\\LogElec\\backend\\LogElec",
+  "sessionId": "20260330154254",
+  "status": "succeeded"
+}}).
+2026-03-30T16:16:59.646Z [INFO] [Tool.prepareInvocation] do prepare invocation.
+2026-03-30T16:16:59.647Z [INFO] [Tool.prepareInvocation]({result: {
+  "invocationMessage": "Report upgrade event"
+}}).
+2026-03-30T16:16:59.647Z [INFO] ----------------------prepared appmod-report-event----------------------
+2026-03-30T16:16:59.687Z [INFO] ----------------------invoke appmod-report-event----------------------
+2026-03-30T16:16:59.687Z [INFO] [Tool.invoke]({name: appmod-report-event, input: {
+  "event": "buildCompleted",
+  "phase": "execute",
+  "projectPath": "c:\\Users\\Nicolas\\Documents\\USCS\\PE\\LogElec\\backend\\LogElec",
+  "sessionId": "20260330154254",
+  "status": "succeeded"
+}}).
+2026-03-30T16:16:59.687Z [INFO] [Tool.invoke] do invoke.
+2026-03-30T16:16:59.688Z [INFO] Project c:\Users\Nicolas\Documents\USCS\PE\LogElec\backend\LogElec is a maven project, try to get java version from pom.xml
+2026-03-30T16:16:59.689Z [INFO] Project java version: 25
+2026-03-30T16:16:59.689Z [INFO] Maven project detected.
+2026-03-30T16:16:59.689Z [INFO] Build tool type: mvnw
+2026-03-30T16:16:59.713Z [INFO] JDK: {
+  "name": "java",
+  "path": "C:\\Users\\Nicolas\\.jdk\\jdk-25\\bin",
+  "version": "25"
+}
+2026-03-30T16:16:59.714Z [INFO] Build tool: {
+  "name": "mvnw",
+  "path": ".",
+  "version": ""
+}
+2026-03-30T16:16:59.715Z [INFO] Project config: {
+  "buildTool": {
+    "path": ".",
+    "name": "mvnw",
+    "version": ""
+  },
+  "jdk": {
+    "path": "C:\\Users\\Nicolas\\.jdk\\jdk-25\\bin",
+    "name": "java",
+    "version": "25"
+  },
+  "name": "LogElec",
+  "dir": "c:\\Users\\Nicolas\\Documents\\USCS\\PE\\LogElec\\backend\\LogElec"
+}
+2026-03-30T16:16:59.716Z [INFO] [MavenBuildTool] Getting all module coordinates of c:\Users\Nicolas\Documents\USCS\PE\LogElec\backend\LogElec
+2026-03-30T16:16:59.717Z [INFO] [MavenBuildTool] Getting effective POMs of c:\Users\Nicolas\Documents\USCS\PE\LogElec\backend\LogElec
+2026-03-30T16:16:59.717Z [INFO] [Environment] Running command (Java undefined): mvnw help:effective-pom -Doutput=effective-pom-ddde1c39-83c2-4e87-9b24-2a2acf02a063.log
+WARNING: A terminally deprecated method in sun.misc.Unsafe has been called
+WARNING: sun.misc.Unsafe::staticFieldBase has been called by com.google.inject.internal.aop.HiddenClassDefiner (file:/C:/Users/Nicolas/.m2/wrapper/dists/apache-maven-3.9.11/03d7e36a140982eea48e22c1dcac01d8862b2550b2939e09a0809bbc5182a5bc/lib/guice-5.1.0-classes.jar)
+WARNING: Please consider reporting this to the maintainers of class com.google.inject.internal.aop.HiddenClassDefiner
+WARNING: sun.misc.Unsafe::staticFieldBase will be removed in a future release
+[INFO] Scanning for projects...
+[WARNING] 
+[WARNING] Some problems were encountered while building the effective model for com.ads:LogElec:jar:0.0.1-SNAPSHOT
+[WARNING] 'dependencies.dependency.(groupId:artifactId:type:classifier)' must be unique: org.springframework.boot:spring-boot-starter-validation:jar -> duplicate declaration of version (?) @ line 80, column 17
+[WARNING] 
+[WARNING] It is highly recommended to fix these problems because they threaten the stability of your build.
+[WARNING] 
+[WARNING] For this reason, future Maven versions might no longer support building such malformed projects.
+[WARNING] 
+[INFO] 
+[INFO] --------------------------< com.ads:LogElec >---------------------------
+[INFO] Building LogElec 0.0.1-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- help:3.5.1:effective-pom (default-cli) @ LogElec ---
+[INFO] Effective-POM written to: c:\Users\Nicolas\Documents\USCS\PE\LogElec\backend\LogElec\effective-pom-ddde1c39-83c2-4e87-9b24-2a2acf02a063.log
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  1.223 s
+[INFO] Finished at: 2026-03-30T13:17:02-03:00
+[INFO] ------------------------------------------------------------------------
+2026-03-30T16:17:02.611Z [INFO] [BaseBuildTool] Found 1 modules: .
+2026-03-30T16:17:02.621Z [INFO] [BaseBuildTool] Finish counting Java and class files
+2026-03-30T16:17:02.622Z [INFO] [MavenBuildTool] Cleaning c:\Users\Nicolas\Documents\USCS\PE\LogElec\backend\LogElec using Maven
+2026-03-30T16:17:02.622Z [INFO] [Environment] Running command (Java undefined): mvnw clean -q -B -fn
+WARNING: A terminally deprecated method in sun.misc.Unsafe has been called
+WARNING: sun.misc.Unsafe::staticFieldBase has been called by com.google.inject.internal.aop.HiddenClassDefiner (file:/C:/Users/Nicolas/.m2/wrapper/dists/apache-maven-3.9.11/03d7e36a140982eea48e22c1dcac01d8862b2550b2939e09a0809bbc5182a5bc/lib/guice-5.1.0-classes.jar)
+WARNING: Please consider reporting this to the maintainers of class com.google.inject.internal.aop.HiddenClassDefiner
+WARNING: sun.misc.Unsafe::staticFieldBase will be removed in a future release
+2026-03-30T16:17:04.572Z [INFO] [Tool.invoke]({result: {
+  "message": "Event 'buildCompleted' reported!\nSession ID: 20260330154254,\nSession Dir: c:\\Users\\Nicolas\\Documents\\USCS\\PE\\LogElec\\backend\\LogElec\\.github\\java-upgrade\\20260330154254"
+}}).
+2026-03-30T16:17:04.572Z [INFO] ----------------------invoked appmod-report-event----------------------
+2026-03-30T16:17:04.583Z [INFO] ---------------------prepare appmod-report-event----------------------
+2026-03-30T16:17:04.583Z [INFO] [Tool.prepareInvocation]({name: appmod-report-event, input: {
+  "details": {
+    "stepNumber": 3,
+    "stepTitle": "Upgrade Java to 25 and Maven Wrapper to 4.0.x",
+    "commitId": "9bd9009"
+  },
+  "event": "upgradeStepCompleted",
+  "phase": "execute",
+  "projectPath": "c:\\Users\\Nicolas\\Documents\\USCS\\PE\\LogElec\\backend\\LogElec",
+  "sessionId": "20260330154254",
+  "status": "succeeded"
+}}).
+2026-03-30T16:17:04.583Z [INFO] [Tool.prepareInvocation] do prepare invocation.
+2026-03-30T16:17:04.584Z [INFO] [Tool.prepareInvocation]({result: {
+  "invocationMessage": "Report upgrade event"
+}}).
+2026-03-30T16:17:04.584Z [INFO] ----------------------prepared appmod-report-event----------------------
+2026-03-30T16:17:04.621Z [INFO] ----------------------invoke appmod-report-event----------------------
+2026-03-30T16:17:04.621Z [INFO] [Tool.invoke]({name: appmod-report-event, input: {
+  "details": {
+    "stepNumber": 3,
+    "stepTitle": "Upgrade Java to 25 and Maven Wrapper to 4.0.x",
+    "commitId": "9bd9009"
+  },
+  "event": "upgradeStepCompleted",
+  "phase": "execute",
+  "projectPath": "c:\\Users\\Nicolas\\Documents\\USCS\\PE\\LogElec\\backend\\LogElec",
+  "sessionId": "20260330154254",
+  "status": "succeeded"
+}}).
+2026-03-30T16:17:04.621Z [INFO] [Tool.invoke] do invoke.
+2026-03-30T16:17:04.694Z [INFO] [Tool.invoke]({result: {
+  "message": "Event 'upgradeStepCompleted' reported!\nSession ID: 20260330154254,\nSession Dir: c:\\Users\\Nicolas\\Documents\\USCS\\PE\\LogElec\\backend\\LogElec\\.github\\java-upgrade\\20260330154254"
+}}).
+2026-03-30T16:17:04.694Z [INFO] ----------------------invoked appmod-report-event----------------------
+2026-03-30T16:42:26.552Z [INFO] ---------------------prepare appmod-report-event----------------------
+2026-03-30T16:42:26.553Z [INFO] [Tool.prepareInvocation]({name: appmod-report-event, input: {
+  "event": "buildCompleted",
+  "phase": "execute",
+  "projectPath": "c:\\Users\\Nicolas\\Documents\\USCS\\PE\\LogElec\\backend\\LogElec",
+  "sessionId": "20260330154254",
+  "status": "succeeded"
+}}).
+2026-03-30T16:42:26.553Z [INFO] [Tool.prepareInvocation] do prepare invocation.
+2026-03-30T16:42:26.553Z [INFO] [Tool.prepareInvocation]({result: {
+  "invocationMessage": "Report upgrade event"
+}}).
+2026-03-30T16:42:26.554Z [INFO] ----------------------prepared appmod-report-event----------------------
+2026-03-30T16:42:26.589Z [INFO] ----------------------invoke appmod-report-event----------------------
+2026-03-30T16:42:26.589Z [INFO] [Tool.invoke]({name: appmod-report-event, input: {
+  "event": "buildCompleted",
+  "phase": "execute",
+  "projectPath": "c:\\Users\\Nicolas\\Documents\\USCS\\PE\\LogElec\\backend\\LogElec",
+  "sessionId": "20260330154254",
+  "status": "succeeded"
+}}).
+2026-03-30T16:42:26.589Z [INFO] [Tool.invoke] do invoke.
+2026-03-30T16:42:26.590Z [INFO] Project c:\Users\Nicolas\Documents\USCS\PE\LogElec\backend\LogElec is a maven project, try to get java version from pom.xml
+2026-03-30T16:42:26.590Z [INFO] Project java version: 25
+2026-03-30T16:42:26.590Z [INFO] Maven project detected.
+2026-03-30T16:42:26.591Z [INFO] Build tool type: mvnw
+2026-03-30T16:42:26.613Z [INFO] JDK: {
+  "name": "java",
+  "path": "C:\\Users\\Nicolas\\.jdk\\jdk-25\\bin",
+  "version": "25"
+}
+2026-03-30T16:42:26.614Z [INFO] Build tool: {
+  "name": "mvnw",
+  "path": ".",
+  "version": ""
+}
+2026-03-30T16:42:26.614Z [INFO] Project config: {
+  "buildTool": {
+    "path": ".",
+    "name": "mvnw",
+    "version": ""
+  },
+  "jdk": {
+    "path": "C:\\Users\\Nicolas\\.jdk\\jdk-25\\bin",
+    "name": "java",
+    "version": "25"
+  },
+  "name": "LogElec",
+  "dir": "c:\\Users\\Nicolas\\Documents\\USCS\\PE\\LogElec\\backend\\LogElec"
+}
+2026-03-30T16:42:26.614Z [INFO] [MavenBuildTool] Getting all module coordinates of c:\Users\Nicolas\Documents\USCS\PE\LogElec\backend\LogElec
+2026-03-30T16:42:26.615Z [INFO] [MavenBuildTool] Getting effective POMs of c:\Users\Nicolas\Documents\USCS\PE\LogElec\backend\LogElec
+2026-03-30T16:42:26.615Z [INFO] [Environment] Running command (Java undefined): mvnw help:effective-pom -Doutput=effective-pom-d1c633dc-4623-4b09-bcd1-2e04acb515f9.log
+WARNING: A terminally deprecated method in sun.misc.Unsafe has been called
+WARNING: sun.misc.Unsafe::staticFieldBase has been called by com.google.inject.internal.aop.HiddenClassDefiner (file:/C:/Users/Nicolas/.m2/wrapper/dists/apache-maven-3.9.11/03d7e36a140982eea48e22c1dcac01d8862b2550b2939e09a0809bbc5182a5bc/lib/guice-5.1.0-classes.jar)
+WARNING: Please consider reporting this to the maintainers of class com.google.inject.internal.aop.HiddenClassDefiner
+WARNING: sun.misc.Unsafe::staticFieldBase will be removed in a future release
+[INFO] Scanning for projects...
+[WARNING] 
+[WARNING] Some problems were encountered while building the effective model for com.ads:LogElec:jar:0.0.1-SNAPSHOT
+[WARNING] 'dependencies.dependency.(groupId:artifactId:type:classifier)' must be unique: org.springframework.boot:spring-boot-starter-validation:jar -> duplicate declaration of version (?) @ line 80, column 17
+[WARNING] 
+[WARNING] It is highly recommended to fix these problems because they threaten the stability of your build.
+[WARNING] 
+[WARNING] For this reason, future Maven versions might no longer support building such malformed projects.
+[WARNING] 
+[INFO] 
+[INFO] --------------------------< com.ads:LogElec >---------------------------
+[INFO] Building LogElec 0.0.1-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- help:3.5.1:effective-pom (default-cli) @ LogElec ---
+[INFO] Effective-POM written to: c:\Users\Nicolas\Documents\USCS\PE\LogElec\backend\LogElec\effective-pom-d1c633dc-4623-4b09-bcd1-2e04acb515f9.log
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  1.181 s
+[INFO] Finished at: 2026-03-30T13:42:29-03:00
+[INFO] ------------------------------------------------------------------------
+2026-03-30T16:42:29.544Z [INFO] [BaseBuildTool] Found 1 modules: .
+2026-03-30T16:42:29.552Z [INFO] [BaseBuildTool] Finish counting Java and class files
+2026-03-30T16:42:29.552Z [INFO] [MavenBuildTool] Cleaning c:\Users\Nicolas\Documents\USCS\PE\LogElec\backend\LogElec using Maven
+2026-03-30T16:42:29.553Z [INFO] [Environment] Running command (Java undefined): mvnw clean -q -B -fn
+WARNING: A terminally deprecated method in sun.misc.Unsafe has been called
+WARNING: sun.misc.Unsafe::staticFieldBase has been called by com.google.inject.internal.aop.HiddenClassDefiner (file:/C:/Users/Nicolas/.m2/wrapper/dists/apache-maven-3.9.11/03d7e36a140982eea48e22c1dcac01d8862b2550b2939e09a0809bbc5182a5bc/lib/guice-5.1.0-classes.jar)
+WARNING: Please consider reporting this to the maintainers of class com.google.inject.internal.aop.HiddenClassDefiner
+WARNING: sun.misc.Unsafe::staticFieldBase will be removed in a future release
+2026-03-30T16:42:31.390Z [INFO] [Tool.invoke]({result: {
+  "message": "Event 'buildCompleted' reported!\nSession ID: 20260330154254,\nSession Dir: c:\\Users\\Nicolas\\Documents\\USCS\\PE\\LogElec\\backend\\LogElec\\.github\\java-upgrade\\20260330154254"
+}}).
+2026-03-30T16:42:31.390Z [INFO] ----------------------invoked appmod-report-event----------------------
+2026-03-30T16:42:31.400Z [INFO] ---------------------prepare appmod-report-event----------------------
+2026-03-30T16:42:31.401Z [INFO] [Tool.prepareInvocation]({name: appmod-report-event, input: {
+  "event": "testCompleted",
+  "phase": "execute",
+  "projectPath": "c:\\Users\\Nicolas\\Documents\\USCS\\PE\\LogElec\\backend\\LogElec",
+  "sessionId": "20260330154254",
+  "status": "succeeded"
+}}).
+2026-03-30T16:42:31.401Z [INFO] [Tool.prepareInvocation] do prepare invocation.
+2026-03-30T16:42:31.402Z [INFO] [Tool.prepareInvocation]({result: {
+  "invocationMessage": "Report upgrade event"
+}}).
+2026-03-30T16:42:31.402Z [INFO] ----------------------prepared appmod-report-event----------------------
+2026-03-30T16:42:31.519Z [INFO] ----------------------invoke appmod-report-event----------------------
+2026-03-30T16:42:31.519Z [INFO] [Tool.invoke]({name: appmod-report-event, input: {
+  "event": "testCompleted",
+  "phase": "execute",
+  "projectPath": "c:\\Users\\Nicolas\\Documents\\USCS\\PE\\LogElec\\backend\\LogElec",
+  "sessionId": "20260330154254",
+  "status": "succeeded"
+}}).
+2026-03-30T16:42:31.520Z [INFO] [Tool.invoke] do invoke.
+2026-03-30T16:42:31.520Z [INFO] Project c:\Users\Nicolas\Documents\USCS\PE\LogElec\backend\LogElec is a maven project, try to get java version from pom.xml
+2026-03-30T16:42:31.521Z [INFO] Project java version: 25
+2026-03-30T16:42:31.521Z [INFO] Maven project detected.
+2026-03-30T16:42:31.521Z [INFO] Build tool type: mvnw
+2026-03-30T16:42:31.541Z [INFO] JDK: {
+  "name": "java",
+  "path": "C:\\Users\\Nicolas\\.jdk\\jdk-25\\bin",
+  "version": "25"
+}
+2026-03-30T16:42:31.541Z [INFO] Build tool: {
+  "name": "mvnw",
+  "path": ".",
+  "version": ""
+}
+2026-03-30T16:42:31.541Z [INFO] Project config: {
+  "buildTool": {
+    "path": ".",
+    "name": "mvnw",
+    "version": ""
+  },
+  "jdk": {
+    "path": "C:\\Users\\Nicolas\\.jdk\\jdk-25\\bin",
+    "name": "java",
+    "version": "25"
+  },
+  "name": "LogElec",
+  "dir": "c:\\Users\\Nicolas\\Documents\\USCS\\PE\\LogElec\\backend\\LogElec"
+}
+2026-03-30T16:42:31.542Z [INFO] [BaseBuildTool] Gathering test results...
+2026-03-30T16:42:31.547Z [INFO] [BaseBuildTool] Summarizing surefire reports.
+2026-03-30T16:42:31.548Z [INFO] [Tool.invoke]({result: {
+  "message": "Event 'testCompleted' reported!\nSession ID: 20260330154254,\nSession Dir: c:\\Users\\Nicolas\\Documents\\USCS\\PE\\LogElec\\backend\\LogElec\\.github\\java-upgrade\\20260330154254"
+}}).
+2026-03-30T16:42:31.548Z [INFO] ----------------------invoked appmod-report-event----------------------
