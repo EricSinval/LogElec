@@ -22,6 +22,7 @@
         <span class="icon menu-icon" onclick="toggleMenu()">☰</span>
         <img src="../img/Icon_User.png" alt="icon user-icon" onclick="window.location.href='perfil.html'" style="cursor:pointer;">
         <div class="dropdown" id="dropdown">
+          <a href="agendamento.html">Agendamentos</a>
           <a id="linkPostagensTipo" href="postagens.html">Postagens</a>
           <a href="cadastro_postagens.html">Cadastro de Postagens</a>
           <a href="editar_postagens.html">Editar Postagens</a>
@@ -39,7 +40,7 @@
         <p>Selecione uma postagem para editar seus dados</p>
         
         <div class="conteudo-principal">
-          <!-- Seção de Listagem de Postagens -->
+          
           <div class="lista-postagens-container">
             <h3>Suas Postagens</h3>
             <div id="listaPostagens" class="lista-postagens">
@@ -47,11 +48,11 @@
             </div>
           </div>
 
-          <!-- Seção de Edição -->
+          
           <div class="formulario-container">
             <h3>Editar Postagem</h3>
             <form id="formEdicaoPostagem" style="display: none;">
-              <!-- Seção: Informações Básicas -->
+              
               <div class="section-heading">Informações Básicas</div>
 
               <label for="nomeEmpresa">Nome Empresa</label>
@@ -85,7 +86,7 @@
                 <img id="imagePreview" alt="Preview da imagem" />
               </div>
 
-              <!-- Seção: Disponibilidade -->
+              
               <div class="section-heading">Disponibilidade</div>
 
               <div id="diasDisponibilidade" style="display: flex; gap: 10px; flex-wrap: wrap;">

@@ -81,9 +81,9 @@ position: relative;
 }
 
 .header-icons img {
- width: auto; /* Aumentado para 35px */
-height: 100px; /* Aumentado para 35px, mantendo proporção */
-object-fit: contain; /* Garante que a imagem não seja cortada e mantenha suas proporções */
+ width: auto; 
+height: 100px; 
+object-fit: contain; 
  cursor: pointer;
 }
 
@@ -106,7 +106,7 @@ object-fit: contain; /* Garante que a imagem não seja cortada e mantenha suas p
 
 form { display: grid; grid-template-columns: 1fr 1fr; gap: 16px 16px; }
 
-/* Section headings */
+
 .section-heading {
   grid-column: 1 / -1;
   font-size: 15px;
@@ -118,13 +118,13 @@ form { display: grid; grid-template-columns: 1fr 1fr; gap: 16px 16px; }
   border-bottom: 1px solid var(--border);
 }
 
-/* Make full-width rows where helpful */
+
 #nomeEmpresa, #descricao, #foto, #diasDisponibilidade, button[type="submit"],
 .hint, #imagePreviewContainer {
   grid-column: 1 / -1;
 }
 
-/* Labels = Títulos dos campos (em negrito e maiores) */
+
 form label { 
   font-size: 15px; 
   font-weight: 600; 
@@ -134,7 +134,7 @@ form label {
   display: block;
 }
 
-/* Hints = Descrições dos campos (cinza claro e menores) */
+
 .hint {
   font-size: 11px;
   color: #9ca3af;
@@ -144,7 +144,7 @@ form label {
   display: block;
 }
 
-/* Image preview */
+
 #imagePreviewContainer {
   margin-top: 8px;
   padding: 12px;
@@ -178,23 +178,23 @@ input:focus, textarea:focus, select:focus {
   box-shadow: 0 0 0 4px var(--ring);
 }
 
-/* Time inputs side-by-side already via grid; ensure consistent height */
+
 input[type="time"] { padding: 10px 12px; }
 
-/* Custom file input - keep native but nicer container */
+
 input[type="file"] { padding: 10px; background: #f9fafb; border-style: dashed; }
 input[type="file"]:hover { background: #f3f4f6; }
 
-/* Days availability as chips using current markup */
+
 #diasDisponibilidade { 
   display: flex; gap: 8px; flex-wrap: wrap; padding: 8px; background: #f9fafb; border: 1px solid var(--border); border-radius: 12px;
 }
 #diasDisponibilidade > label {
   display: inline-flex; align-items: center; gap: 8px; padding: 8px 10px; border: 1px solid var(--border); border-radius: 999px; background: #fff; color: var(--text);
   cursor: pointer; user-select: none; transition: all .18s ease;
-  font-size: 13px; /* Restaura tamanho normal para os chips de dia */
-  font-weight: 400; /* Restaura peso normal para os chips */
-  margin: 0; /* Remove margin do label geral */
+  font-size: 13px; 
+  font-weight: 400; 
+  margin: 0; 
 }
 #diasDisponibilidade > label:hover { transform: translateY(-1px); box-shadow: 0 6px 14px rgba(0,0,0,0.06); }
 #diasDisponibilidade input[type="checkbox"] { accent-color: var(--primary); width: 16px; height: 16px; }

@@ -11,7 +11,7 @@ public class AgendamentoDTO {
     private LocalTime horaAgendamento;
     private String observacoes;
     
-    // Construtores
+    
     public AgendamentoDTO() {}
     
     public AgendamentoDTO(Long empresaSolicitanteId, Long empresaColetoraId, 
@@ -32,7 +32,7 @@ public class AgendamentoDTO {
         this.observacoes = observacoes;
     }
     
-    // Getters e Setters
+    
     public Long getEmpresaSolicitanteId() { return empresaSolicitanteId; }
     public void setEmpresaSolicitanteId(Long empresaSolicitanteId) { this.empresaSolicitanteId = empresaSolicitanteId; }
     

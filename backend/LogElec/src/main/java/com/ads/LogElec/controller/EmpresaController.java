@@ -2,7 +2,10 @@ package com.ads.LogElec.controller;
 
 import com.ads.LogElec.entity.Empresa;
 import com.ads.LogElec.entity.TipoEmpresa;
+import com.ads.LogElec.repository.AgendamentoRepository;
 import com.ads.LogElec.repository.EmpresaRepository;
+import com.ads.LogElec.repository.MensagemRepository;
+import com.ads.LogElec.repository.PostagemRepository;
 import com.ads.LogElec.service.EmpresaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -34,32 +37,41 @@ public class EmpresaController {
     @Autowired
     private EmpresaService empresaService;
 
-    // ✅ MÉTODO CADASTRAR EMPRESA COM VALIDAÇÕES
+    @Autowired
+    private PostagemRepository postagemRepository;
+
+    @Autowired
+    private AgendamentoRepository agendamentoRepository;
+
+    @Autowired
+    private MensagemRepository mensagemRepository;
+
+    
     @PostMapping
     public ResponseEntity<?> createEmpresa(@RequestBody Empresa empresa) {
         try {
             System.out.println("📥 Recebendo cadastro de empresa: " + empresa.getEmail());
             
-            // ✅ VALIDAÇÃO 1: Campos obrigatórios
+            
             if (!empresa.isValido()) {
                 String mensagensErro = empresa.getMensagensErro();
                 System.out.println("❌ Validação falhou: " + mensagensErro);
                 return ResponseEntity.badRequest().body(mensagensErro);
             }
             
-            // ✅ VALIDAÇÃO 2: Email único
+            
             if (empresaRepository.findByEmail(empresa.getEmail()).isPresent()) {
                 System.out.println("❌ Email já cadastrado: " + empresa.getEmail());
                 return ResponseEntity.badRequest().body("Email já cadastrado");
             }
             
-            // ✅ VALIDAÇÃO 3: CNPJ único  
+            
             if (empresaRepository.findByCnpj(empresa.getCnpj()).isPresent()) {
                 System.out.println("❌ CNPJ já cadastrado: " + empresa.getCnpj());
                 return ResponseEntity.badRequest().body("CNPJ já cadastrado");
             }
             
-            // ✅ VALIDAÇÃO 4: Usar o Service para criar a empresa
+            
             Empresa novaEmpresa = empresaService.createEmpresa(empresa);
             System.out.println("✅ Empresa cadastrada com sucesso: " + novaEmpresa.getId());
             
@@ -74,7 +86,7 @@ public class EmpresaController {
         }
     }
 
-    // ✅ MÉTODOS EXISTENTES (mantenha esses)
+    
     @GetMapping("/email/{email}")
     public ResponseEntity<Empresa> getEmpresaByEmail(@PathVariable String email) {
         Optional<Empresa> empresa = empresaRepository.findByEmail(email);
@@ -99,7 +111,7 @@ public class EmpresaController {
                     .orElse(ResponseEntity.notFound().build());
     }
 
-    // ✅ ATUALIZAR DADOS DA EMPRESA (PERFIL)
+    
     @PutMapping("/{id}")
     public ResponseEntity<?> updateEmpresa(@PathVariable Long id, @RequestBody java.util.Map<String, Object> dadosAtualizados) {
         try {
@@ -113,10 +125,10 @@ public class EmpresaController {
             
             Empresa empresa = empresaOpt.get();
             
-            // Atualizar campos permitidos
+            
             if (dadosAtualizados.containsKey("email")) {
                 String novoEmail = (String) dadosAtualizados.get("email");
-                // Verificar se o email não está sendo usado por outra empresa
+                
                 Optional<Empresa> emailExistente = empresaRepository.findByEmail(novoEmail);
                 if (emailExistente.isPresent() && !emailExistente.get().getId().equals(id)) {
                     return ResponseEntity.badRequest().body("Email já está em uso por outra empresa");
@@ -132,21 +144,21 @@ public class EmpresaController {
                 empresa.setEndereco((String) dadosAtualizados.get("endereco"));
             }
             
-            // Verificar se há alteração de senha
+            
             if (dadosAtualizados.containsKey("senhaAtual") && dadosAtualizados.containsKey("novaSenha")) {
                 String senhaAtual = (String) dadosAtualizados.get("senhaAtual");
                 String novaSenha = (String) dadosAtualizados.get("novaSenha");
                 
-                // Verificar senha atual
+                
                 if (!empresaService.verificarSenha(empresa, senhaAtual)) {
                     return ResponseEntity.badRequest().body("Senha atual incorreta");
                 }
                 
-                // Atualizar senha usando o service para hash correto
+                
                 empresaService.atualizarSenha(empresa, novaSenha);
             }
             
-            // Salvar empresa atualizada
+            
             Empresa empresaAtualizada = empresaRepository.save(empresa);
             System.out.println("✅ Empresa atualizada com sucesso: " + empresaAtualizada.getId());
             
@@ -157,5 +169,29 @@ public class EmpresaController {
             e.printStackTrace();
             return ResponseEntity.status(500).body("Erro ao atualizar empresa: " + e.getMessage());
         }
+    }
+
+    
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteEmpresa(@PathVariable Long id) {
+        Optional<Empresa> empresaOpt = empresaRepository.findById(id);
+        if (!empresaOpt.isPresent()) {
+            return ResponseEntity.notFound().build();
+        }
+        Empresa empresa = empresaOpt.get();
+
+        if (!postagemRepository.findByEmpresaId(id).isEmpty()) {
+            return ResponseEntity.status(409).body("Empresa possui postagens vinculadas e não pode ser removida.");
+        }
+        if (!agendamentoRepository.findByEmpresaSolicitante(empresa).isEmpty() ||
+                !agendamentoRepository.findByEmpresaColetora(empresa).isEmpty()) {
+            return ResponseEntity.status(409).body("Empresa possui agendamentos vinculados e não pode ser removida.");
+        }
+        if (!mensagemRepository.findByEmpresaRemetenteIdOrEmpresaDestinatarioId(id, id).isEmpty()) {
+            return ResponseEntity.status(409).body("Empresa possui mensagens vinculadas e não pode ser removida.");
+        }
+
+        empresaRepository.deleteById(id);
+        return ResponseEntity.noContent().build();
     }
 }

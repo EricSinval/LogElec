@@ -24,7 +24,7 @@ public class DatabaseIntegrationTest implements CommandLineRunner {
             System.out.println("📊 Banco: " + conn.getMetaData().getDatabaseProductName());
             System.out.println("🔗 URL: " + conn.getMetaData().getURL());
             
-            // Verificar tabelas
+            
             String[] tables = {"empresas", "postagens", "agendamentos", "mensagens"};
             for (String table : tables) {
                 try {
@@ -39,7 +39,7 @@ public class DatabaseIntegrationTest implements CommandLineRunner {
                 }
             }
             
-            // Contar registros
+            
             try (var stmt = conn.createStatement();
                  var rs = stmt.executeQuery("SELECT COUNT(*) as count FROM empresas")) {
                 if (rs.next()) {

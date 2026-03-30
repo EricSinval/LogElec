@@ -16,7 +16,7 @@ public interface PostagemRepository extends JpaRepository<Postagem, Long> {
     List<Postagem> findByEmpresaTipo(com.ads.LogElec.entity.TipoEmpresa tipo);
     List<Postagem> findByEmpresaAndStatus(com.ads.LogElec.entity.Empresa empresa, StatusPostagem status);
     
-    // Método de busca customizado para pesquisa flexível
+    
     @Query("SELECT p FROM Postagem p WHERE " +
            "LOWER(p.titulo) LIKE LOWER(CONCAT('%', :searchTerm, '%')) OR " +
            "LOWER(p.descricao) LIKE LOWER(CONCAT('%', :searchTerm, '%')) OR " +

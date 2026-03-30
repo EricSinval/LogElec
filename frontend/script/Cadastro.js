@@ -1,9 +1,9 @@
-// Cadastro.js - Versão Atualizada com Validações
+
 console.log('Cadastro.js carregado! Vamos configurar...');
 
 let tipoSelecionado = null;
 
-// Aguarda a página carregar COMPLETAMENTE
+
 window.addEventListener('load', function() {
     console.log('Página totalmente carregada, iniciando configuração...');
     configurarCadastro();
@@ -25,7 +25,7 @@ function configurarCadastro() {
         return;
     }
     
-    // CONFIGURAR VALIDAÇÕES EM TEMPO REAL
+    
     configurarValidacoesEmTempoReal();
     configurarTipoSelector(tipo);
     atualizarInterface(tipoSelecionado);
@@ -38,7 +38,7 @@ function configurarCadastro() {
             return;
         }
         
-        // VALIDAÇÃO FINAL ANTES DE ENVIAR
+        
         if (!tipoSelecionado) {
             mostrarErroTipo();
             return;
@@ -97,7 +97,7 @@ function limparErroTipo() {
     }
 }
 
-// ✅ CONFIGURAR VALIDAÇÕES EM TEMPO REAL
+
 function configurarValidacoesEmTempoReal() {
     const emailInput = document.getElementById('email');
     const cnpjInput = document.getElementById('cnpj');
@@ -132,13 +132,13 @@ function configurarValidacoesEmTempoReal() {
     }
 }
 
-// ✅ VALIDAÇÃO DE EMAIL
+
 function validarEmail() {
     const emailInput = document.getElementById('email');
     const email = emailInput.value.trim();
     const emailError = document.getElementById('emailError') || criarElementoErro(emailInput, 'emailError');
     
-    // Regex para validar email
+    
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     
     if (email && !emailRegex.test(email)) {
@@ -159,7 +159,7 @@ function limparErroEmail() {
     emailInput.style.borderColor = '';
 }
 
-// ✅ VALIDAÇÃO DE NOME
+
 function validarNome() {
     const nomeInput = document.getElementById('nomeRazao');
     const nome = nomeInput.value.trim();
@@ -183,7 +183,7 @@ function limparErroNome() {
     nomeInput.style.borderColor = '';
 }
 
-// ✅ VALIDAÇÃO DE SENHA
+
 function validarSenha() {
     const senhaInput = document.getElementById('senha');
     const senha = senhaInput.value;
@@ -207,7 +207,7 @@ function limparErroSenha() {
     senhaInput.style.borderColor = '';
 }
 
-// ✅ VALIDAÇÃO E FORMATAÇÃO DE CNPJ
+
 function validarCNPJ() {
     const cnpjInput = document.getElementById('cnpj');
     let cnpj = cnpjInput.value.replace(/\D/g, '');
@@ -228,7 +228,7 @@ function formatarCNPJ() {
     const cnpjInput = document.getElementById('cnpj');
     let cnpj = cnpjInput.value.replace(/\D/g, '');
     
-    // Aplica a máscara: XX.XXX.XXX/XXXX-XX
+    
     if (cnpj.length <= 14) {
         if (cnpj.length > 12) {
             cnpj = cnpj.replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{0,2})/, '$1.$2.$3/$4-$5');
@@ -250,13 +250,13 @@ function limparErroCNPJ() {
     cnpjInput.style.borderColor = '';
 }
 
-// ✅ VALIDAÇÃO DE TELEFONE
+
 function validarTelefone() {
     const telefoneInput = document.getElementById('telefone');
     const telefone = telefoneInput.value;
     const telefoneError = document.getElementById('telefoneError') || criarElementoErro(telefoneInput, 'telefoneError');
     
-    // Telefone é opcional, mas se preenchido, deve estar no formato correto
+    
     if (telefone && telefone.trim() !== '') {
         const telefoneRegex = /^\(\d{2}\)\s\d{4,5}-\d{4}$/;
         if (!telefoneRegex.test(telefone)) {
@@ -289,7 +289,7 @@ function formatarTelefone() {
     }
 }
 
-// ✅ VALIDAÇÃO FINAL DO FORMULÁRIO
+
 function validarFormulario() {
     const camposObrigatorios = [
         { id: 'nomeRazao', nome: 'Nome/Razão Social' },
@@ -302,7 +302,7 @@ function validarFormulario() {
     let formularioValido = true;
     let primeiroCampoInvalido = null;
     
-    // Validar campos obrigatórios
+    
     for (const campo of camposObrigatorios) {
         const input = document.getElementById(campo.id);
         if (!input || !input.value.trim()) {
@@ -313,7 +313,7 @@ function validarFormulario() {
         }
     }
     
-    // Validar campos específicos
+    
     if (formularioValido) {
         if (!validarNome()) { formularioValido = false; primeiroCampoInvalido = document.getElementById('nomeRazao'); }
         if (!validarEmail()) { formularioValido = false; primeiroCampoInvalido = document.getElementById('email'); }
@@ -329,7 +329,7 @@ function validarFormulario() {
     return formularioValido;
 }
 
-// ✅ FUNÇÃO AUXILIAR: Criar elemento de erro
+
 function criarElementoErro(input, id) {
     let errorElement = document.getElementById(id);
     if (!errorElement) {
@@ -345,7 +345,7 @@ function criarElementoErro(input, id) {
     return errorElement;
 }
 
-// FUNÇÃO PARA FAZER LOGIN AUTOMÁTICO APÓS CADASTRO
+
 async function fazerLoginAutomatico(email, senha) {
     console.log('Iniciando login automático...');
     
@@ -367,16 +367,16 @@ async function fazerLoginAutomatico(email, senha) {
             const empresa = await response.json();
             console.log('Login automático bem-sucedido:', empresa);
             
-            // Salvar empresa no localStorage
+            
             localStorage.setItem('empresaLogada', JSON.stringify(empresa));
             
-            // Redirecionar para postagens.html (dashboard)
+            
             window.location.href = 'postagens.html';
             return true;
         } else {
             const error = await response.text();
             console.error('Erro no login automático:', error);
-            // Se falhar, ir para login
+            
             window.location.href = 'login.html';
             return false;
         }
@@ -387,7 +387,7 @@ async function fazerLoginAutomatico(email, senha) {
     }
 }
 
-// ATUALIZAR A FUNÇÃO executarCadastro PARA LIDAR COM NOVAS RESPOSTAS
+
 async function executarCadastro(tipo, formCadastro) {
     console.log('Executando cadastro...');
 
@@ -395,10 +395,10 @@ async function executarCadastro(tipo, formCadastro) {
         formCadastro.dataset.submitting = 'true';
     }
     
-    // Coletar dados do formulário
+    
     const empresaData = {
         nome: document.getElementById('nomeRazao').value.trim(),
-        cnpj: document.getElementById('cnpj').value.replace(/\D/g, ''), // Remove formatação
+        cnpj: document.getElementById('cnpj').value.replace(/\D/g, ''), 
         email: document.getElementById('email').value.trim(),
         senha: document.getElementById('senha').value,
         tipo: tipo,
@@ -406,9 +406,9 @@ async function executarCadastro(tipo, formCadastro) {
         telefone: document.getElementById('telefone').value
     };
     
-    console.log('Dados enviados:', { ...empresaData, senha: '***' }); // Não logar senha
+    console.log('Dados enviados:', { ...empresaData, senha: '***' }); 
     
-    // Mostrar loading
+    
     const btnSubmit = formCadastro
         ? formCadastro.querySelector('button[type="submit"]')
         : document.querySelector('button[type="submit"]');
@@ -439,19 +439,19 @@ async function executarCadastro(tipo, formCadastro) {
                 buttons: []
             });
             
-            // ✅ FAZER LOGIN AUTOMÁTICO APÓS CADASTRO
+            
             setTimeout(() => {
                 fazerLoginAutomatico(empresaData.email, empresaData.senha);
             }, 1500);
         } else {
             console.error('Erro no cadastro:', responseText);
             
-            // TRATAMENTO MELHORADO PARA ERROS DO BACKEND
+            
             if (responseText.includes('•')) {
-                // Se o backend retornou múltiplos erros
+                
                 showPopup('Erros no cadastro:\n' + responseText.replace(/•/g, '\n•'), { type: 'error' });
             } else {
-                // Erro simples
+                
                 showPopup('Erro no cadastro: ' + responseText, { type: 'error' });
             }
         }
@@ -462,7 +462,7 @@ async function executarCadastro(tipo, formCadastro) {
         if (formCadastro) {
             formCadastro.dataset.submitting = 'false';
         }
-        // Restaurar botão
+        
         if (btnSubmit) {
             btnSubmit.textContent = originalText;
             btnSubmit.disabled = false;
@@ -470,7 +470,7 @@ async function executarCadastro(tipo, formCadastro) {
     }
 }
 
-// ... (as funções atualizarInterface e outras permanecem iguais)
+
 function atualizarInterface(tipo) {
     console.log('Atualizando interface para tipo:', tipo);
     
@@ -495,7 +495,7 @@ function atualizarInterface(tipo) {
     }
 }
 
-// Fallback: se a página já estiver carregada
+
 if (document.readyState === 'complete') {
     console.log('Página já carregada, iniciando diretamente...');
     configurarCadastro();

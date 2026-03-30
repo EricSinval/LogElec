@@ -1,8 +1,8 @@
-// Postagens.js - Gerenciamento da página de postagens
+
 console.log('Postagens.js carregado!');
 
 let todasPostagens = [];
-let debounceTimer = null; // Para debounce da busca
+let debounceTimer = null; 
 
 function truncarTexto(texto, limite = 140) {
     if (!texto) return '';
@@ -15,7 +15,7 @@ function truncarTexto(texto, limite = 140) {
     return `${resumo.trim()}...`;
 }
 
-// Verificar se usuário está logado
+
 function verificarLogin() {
     const empresaLogada = localStorage.getItem('empresaLogada');
     if (!empresaLogada) {
@@ -31,7 +31,7 @@ function verificarLogin() {
     return JSON.parse(empresaLogada);
 }
 
-// Carregar postagens do backend
+
 async function carregarPostagens() {
     console.log('Carregando postagens...');
     
@@ -44,17 +44,17 @@ async function carregarPostagens() {
             aplicarFiltro();
         } else {
             console.error('Erro ao carregar postagens');
-            // Fallback para dados mock se a API não estiver disponível
+            
             carregarPostagensMock();
         }
     } catch (error) {
         console.error('Erro de conexão:', error);
-        // Fallback para dados mock
+        
         carregarPostagensMock();
     }
 }
 
-// Fallback com dados mock (para desenvolvimento)
+
 function carregarPostagensMock() {
     console.log('Usando dados mock para desenvolvimento');
     todasPostagens = [
@@ -92,7 +92,7 @@ function carregarPostagensMock() {
     aplicarFiltro();
 }
 
-// Aplicar filtro automático baseado no tipo da empresa logada
+
 function aplicarFiltro() {
     let postagensFiltradas = [...todasPostagens];
     
@@ -100,12 +100,12 @@ function aplicarFiltro() {
     
     if (empresaLogada) {
         if (empresaLogada.tipo === 'DESCARTE') {
-            // Empresas de DESCARTE veem postagens de COLETA
+            
             postagensFiltradas = postagensFiltradas.filter(p => 
                 p.empresa && p.empresa.tipo === 'COLETA'
             );
         } else if (empresaLogada.tipo === 'COLETA') {
-            // Empresas de COLETA veem postagens de DESCARTE
+            
             postagensFiltradas = postagensFiltradas.filter(p => 
                 p.empresa && p.empresa.tipo === 'DESCARTE'
             );
@@ -115,7 +115,7 @@ function aplicarFiltro() {
     exibirPostagens(postagensFiltradas);
 }
 
-// Exibir postagens na página
+
 function exibirPostagens(postagens) {
     const container = document.getElementById('listaPostagens');
     
@@ -138,12 +138,12 @@ function exibirPostagens(postagens) {
         const enderecoResumo = truncarTexto(endereco, 90);
         const descricaoResumo = truncarTexto(descricao, 140);
         
-        // Definir imagem correta conforme o tipo da empresa da postagem
-        const imagemPadrao = '../img/sem-imagem.png'; // Placeholder online
+        
+        const imagemPadrao = '../img/sem-imagem.png'; 
         const imagemPorTipo = obterImagemPorTipoResiduo(tipoResiduo);
         const imagem = (empresa.tipo === 'COLETA')
-            ? (postagem.fotoEmpresa || imagemPadrao) // Coleta: usa fotoEmpresa ou placeholder genérico
-            : (postagem.fotoResiduos || imagemPadrao);   // Descarte: usa fotoResiduos ou placeholder genérico
+            ? (postagem.fotoEmpresa || imagemPadrao) 
+            : (postagem.fotoResiduos || imagemPadrao);   
         
         return `
         <div class="card" data-id="${postagem.id}">
@@ -159,10 +159,10 @@ function exibirPostagens(postagens) {
             </div>
             <div class="card-actions">
                 <button onclick="verDetalhesPostagem(${postagem.id})" class="btn-detalhes">
-                    Ver Detalhes
+                    Descrição
                 </button>
                 <button onclick="redirecionarAgendamento(${postagem.id})" class="btn-agendar">
-                    Verificar disponibilidade
+                    Enviar proposta de agendamento
                 </button>
             </div>
         </div>
@@ -170,12 +170,12 @@ function exibirPostagens(postagens) {
     }).join('');
 }
 
-// Redirecionar para agendamento - AGORA ABRE POPUP
+
 function redirecionarAgendamento(postagemId) {
     abrirPopupAgendamento(postagemId);
 }
 
-// Função auxiliar para obter imagem baseada no tipo de resíduo
+
 function obterImagemPorTipoResiduo(tipoResiduo) {
     const tipo = tipoResiduo.toLowerCase();
     if (tipo.includes('placa') || tipo.includes('eletrônic')) {
@@ -187,11 +187,11 @@ function obterImagemPorTipoResiduo(tipoResiduo) {
     } else if (tipo.includes('cabo') || tipo.includes('fio')) {
         return '../img/E-recyclers.png';
     } else {
-        return '../img/Placa mãe.jpg'; // imagem padrão
+        return '../img/Placa mãe.jpg'; 
     }
 }
 
-// Formatar status para exibição
+
 function formatarStatus(status) {
     const statusMap = {
         'ABERTA': 'Aberta',
@@ -201,7 +201,7 @@ function formatarStatus(status) {
     return statusMap[status] || status;
 }
 
-// Solicitar agendamento
+
 function solicitarAgendamento(postagemId) {
     console.log('Solicitar agendamento para postagem:', postagemId);
     const empresaLogada = verificarLogin();
@@ -228,8 +228,8 @@ function solicitarAgendamento(postagemId) {
 function confirmarAgendamento(postagemId, empresaId) {
     console.log('Confirmando agendamento:', { postagemId, empresaId });
     
-    // Aqui você implementaria a chamada para a API de agendamentos
-    // Por enquanto, vamos apenas mostrar uma mensagem de sucesso
+    
+    
     showPopup('Solicitação de agendamento enviada com sucesso! A empresa será notificada.', { 
         type: 'success',
         buttons: [
@@ -241,7 +241,7 @@ function confirmarAgendamento(postagemId, empresaId) {
     });
 }
 
-// Ver detalhes da postagem
+
 function verDetalhesPostagem(id) {
     const postagem = todasPostagens.find(p => p.id === id);
     if (!postagem) {
@@ -250,42 +250,47 @@ function verDetalhesPostagem(id) {
     }
 
     const empresa = postagem.empresa || {};
-    
+    const nomeEmpresa = empresa.nomeRazao || empresa.nome || 'Não informado';
+    const tipoEmpresa = empresa.tipo === 'DESCARTE'
+        ? 'Empresa que Descarta'
+        : empresa.tipo === 'COLETA'
+            ? 'Empresa Coletora'
+            : 'Não informado';
+
     showPopup(`
         <div class="detalhes-postagem">
             <h3>${postagem.titulo || 'Sem título'}</h3>
-            <div class="detalhes-section">
-                <h4>Informações da Empresa</h4>
-                <p><strong>Empresa:</strong> ${empresa.nomeRazao || 'Não informado'}</p>
-                <p><strong>Tipo:</strong> ${empresa.tipo === 'DESCARTE' ? 'Empresa que Descarta' : 'Empresa Coletora'}</p>
-                <p><strong>Email:</strong> ${empresa.email || 'Não informado'}</p>
-            </div>
-            <div class="detalhes-section">
-                <h4>Informações do Resíduo</h4>
-                <p><strong>Tipo de Resíduo:</strong> ${postagem.tipoResiduo || 'Não especificado'}</p>
-                <p><strong>Peso:</strong> ${postagem.peso ? postagem.peso + ' kg' : 'Não informado'}</p>
-                <p><strong>Endereço para Retirada:</strong> ${postagem.enderecoRetirada || 'Não informado'}</p>
-            </div>
-            <div class="detalhes-section">
-                <h4>Descrição</h4>
-                <p>${postagem.descricao || 'Sem descrição disponível'}</p>
-            </div>
-            <div class="detalhes-section">
-                <p><strong>Status:</strong> <span class="status ${postagem.status ? postagem.status.toLowerCase() : 'aberta'}">${formatarStatus(postagem.status)}</span></p>
+            <div class="detalhes-card">
+                <div class="detalhes-row"><span class="detalhes-label">Empresa</span><span>${nomeEmpresa}</span></div>
+                <div class="detalhes-row"><span class="detalhes-label">Tipo de empresa</span><span>${tipoEmpresa}</span></div>
+                <div class="detalhes-row"><span class="detalhes-label">Email</span><span>${empresa.email || 'Não informado'}</span></div>
+                <div class="detalhes-divider"></div>
+                <div class="detalhes-row"><span class="detalhes-label">Tipo de resíduo</span><span>${postagem.tipoResiduo || 'Não especificado'}</span></div>
+                <div class="detalhes-row"><span class="detalhes-label">Peso</span><span>${postagem.peso ? postagem.peso + ' kg' : 'Não informado'}</span></div>
+                <div class="detalhes-row"><span class="detalhes-label">Endereço de retirada</span><span>${postagem.enderecoRetirada || 'Não informado'}</span></div>
+                <div class="detalhes-divider"></div>
+                <div class="detalhes-row"><span class="detalhes-label">Status</span><span class="status ${postagem.status ? postagem.status.toLowerCase() : 'aberta'}">${formatarStatus(postagem.status)}</span></div>
+                <div class="detalhes-row detalhes-descricao"><span class="detalhes-label">Descrição</span><span>${postagem.descricao || 'Sem descrição disponível'}</span></div>
             </div>
         </div>
-    `, { 
+    `, {
         type: 'info',
         buttons: [
             {
-                text: 'Fechar',
-                onClick: () => console.log('Detalhes fechados')
+                text: 'Voltar',
+                className: 'ui-btn-detalhes',
+                onClick: () => {}
+            },
+            {
+                text: 'Enviar proposta de agendamento',
+                className: 'ui-btn-primary',
+                onClick: () => abrirPopupAgendamento(id)
             }
         ]
     });
 }
 
-// Atualizar interface baseada no tipo de empresa
+
 function atualizarInterface() {
     const empresaLogada = JSON.parse(localStorage.getItem('empresaLogada'));
     const nomeUsuarioElement = document.getElementById('nomeUsuario');
@@ -295,7 +300,7 @@ function atualizarInterface() {
     if (empresaLogada && nomeUsuarioElement) {
         nomeUsuarioElement.textContent = empresaLogada.nomeRazao || 'Usuário';
         
-        // Atualizar títulos conforme o tipo
+        
         if (titulo && subtitulo) {
             if (empresaLogada.tipo === 'DESCARTE') {
                 titulo.textContent = 'Empresas de Coleta Disponíveis';
@@ -308,7 +313,7 @@ function atualizarInterface() {
     }
 }
 
-// Função para toggle do menu
+
 function toggleMenu() {
     const dropdown = document.getElementById('dropdown');
     if (dropdown) {
@@ -316,7 +321,7 @@ function toggleMenu() {
     }
 }
 
-// Inicialização
+
 document.addEventListener('DOMContentLoaded', function() {
     console.log('Página de postagens inicializada');
     
@@ -326,16 +331,16 @@ document.addEventListener('DOMContentLoaded', function() {
         atualizarInterface();
         carregarPostagens();
         
-        // Adicionar evento de busca com debounce
+        
         const searchInput = document.querySelector('.search-bar input');
         if (searchInput) {
             searchInput.addEventListener('input', function(e) {
-                // Limpar timer anterior
+                
                 if (debounceTimer) {
                     clearTimeout(debounceTimer);
                 }
                 
-                // Definir novo timer para debounce (300ms)
+                
                 debounceTimer = setTimeout(() => {
                     filtrarPorBusca(e.target.value);
                 }, 300);
@@ -344,7 +349,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-// Função de busca melhorada com suporte a múltiplas palavras e scoring
+
 function filtrarPorBusca(termo) {
     if (!termo.trim()) {
         aplicarFiltro();
@@ -353,47 +358,47 @@ function filtrarPorBusca(termo) {
     
     const empresaLogada = JSON.parse(localStorage.getItem('empresaLogada'));
     
-    // Criar array de termos de busca (suportando múltiplas palavras)
+    
     const termos = termo.toLowerCase().trim().split(/\s+/).filter(t => t.length > 0);
     
-    // Função auxiliar para calcular score de relevância
+    
     function calcularScore(postagem, termos) {
         let score = 0;
         const empresa = postagem.empresa || {};
         
-        // Preparar textos para busca
+        
         const titulo = (postagem.titulo || '').toLowerCase();
         const tipoResiduo = (postagem.tipoResiduo || '').toLowerCase();
         const nomeEmpresa = (empresa.nomeRazao || empresa.nome || '').toLowerCase();
         const descricao = (postagem.descricao || '').toLowerCase();
         const endereco = (postagem.enderecoRetirada || '').toLowerCase();
         
-        // Verificar cada termo e acumular score
+        
         termos.forEach(termo => {
-            // Título: peso 4 (mais importante)
-            if (titulo.includes(termo)) score += 4;
-            if (titulo.startsWith(termo)) score += 2; // Bônus se começa com o termo
-            if (titulo === termo) score += 4; // Bônus se é exatamente igual
             
-            // Tipo de resíduo: peso 3
+            if (titulo.includes(termo)) score += 4;
+            if (titulo.startsWith(termo)) score += 2; 
+            if (titulo === termo) score += 4; 
+            
+            
             if (tipoResiduo.includes(termo)) score += 3;
             if (tipoResiduo.startsWith(termo)) score += 1;
             
-            // Nome da empresa: peso 3
+            
             if (nomeEmpresa.includes(termo)) score += 3;
             if (nomeEmpresa.startsWith(termo)) score += 1;
             
-            // Descrição: peso 2
+            
             if (descricao.includes(termo)) score += 2;
             
-            // Endereço: peso 1
+            
             if (endereco.includes(termo)) score += 1;
         });
         
         return score;
     }
     
-    // Filtrar postagens que contenham pelo menos um termo
+    
     let postagensFiltradas = todasPostagens
         .map(postagem => ({
             postagem,
@@ -403,7 +408,7 @@ function filtrarPorBusca(termo) {
         .sort((a, b) => b.score - a.score)
         .map(item => item.postagem);
     
-    // Aplicar filtro de tipo de empresa (empresas só veem o tipo oposto)
+    
     if (empresaLogada) {
         if (empresaLogada.tipo === 'DESCARTE') {
             postagensFiltradas = postagensFiltradas.filter(p => p.empresa && p.empresa.tipo === 'COLETA');
@@ -415,7 +420,7 @@ function filtrarPorBusca(termo) {
     exibirPostagens(postagensFiltradas);
 }
 
-// Função alternativa para buscar usando a API do backend (para grandes datasets)
+
 async function buscarPeloBackend(termo) {
     try {
         const response = await fetch(`http://localhost:8080/api/postagens/search?q=${encodeURIComponent(termo)}`);
@@ -423,7 +428,7 @@ async function buscarPeloBackend(termo) {
         if (response.ok) {
             let resultados = await response.json();
             
-            // Aplicar filtro de tipo de empresa
+            
             const empresaLogada = JSON.parse(localStorage.getItem('empresaLogada'));
             if (empresaLogada) {
                 if (empresaLogada.tipo === 'DESCARTE') {
@@ -444,15 +449,15 @@ async function buscarPeloBackend(termo) {
     }
 }
 
-// ============================
-// FUNÇÕES DE AGENDAMENTO (POPUP)
-// ============================
+
+
+
 
 let postagemAgendamento = null;
 
-// Abrir popup de agendamento para uma postagem específica
+
 async function abrirPopupAgendamento(postagemId) {
-    // Buscar detalhes completos da postagem
+    
     try {
         const response = await fetch(`http://localhost:8080/api/postagens/${postagemId}`);
         if (!response.ok) throw new Error('Erro ao carregar postagem');
@@ -460,7 +465,7 @@ async function abrirPopupAgendamento(postagemId) {
         const postagem = await response.json();
         postagemAgendamento = postagem;
         
-        // Preencher informações da postagem
+        
         const infoDiv = document.getElementById('postagemAgendamentoInfo');
         const empresa = postagem.empresa || {};
         
@@ -472,10 +477,10 @@ async function abrirPopupAgendamento(postagemId) {
             <p><strong>Local:</strong> ${postagem.enderecoRetirada || 'Não informado'}</p>
         `;
         
-        // Preencher seletores de dia e horário
+        
         await preencherSeletoresDiaHoraPopup(postagem);
         
-        // Mostrar popup
+        
         document.getElementById('popupAgendamento').classList.remove('hidden');
         document.getElementById('seletoresAgendamento').style.display = 'flex';
         
@@ -485,18 +490,18 @@ async function abrirPopupAgendamento(postagemId) {
     }
 }
 
-// Fechar popup de agendamento
+
 function fecharPopupAgendamento() {
     document.getElementById('popupAgendamento').classList.add('hidden');
     postagemAgendamento = null;
 }
 
-// Preencher seletores de dia e horário
+
 async function preencherSeletoresDiaHoraPopup(postagem) {
     const diaSelect = document.getElementById('diaAgendamento');
     const horarioSelect = document.getElementById('horarioAgendamento');
     
-    // Limpar opções
+    
     diaSelect.innerHTML = '<option value="">-- Selecione um dia --</option>';
     horarioSelect.innerHTML = '<option value="">-- Selecione um horário --</option>';
     
@@ -511,7 +516,7 @@ async function preencherSeletoresDiaHoraPopup(postagem) {
         'DOMINGO': 'Domingo'
     };
     
-    // Preencher dias
+    
     dias.forEach(dia => {
         const option = document.createElement('option');
         option.value = dia;
@@ -519,19 +524,19 @@ async function preencherSeletoresDiaHoraPopup(postagem) {
         diaSelect.appendChild(option);
     });
     
-    // Adicionar listener para atualizar horários quando dia mudar
+    
     diaSelect.addEventListener('change', function() {
         preencherHorariosPopup(postagem);
     });
     
-    // Preencher horários iniciais se houver dias disponíveis
+    
     if (dias.length > 0) {
         diaSelect.value = dias[0];
         await preencherHorariosPopup(postagem);
     }
 }
 
-// Preencher horários disponíveis
+
 async function preencherHorariosPopup(postagem) {
     const diaSelect = document.getElementById('diaAgendamento');
     const horarioSelect = document.getElementById('horarioAgendamento');
@@ -544,7 +549,7 @@ async function preencherHorariosPopup(postagem) {
         return;
     }
     
-    // Buscar agendamentos existentes
+    
     let agendamentosExistentes = [];
     try {
         const response = await fetch(`http://localhost:8080/api/agendamentos/postagem/${postagem.id}`);
@@ -555,13 +560,13 @@ async function preencherHorariosPopup(postagem) {
         console.error('Erro ao buscar agendamentos:', error);
     }
     
-    // Converter dia selecionado para próxima data
+    
     const proximaData = getNextDateForDayPopup(diaSelecionado, '00:00');
     if (!proximaData) return;
     
     const dataFormatada = proximaData.toISOString().slice(0, 10);
     
-    // Filtrar horários ocupados
+    
     const horariosOcupados = agendamentosExistentes
         .filter(ag => {
             const dataAgendamento = ag.dataAgendamento || (ag.dataHora ? ag.dataHora.split('T')[0] : null);
@@ -571,7 +576,7 @@ async function preencherHorariosPopup(postagem) {
         .map(ag => ag.horaAgendamento || (ag.dataHora ? ag.dataHora.split('T')[1].substring(0, 5) : null))
         .filter(hora => hora !== null);
     
-    // Gerar horários a cada 30 minutos
+    
     const inicio = postagem.horaInicio.split(':');
     const fim = postagem.horaFim.split(':');
     
@@ -602,7 +607,7 @@ async function preencherHorariosPopup(postagem) {
     }
 }
 
-// Confirmar agendamento no popup
+
 async function confirmarAgendamentoPopup() {
     const diaSelect = document.getElementById('diaAgendamento');
     const horarioSelect = document.getElementById('horarioAgendamento');
@@ -660,7 +665,7 @@ async function confirmarAgendamentoPopup() {
     }
 }
 
-// Calcular próxima data para dia da semana
+
 function getNextDateForDayPopup(dia, horario) {
     const map = {
         'SEGUNDA': 1,

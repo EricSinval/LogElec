@@ -45,7 +45,7 @@ public class Agendamento {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    // Construtores
+    
     public Agendamento() {
         this.createdAt = LocalDateTime.now();
         this.updatedAt = LocalDateTime.now();
@@ -60,7 +60,7 @@ public class Agendamento {
         this.updatedAt = LocalDateTime.now();
     }
 
-    // Getters e Setters
+    
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
@@ -99,7 +99,7 @@ public class Agendamento {
         this.updatedAt = LocalDateTime.now();
     }
 
-    // ✅ MÉTODOS DE CONVENIÊNCIA PARA O FRONTEND
+    
     public String getDataFormatada() {
         return dataHora != null ? dataHora.toLocalDate().toString() : "";
     }

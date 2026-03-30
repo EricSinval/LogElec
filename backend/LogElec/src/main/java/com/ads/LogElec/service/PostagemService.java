@@ -74,7 +74,7 @@ public class PostagemService {
         postagemRepository.deleteById(id);
     }
 
-    // Método de busca flexível por termo
+    
     public List<Postagem> buscarPorTermo(String termo) {
         if (termo == null || termo.trim().isEmpty()) {
             return postagemRepository.findAll();

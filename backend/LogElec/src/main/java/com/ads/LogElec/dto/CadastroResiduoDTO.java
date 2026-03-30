@@ -14,7 +14,7 @@ public class CadastroResiduoDTO {
     private String horaInicio;
     private String horaFim;
     
-    // Construtores
+    
     public CadastroResiduoDTO() {}
     
     public CadastroResiduoDTO(String nome, String descricao, String categoria, 
@@ -27,7 +27,7 @@ public class CadastroResiduoDTO {
         this.empresaId = empresaId;
     }
     
-    // Getters e Setters
+    
     public String getNome() { return nome; }
     public void setNome(String nome) { this.nome = nome; }
     

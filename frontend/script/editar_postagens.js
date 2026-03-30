@@ -108,17 +108,17 @@ function selecionarPostagem(index) {
     
     postagemSelecionada = postagens[index];
     
-    // Atualizar UI
+    
     document.querySelectorAll('.item-postagem').forEach((item, i) => {
         item.classList.toggle('ativo', i === index);
     });
 
-    // Exibir formulário
+    
     document.getElementById('mensagemEscolher').style.display = 'none';
     const formulario = document.getElementById('formEdicaoPostagem');
     formulario.style.display = 'flex';
 
-    // Popular formulário
+    
     preencherFormulario(postagemSelecionada);
 }
 
@@ -134,7 +134,7 @@ function preencherFormulario(postagem) {
     document.getElementById('horaFim').value = postagem.horaFim || '';
     document.getElementById('status').value = postagem.status || 'ABERTA';
 
-    // Preencher dias
+    
     document.querySelectorAll('input[name="dia"]').forEach(checkbox => {
         checkbox.checked = false;
     });
@@ -148,7 +148,7 @@ function preencherFormulario(postagem) {
         });
     }
 
-    // Exibir foto se existir
+    
     const fotoAtual = postagem.fotoResiduos || postagem.fotoEmpresa;
     if (fotoAtual) {
         document.getElementById('imagePreviewContainer').style.display = 'block';
@@ -157,7 +157,7 @@ function preencherFormulario(postagem) {
         document.getElementById('imagePreviewContainer').style.display = 'none';
     }
 
-    // Limpar input de arquivo
+    
     document.getElementById('foto').value = '';
 }
 
@@ -235,7 +235,7 @@ document.getElementById('formEdicaoPostagem').addEventListener('submit', async f
             const postagemAtualizada = await response.json();
             console.log('Postagem atualizada:', postagemAtualizada);
             
-            // Atualizar na lista local
+            
             const index = postagens.findIndex(p => p.id === postagemSelecionada.id);
             if (index !== -1) {
                 postagens[index] = postagemAtualizada;

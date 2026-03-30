@@ -1,6 +1,6 @@
-/* ============================
-   RESET GLOBAL
-============================ */
+
+
+
 * {
   margin: 0;
   padding: 0;
@@ -13,9 +13,9 @@ body {
   min-height: 100vh;
 }
 
-/* ============================
-   CABEÇALHO
-============================ */
+
+
+
 .topbar {
   display: flex;
   align-items: center;
@@ -27,7 +27,7 @@ body {
   position: relative;
 }
 
-/* Logo */
+
 .logo {
   display: flex;
   align-items: center;
@@ -47,7 +47,7 @@ body {
   color: #F3F4F6;
 }
 
-/* Barra de busca */
+
 .search-bar {
   display: flex;
   align-items: center;
@@ -82,7 +82,7 @@ body {
   color: #D1D5DB;
 }
 
-/* Ícones do cabeçalho */
+
 .header-icons {
 display: flex;
  align-items: center;
@@ -98,13 +98,13 @@ position: relative;
 }
 
 .header-icons img {
- width: auto; /* Aumentado para 35px */
-height: 100px; /* Aumentado para 35px, mantendo proporção */
-object-fit: contain; /* Garante que a imagem não seja cortada e mantenha suas proporções */
+ width: auto; 
+height: 100px; 
+object-fit: contain; 
  cursor: pointer;
 }
 
-/* Dropdown */
+
 .dropdown {
   display: none;
   flex-direction: column;
@@ -136,9 +136,9 @@ object-fit: contain; /* Garante que a imagem não seja cortada e mantenha suas p
   border-bottom: none;
 }
 
-/* ============================
-   CONTEÚDO PRINCIPAL
-============================ */
+
+
+
 .content {
   margin: 0 auto;
   padding: 40px;
@@ -158,7 +158,7 @@ h1 {
   color: #444;
 }
 
-/* Cards */
+
 .cards {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -211,9 +211,9 @@ h1 {
 }
 
 
-/* ============================
-   RODAPÉ
-============================ */
+
+
+
 .footer {
   background: linear-gradient(135deg, #0F726C, #0c5e59);
   color: white;
@@ -249,7 +249,7 @@ h1 {
   text-decoration: underline;
 }
 
-/* Idioma */
+
 .footer-section select {
   padding: 8px 12px;
   border: none;
@@ -259,7 +259,7 @@ h1 {
   cursor: pointer;
 }
 
-/* Formulário */
+
 .contact-form {
   display: flex;
   gap: 5px;
@@ -287,7 +287,7 @@ h1 {
   background: rgba(0, 0, 0, 0.6);
 }
 
-/* Redes sociais */
+
 .social-icons {
   display: flex;
   gap: 15px;
@@ -312,9 +312,9 @@ h1 {
   border: 0.5px solid rgba(255, 255, 255, 0.4);
 }
 
-/* ============================
-   RESPONSIVIDADE
-============================ */
+
+
+
 @media (max-width: 992px) {
   .cards {
     grid-template-columns: repeat(2, 1fr);
@@ -369,9 +369,9 @@ h1 {
     border-radius: 5px;
   }
 }
-/* ============================
-   FILTROS
-============================ */
+
+
+
 .filtros {
     display: flex;
     justify-content: center;
@@ -401,9 +401,9 @@ h1 {
     color: white;
 }
 
-/* ============================
-   CARDS DINÂMICOS
-============================ */
+
+
+
 .card {
     width: 325px;
   height: 560px;
@@ -520,12 +520,14 @@ h1 {
 
 .btn-detalhes, .btn-agendar {
     flex: 1;
-    padding: 8px 12px;
+  padding: 12px 16px;
     border: none;
     border-radius: 8px;
     cursor: pointer;
     font-family: 'Roboto', sans-serif;
-    font-size: 0.9rem;
+  font-size: 1rem;
+  font-weight: 600;
+  min-height: 44px;
     transition: background 0.3s ease;
 }
 
@@ -547,9 +549,9 @@ h1 {
   background: #0c5e59;
 }
 
-/* ============================
-   MENSAGEM SEM POSTAGENS
-============================ */
+
+
+
 .sem-postagens {
     grid-column: 1 / -1;
     text-align: center;
@@ -576,22 +578,78 @@ h1 {
   background: #0c5e59;
 }
 
-/* ============================
-   DETALHES DA POSTAGEM NO POPUP
-============================ */
+
+
+
+.detalhes-postagem {
+    max-width: 480px;
+    text-align: left;
+}
+
 .detalhes-postagem h3 {
-  color: #0F726C;
-    margin-bottom: 15px;
+    color: #0F726C;
+    margin-bottom: 16px;
+    text-align: center;
+    border-bottom: 2px solid #0F726C;
+    padding-bottom: 10px;
+    font-size: 1.1rem;
 }
 
-.detalhes-postagem p {
-    margin: 8px 0;
-    line-height: 1.4;
+.detalhes-card {
+  background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    padding: 4px 0;
+    overflow: hidden;
 }
 
-/* ============================
-   RESPONSIVIDADE
-============================ */
+.detalhes-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 10px 16px;
+}
+
+.detalhes-row:not(:last-child) {
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.detalhes-row.detalhes-descricao {
+    align-items: flex-start;
+}
+
+.detalhes-row.detalhes-descricao span:last-child {
+    text-align: right;
+    white-space: normal;
+    word-break: break-word;
+}
+
+.detalhes-label {
+    font-weight: 600;
+  color: #1f2937;
+    white-space: nowrap;
+    flex-shrink: 0;
+    font-size: 0.88rem;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+
+.detalhes-card span:not(.detalhes-label):not(.status) {
+  color: #111827;
+    font-size: 0.92rem;
+    text-align: right;
+}
+
+.detalhes-divider {
+    height: 1px;
+    background: #d1fae5;
+    margin: 2px 0;
+}
+
+
+
+
 @media (max-width: 992px) {
     .cards {
         grid-template-columns: repeat(2, 1fr);
@@ -617,51 +675,9 @@ h1 {
     }
 }
 
-/* ============================
-   DETALHES DA POSTAGEM NO POPUP
-============================ */
-.detalhes-postagem {
-    max-width: 500px;
-    text-align: left;
-}
 
-.detalhes-postagem h3 {
-  color: #0F726C;
-    margin-bottom: 20px;
-    text-align: center;
-    border-bottom: 2px solid #0F726C;
-    padding-bottom: 10px;
-}
 
-.detalhes-section {
-    margin-bottom: 20px;
-    padding: 15px;
-    background: #f8f9fa;
-    border-radius: 8px;
-    border-left: 4px solid #0F726C;
-}
 
-.detalhes-section h4 {
-    color: #0F726C;
-    margin-bottom: 10px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.detalhes-section p {
-    margin: 8px 0;
-    line-height: 1.4;
-    color: #555;
-}
-
-.detalhes-section strong {
-    color: #333;
-}
-
-/* ============================
-   MELHORIAS NOS CARDS
-============================ */
 .card-content p {
     margin: 8px 0;
 }
@@ -672,9 +688,9 @@ h1 {
     margin-bottom: 12px;
 }
 
-/* ============================
-   RESPONSIVIDADE MELHORADA
-============================ */
+
+
+
 @media (max-width: 1100px) {
     .cards {
         grid-template-columns: repeat(2, 1fr);
@@ -743,9 +759,9 @@ h1 {
     }
 }
 
-/* ============================
-   POPUP DE AGENDAMENTO
-============================ */
+
+
+
 .popup-agendamento {
   position: fixed;
   top: 0;
@@ -918,7 +934,7 @@ h1 {
   background: #d1d5db;
 }
 
-/* Responsivo para popup */
+
 @media (max-width: 768px) {
   .popup-agendamento-content {
     padding: 24px;

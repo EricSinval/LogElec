@@ -102,7 +102,7 @@ function closePopup(overlay) {
   setTimeout(() => { if (overlay.parentNode) overlay.parentNode.removeChild(overlay); }, 200);
 }
 
-// Exposed function
+
 function showPopup(message, options = {}) {
   ensurePopupRoot();
   const root = document.getElementById('ui-popup-root');
@@ -130,6 +130,6 @@ function showPopup(message, options = {}) {
   }
 }
 
-// Make available in global scope
+
 window.showPopup = showPopup;
 window.closePopup = closePopup;

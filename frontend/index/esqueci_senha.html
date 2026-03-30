@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>LogElec - Recuperar Senha</title>
+  <link rel="stylesheet" href="../style_css/style_login.css">
+  <link rel="stylesheet" href="../style_css/styles_popup.css">
+  <style>
+    .form-hint {
+      font-size: 13px;
+      color: #666;
+      margin-bottom: 18px;
+      line-height: 1.5;
+    }
+    .forgot-link {
+      display: block;
+      text-align: center;
+      margin-top: 14px;
+      font-size: 14px;
+      color: #0F726C;
+      text-decoration: none;
+    }
+    .forgot-link:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h2>Recuperar<br>senha</h2>
+    <p class="login-link">
+      Lembrou a senha? <a href="login.html">Faça login</a>
+    </p>
+
+    <p class="form-hint">
+      Informe o e-mail e o CNPJ cadastrados para redefinir sua senha.
+    </p>
+
+    <form id="recuperarForm">
+      <label for="email">E-mail</label>
+      <input type="email" id="email" name="email" placeholder="Insira seu e-mail" required>
+
+      <label for="cnpj">CNPJ</label>
+      <input type="text" id="cnpj" name="cnpj" placeholder="00.000.000/0000-00" maxlength="18" required>
+
+      <label for="novaSenha">Nova Senha</label>
+      <input type="password" id="novaSenha" name="novaSenha" placeholder="Mínimo 6 caracteres" required>
+
+      <label for="confirmarSenha">Confirmar Nova Senha</label>
+      <input type="password" id="confirmarSenha" name="confirmarSenha" placeholder="Repita a nova senha" required>
+
+      <button type="submit">Redefinir Senha</button>
+    </form>
+
+    <a href="login.html" class="forgot-link">← Voltar ao login</a>
+  </div>
+
+  <script src="../script/popup.js"></script>
+  <script src="../script/recuperar_senha.js"></script>
+</body>
+</html>

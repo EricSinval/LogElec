@@ -1,4 +1,4 @@
-// CadastroPostagens.js - Gerenciamento do cadastro de postagens
+
 console.log('CadastroPostagens.js carregado!');
 
 async function cadastrarPostagem(event) {
@@ -27,24 +27,24 @@ async function cadastrarPostagem(event) {
         return;
     }
 
-    // Nome da empresa sempre do localStorage
+    
     const nomeEmpresa = empresaLogada.nomeRazao || empresaLogada.nome;
     document.getElementById('nomeEmpresa').value = nomeEmpresa;
 
-    // Coletar dias selecionados
+    
     const diasCheckboxes = document.querySelectorAll('input[name="dia"]:checked');
     const diasSelecionados = Array.from(diasCheckboxes).map(cb => cb.value);
     const horaInicio = document.getElementById('horaInicio').value;
     const horaFim = document.getElementById('horaFim').value;
 
-    // Converter imagem para Base64
+    
     let fotoBase64 = null;
     const fotoInput = document.getElementById('foto');
     if (fotoInput.files && fotoInput.files[0]) {
         fotoBase64 = await converterImagemBase64(fotoInput.files[0]);
     }
 
-    // Montar payload de forma condicional por tipo de empresa
+    
     const isColeta = empresaLogada.tipo === 'COLETA';
     const postagemData = {
         titulo: nomeEmpresa,
@@ -58,10 +58,10 @@ async function cadastrarPostagem(event) {
     };
 
     if (isColeta) {
-        // COLETA: enviar fotoEmpresa; não enviar endereço de retirada
+        
         if (fotoBase64) postagemData.fotoEmpresa = fotoBase64;
     } else {
-        // DESCARTE: enviar endereçoRetirada e fotoResiduos
+        
         postagemData.enderecoRetirada = document.getElementById('enderecoRetirada').value;
         if (fotoBase64) postagemData.fotoResiduos = fotoBase64;
     }
@@ -102,7 +102,7 @@ async function cadastrarPostagem(event) {
     }
 }
 
-// Atualizar interface baseada no tipo de empresa
+
 function atualizarInterface() {
     const empresaLogada = JSON.parse(localStorage.getItem('empresaLogada'));
     const userInfoElement = document.getElementById('userInfo');
@@ -114,7 +114,7 @@ function atualizarInterface() {
             <span class="tipo-empresa">(${empresaLogada.tipo === 'DESCARTE' ? 'Descarte' : 'Coleta'})</span>
         `;
         
-        // Atualizar subtítulo conforme o tipo
+        
         if (subtitulo) {
             if (empresaLogada.tipo === 'DESCARTE') {
                 subtitulo.textContent = 'Cadastre seus resíduos para que empresas de coleta possam encontrá-los';
@@ -123,7 +123,7 @@ function atualizarInterface() {
             }
         }
 
-            // Atualizar link do dropdown para mostrar o tipo de postagens relevantes
+            
             const linkPostagens = document.getElementById('linkPostagensTipo');
             if (linkPostagens) {
                 linkPostagens.textContent = 'Postagens';
@@ -131,7 +131,7 @@ function atualizarInterface() {
             }
     }
     
-    // Ajustar campos exibidos e textos conforme tipo
+    
     configurarCamposPorTipo(empresaLogada.tipo);
 }
 
@@ -140,7 +140,7 @@ function sair() {
     window.location.href = 'login.html';
 }
 
-// Converter imagem para Base64
+
 function converterImagemBase64(arquivo) {
     return new Promise((resolve, reject) => {
         const reader = new FileReader();
@@ -153,7 +153,7 @@ function converterImagemBase64(arquivo) {
     });
 }
 
-// Inicialização
+
 document.addEventListener('DOMContentLoaded', function() {
     console.log('Página de cadastro de postagens inicializada');
     
@@ -163,7 +163,7 @@ document.addEventListener('DOMContentLoaded', function() {
         return;
     }
     atualizarInterface();
-    // Preencher campo nomeEmpresa
+    
     const nomeEmpresa = empresaLogada.nomeRazao || empresaLogada.nome;
     const nomeEmpresaInput = document.getElementById('nomeEmpresa');
     if (nomeEmpresaInput) nomeEmpresaInput.value = nomeEmpresa;
@@ -174,15 +174,15 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log('Event listener adicionado ao formulário de postagem');
     }
     
-    // Configurar preview de imagem
+    
     setupImagePreview();
 });
 
-// Exibir/ocultar campos e ajustar labels conforme tipo de empresa
+
 function configurarCamposPorTipo(tipo) {
     const isColeta = tipo === 'COLETA';
 
-    // Seletores de labels
+    
     const labelTipoResiduo = document.querySelector('label[for="tipoResiduo"]');
     const labelPeso = document.querySelector('label[for="peso"]');
     const labelFoto = document.querySelector('label[for="foto"]');
@@ -190,7 +190,7 @@ function configurarCamposPorTipo(tipo) {
 
     const inputEndereco = document.getElementById('enderecoRetirada');
 
-    // Ajuste de textos
+    
     if (labelTipoResiduo) {
         labelTipoResiduo.textContent = isColeta ? 'Tipos de resíduos que coletamos' : 'Tipos de resíduos que está descartando';
     }
@@ -202,24 +202,24 @@ function configurarCamposPorTipo(tipo) {
     }
     if (labelEndereco && inputEndereco) {
         if (isColeta) {
-            // COLETA: esconder endereço e remover required
+            
             labelEndereco.style.display = 'none';
             inputEndereco.style.display = 'none';
             inputEndereco.required = false;
             inputEndereco.value = '';
         } else {
-            // DESCARTE: mostrar endereço e exigir preenchimento
+            
             labelEndereco.style.display = '';
             inputEndereco.style.display = '';
             inputEndereco.required = true;
         }
     }
     
-    // Configurar micro-dicas contextuais
+    
     configurarMicroDicas(isColeta);
 }
 
-// Configurar micro-dicas (hints) baseadas no tipo de empresa
+
 function configurarMicroDicas(isColeta) {
     const hintDescricao = document.getElementById('hintDescricao');
     const hintTipoResiduo = document.getElementById('hintTipoResiduo');
@@ -248,7 +248,7 @@ function configurarMicroDicas(isColeta) {
     }
 }
 
-// Preview de imagem ao selecionar arquivo
+
 function setupImagePreview() {
     const fotoInput = document.getElementById('foto');
     const previewContainer = document.getElementById('imagePreviewContainer');

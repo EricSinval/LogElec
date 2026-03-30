@@ -10,7 +10,7 @@
   <script defer src="../script/cabecalho.js"></script>
 </head>
 <body>
-  <!-- HEADER -->
+  
   <header class="topbar">
     <a href="postagens.html" class="logo">
       <img src="../img/Logo.png" alt="Logo LogElec" />
@@ -20,33 +20,60 @@
       <span class="icon menu-icon" onclick="toggleMenu()">☰</span>
       <img src="../img/Icon_User.png" alt="icon user-icon" onclick="window.location.href='perfil.html'" style="cursor:pointer;">
       <div class="dropdown" id="dropdown">
-        <a href="#">Agendamentos de Coleta</a>
+        <a href="agendamento.html">Agendamentos</a>
         <a id="linkPostagensTipo" href="postagens.html">Postagens</a>
         <a href="cadastro_postagens.html">Cadastro de postagens</a>
-        <a href="mensagens.html">Mensagens</a>
+        <a id="linkMensagens" href="mensagens.html">Mensagens</a>
         <a href="perfil.html">Meu Perfil</a>
         <a href="#" onclick="sair()">Sair</a>
       </div>
     </div>
   </header>
 
-  <!-- MAIN CONTENT -->
+  
   <div class="agendamento-wrapper">
-    <!-- LATERAL ESQUERDA - CLIENTES -->
-    <aside class="sidebar">
-      <h2>Clientes</h2>
-      <div id="listaPostagens" class="lista-postagens">
-        <!-- Postagens ativas serão carregadas aqui -->
-      </div>
+    <aside class="painel-agendamentos">
+      <h2>Agendamentos</h2>
+
+      <section class="bloco-agendamento">
+        <div class="bloco-titulo">
+          <h3>Aguardando confirmação</h3>
+          <span id="countAguardando" class="count">0</span>
+        </div>
+        <div id="listaAguardando" class="lista-agendamentos"></div>
+      </section>
+
+      <section class="bloco-agendamento">
+        <div class="bloco-titulo">
+          <h3>Propostas enviadas</h3>
+          <span id="countPropostas" class="count">0</span>
+        </div>
+        <div id="listaPropostas" class="lista-agendamentos"></div>
+      </section>
+
+      <section class="bloco-agendamento">
+        <div class="bloco-titulo">
+          <h3>Agendamento em andamento</h3>
+          <span id="countAndamento" class="count">0</span>
+        </div>
+        <div id="listaAndamento" class="lista-agendamentos"></div>
+      </section>
+
+      <section class="bloco-agendamento">
+        <div class="bloco-titulo">
+          <h3>Histórico de coletas</h3>
+          <span id="countHistorico" class="count">0</span>
+        </div>
+        <div id="listaHistorico" class="lista-agendamentos"></div>
+      </section>
     </aside>
 
-    <!-- CONTEÚDO PRINCIPAL - SELETOR DE AGENDAMENTO -->
     <main class="agendamento-content">
       <h1>Verificar Disponibilidade</h1>
-      <p class="subtitle">Selecione um cliente e um horário para agendar</p>
+      <p class="subtitle">Envie propostas a partir da tela de postagens e acompanhe os detalhes aqui.</p>
 
       <div id="postagemSelecionada" class="postagem-selecionada">
-        <p style="text-align: center; color: #999;">Clique em uma postagem para verificar disponibilidade</p>
+        <p style="text-align: center; color: #999;">Selecione uma postagem na tela de postagens para enviar proposta de agendamento</p>
       </div>
 
       <div id="seletoresContainer" class="seletores-container" style="display: none;">
@@ -60,9 +87,17 @@
           <option value="">-- Selecione um horário --</option>
         </select>
 
-        <button onclick="confirmarAgendamento()" class="btn-confirmar">Confirmar Agendamento</button>
+        <button onclick="confirmarAgendamento()" class="btn-confirmar">Enviar proposta de agendamento</button>
         <button onclick="cancelarAgendamento()" class="btn-cancelar">Cancelar</button>
       </div>
+
+      <section class="detalhes-painel centralizado">
+        <h3>Detalhes do agendamento</h3>
+        <div id="detalhesAgendamento" class="detalhes-box">
+          <p>Selecione um agendamento para ver os detalhes e ações.</p>
+        </div>
+        <div id="acoesAgendamento" class="acoes-agendamento"></div>
+      </section>
     </main>
   </div>
 

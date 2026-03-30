@@ -22,7 +22,7 @@ public class PostagemController {
     @GetMapping
     public List<Postagem> getAllPostagens() {
         List<Postagem> lista = postagemService.findAll();
-        // debug: log scheduling fields for each postagem
+        
         lista.forEach(p -> System.out.println("[DEBUG] getAllPostagens - id=" + p.getId()
                 + ", diasDisponibilidade=" + p.getDiasDisponibilidade()
                 + ", horaInicio=" + p.getHoraInicio()
@@ -30,7 +30,7 @@ public class PostagemController {
         return lista;
     }
 
-    // Endpoint de busca flexível
+    
     @GetMapping("/search")
     public List<Postagem> buscarPostagens(@RequestParam(name = "q", required = false) String termo) {
         if (termo == null || termo.trim().isEmpty()) {

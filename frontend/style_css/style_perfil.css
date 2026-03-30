@@ -119,7 +119,7 @@ form {
   gap: 16px 20px; 
 }
 
-/* Section headings */
+
 .section-heading {
   grid-column: 1 / -1;
   font-size: 15px;
@@ -131,7 +131,7 @@ form {
   border-bottom: 1px solid var(--border);
 }
 
-/* Full-width elements */
+
 #endereco, #passwordSection, .hint, .button-group {
   grid-column: 1 / -1;
 }
@@ -179,7 +179,7 @@ textarea:not(:disabled):focus {
   line-height: 1.4;
 }
 
-/* Labels = Títulos dos campos (em negrito e maiores) */
+
 form label { 
   font-size: 15px; 
   font-weight: 600; 
@@ -211,7 +211,7 @@ input:not(:disabled):focus {
   box-shadow: 0 0 0 4px var(--ring);
 }
 
-/* Button group */
+
 .button-group {
   display: flex;
   gap: 12px;
@@ -238,6 +238,22 @@ button {
 .btn-primary:hover { 
   background: var(--primary-600); 
   box-shadow: 0 8px 18px rgba(15,114,108,0.35); 
+}
+
+.btn-danger {
+  background: transparent;
+  color: #dc2626;
+  border: 1px solid #dc2626;
+  transition: background 0.2s, color 0.2s;
+}
+.btn-danger:hover {
+  background: #dc2626;
+  color: #fff;
+}
+.danger-zone {
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
 }
 
 .btn-secondary {
@@ -276,7 +292,7 @@ button:active {
   max-width: 400px;
 }
 
-/* Responsive */
+
 @media (max-width: 640px) {
   form, #passwordSection {
     grid-template-columns: 1fr;

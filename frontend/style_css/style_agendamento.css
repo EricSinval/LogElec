@@ -1,6 +1,6 @@
-/* ============================
-   RESET GLOBAL
-============================ */
+
+
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -13,9 +13,9 @@ body {
   min-height: 100vh;
 }
 
-/* ============================
-   CABEÇALHO
-============================ */
+
+
+
 .topbar {
   display: flex;
   align-items: center;
@@ -67,7 +67,7 @@ body {
   cursor: pointer;
 }
 
-/* Dropdown */
+
 .dropdown {
   display: none;
   flex-direction: column;
@@ -99,90 +99,38 @@ body {
   background: rgba(0, 0, 0, 0.2);
 }
 
-/* ============================
-   LAYOUT PRINCIPAL
-============================ */
+
+
+
 .agendamento-wrapper {
   display: flex;
   min-height: calc(100vh - 93px);
   background-color: #f8f1de;
+  align-items: stretch;
 }
 
-/* SIDEBAR - LATERAL ESQUERDA */
-.sidebar {
-  width: 320px;
-  background: #fff;
-  border-right: 1px solid #ddd;
-  padding: 20px;
-  overflow-y: auto;
-  box-shadow: 2px 0 6px rgba(0, 0, 0, 0.1);
-}
 
-.sidebar h2 {
-  font-size: 1.3rem;
-  color: #333;
-  margin-bottom: 20px;
-  text-align: center;
-  border-bottom: 2px solid #0F726C;
-  padding-bottom: 10px;
-}
-
-.lista-postagens {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-
-.postagem-card {
-  background: #f9f9f9;
-  border: 2px solid #e0e0e0;
-  border-radius: 10px;
-  padding: 15px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.postagem-card:hover {
-  border-color: #0F726C;
-  background: #f0f8f7;
-  box-shadow: 0 4px 8px rgba(15, 114, 108, 0.2);
-}
-
-.postagem-card.ativo {
-  border-color: #0F726C;
-  background: #e8f5f4;
-}
-
-.postagem-card h4 {
-  color: #333;
-  font-size: 0.95rem;
-  margin-bottom: 8px;
-}
-
-.postagem-card p {
-  color: #666;
-  font-size: 0.85rem;
-  margin: 4px 0;
-}
-
-/* CONTEÚDO PRINCIPAL */
 .agendamento-content {
   flex: 1;
-  padding: 40px;
-  max-width: 900px;
+  padding: 40px 48px;
+  max-width: 920px;
   margin: 0 auto;
+  display: flex;
+  flex-direction: column;
 }
 
 .agendamento-content h1 {
   font-size: 2rem;
   color: #333;
   margin-bottom: 10px;
+  text-align: center;
 }
 
 .subtitle {
   font-size: 1rem;
   color: #666;
   margin-bottom: 30px;
+  text-align: center;
 }
 
 .postagem-selecionada {
@@ -195,6 +143,10 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 100%;
+  max-width: 720px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .postagem-selecionada.ativo {
@@ -213,13 +165,16 @@ body {
   margin: 5px 0;
 }
 
-/* SELETORES */
+
 .seletores-container {
   background: #fff;
   border: 1px solid #ddd;
   border-radius: 10px;
   padding: 30px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 720px;
+  margin: 0 auto;
 }
 
 .seletores-container label {
@@ -252,10 +207,10 @@ body {
   box-shadow: 0 0 0 3px rgba(15, 114, 108, 0.1);
 }
 
-/* BOTÕES */
+
 .btn-confirmar,
 .btn-cancelar {
-  width: 48%;
+  width: calc(50% - 6px);
   padding: 12px 24px;
   border: none;
   border-radius: 6px;
@@ -264,12 +219,15 @@ body {
   font-weight: 600;
   transition: background 0.3s ease;
   margin-top: 20px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .btn-confirmar {
   background: #0F726C;
   color: white;
-  float: left;
+  margin-right: 12px;
 }
 
 .btn-confirmar:hover {
@@ -279,28 +237,246 @@ body {
 .btn-cancelar {
   background: #e5e7eb;
   color: #374151;
-  float: right;
 }
 
 .btn-cancelar:hover {
   background: #d1d5db;
 }
 
-/* RESPONSIVE */
+.painel-agendamentos {
+  width: 380px;
+  border-right: 1px solid #d9e2dd;
+  background: #ffffff;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.painel-agendamentos h2 {
+  font-size: 1.35rem;
+  color: #1f2937;
+  margin-bottom: 16px;
+  border-bottom: 2px solid #0F726C;
+  padding-bottom: 10px;
+}
+
+.bloco-agendamento {
+  background: #f9fbfa;
+  border: 1px solid #e5ece8;
+  border-radius: 10px;
+  padding: 12px;
+  margin-bottom: 12px;
+}
+
+.bloco-titulo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.bloco-titulo h3 {
+  font-size: 0.95rem;
+  color: #0f172a;
+}
+
+.count {
+  background: #0F726C;
+  color: white;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  min-width: 24px;
+  height: 24px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 8px;
+}
+
+.lista-agendamentos {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 150px;
+  overflow-y: auto;
+}
+
+.agendamento-item {
+  border: 1px solid #dbe5df;
+  background: #fff;
+  border-radius: 8px;
+  padding: 10px;
+  cursor: pointer;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.agendamento-item:hover,
+.agendamento-item.ativo {
+  border-color: #0F726C;
+  box-shadow: 0 2px 8px rgba(15, 114, 108, 0.12);
+}
+
+.agendamento-item strong {
+  display: block;
+  color: #111827;
+  font-size: 0.9rem;
+}
+
+.agendamento-item span {
+  display: block;
+  margin-top: 2px;
+  color: #4b5563;
+  font-size: 0.82rem;
+}
+
+.detalhes-painel {
+  margin-top: 14px;
+  border: 1px solid #d4e1db;
+  border-radius: 12px;
+  background: #ecf8f4;
+  padding: 14px;
+}
+
+.detalhes-painel.centralizado {
+  margin-top: 28px;
+  width: 100%;
+  max-width: 720px;
+  margin-left: auto;
+  margin-right: auto;
+  background: #f4faf7;
+  border-color: #d9e9e2;
+}
+
+.detalhes-painel h3 {
+  color: #0b4b46;
+  font-size: 1rem;
+  margin-bottom: 10px;
+}
+
+.detalhes-box {
+  border-radius: 10px;
+  background: #ffffff;
+  border: 1px solid #cfe5dc;
+  padding: 16px;
+  min-height: 150px;
+}
+
+.detalhes-box p {
+  color: #374151;
+  margin: 6px 0;
+  font-size: 0.9rem;
+}
+
+.detalhes-box strong {
+  color: #111827;
+}
+
+.status-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 8px;
+  border-radius: 999px;
+  font-size: 0.76rem;
+  font-weight: 700;
+}
+
+.status-chip.pendente {
+  background: #fff4ce;
+  color: #8a6700;
+}
+
+.status-chip.aceito {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.status-chip.recusado {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.status-chip.concluido {
+  background: #e5e7eb;
+  color: #111827;
+}
+
+.acoes-agendamento {
+  margin-top: 14px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.acoes-agendamento button {
+  border: none;
+  border-radius: 8px;
+  padding: 11px 12px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  width: 100%;
+}
+
+.acao-primaria {
+  background: #0F726C;
+  color: #fff;
+}
+
+.acao-primaria:hover {
+  background: #0c5e59;
+}
+
+.acao-secundaria {
+  background: #e5e7eb;
+  color: #1f2937;
+}
+
+.acao-secundaria:hover {
+  background: #d1d5db;
+}
+
+.acao-perigo {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.acao-perigo:hover {
+  background: #fecaca;
+}
+
+.vazio-lista {
+  color: #6b7280;
+  font-size: 0.82rem;
+  padding: 6px 2px;
+}
+
+#linkMensagens.disabled-link {
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+
 @media (max-width: 768px) {
   .agendamento-wrapper {
     flex-direction: column;
   }
 
-  .sidebar {
+  .agendamento-content {
+    padding: 20px;
+    max-width: 100%;
+  }
+
+  .postagem-selecionada,
+  .seletores-container,
+  .detalhes-painel.centralizado {
+    max-width: 100%;
+  }
+
+  .painel-agendamentos {
     width: 100%;
     border-right: none;
     border-bottom: 1px solid #ddd;
-    max-height: 300px;
-  }
-
-  .agendamento-content {
-    padding: 20px;
   }
 
   .agendamento-content h1 {
@@ -310,7 +486,11 @@ body {
   .btn-confirmar,
   .btn-cancelar {
     width: 100%;
-    float: none;
+    margin-right: 0;
     margin: 10px 0;
+  }
+
+  .acoes-agendamento {
+    grid-template-columns: 1fr;
   }
 }

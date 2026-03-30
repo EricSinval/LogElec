@@ -13,7 +13,7 @@ body {
   padding: 0;
 }
 
-/* ------------------- Header Responsivo Corrigido --------------------------------- */
+
 .topbar {
   display: flex;
   align-items: center;
@@ -52,7 +52,7 @@ body {
   text-shadow: 1px 1px 2px rgba(0,0,0,0.5); 
 }
 
-/* Search bar - Busca */
+
 .search-bar {
   display: flex;
   align-items: center;
@@ -127,7 +127,7 @@ body {
   background: rgba(255, 255, 255, 0.2);
 }
 
-/* Dropdown */
+
 .dropdown {
   display: none;
   flex-direction: column;
@@ -158,14 +158,14 @@ body {
   background: rgba(255, 255, 255, 0.1);
 }
 
-/* Dropdown visível quando ativo */
+
 .dropdown.active {
   display: flex;
 }
 
-/* ------------------- Fim Header --------------------------------- */
 
-/* ------------------- Body Home_Page ----------------------------- */
+
+
 .main-container {
   display: flex;
   flex-direction: column;
@@ -240,7 +240,7 @@ body {
   object-fit: contain;
 }
 
-/* Seção principal */
+
 .escolha-empresa {
   background-color: #1F8D7C8A;
   text-align: center;
@@ -299,9 +299,9 @@ body {
   background: #0a5853;
 }
 
-/* ------------------- RESPONSIVIDADE  ------------------- */
 
-/* Tablet (768px - 1024px) */
+
+
 @media (max-width: 1024px) {
   .hero {
     gap: 30px;
@@ -317,10 +317,10 @@ body {
   }
 }
 
-/* Mobile Large (601px - 768px) */
+
 @media (max-width: 768px) {
   .main-container {
-    justify-content: flex-start; /* Alinha ao topo em mobile */
+    justify-content: flex-start; 
   }
   
   .hero {
@@ -333,7 +333,7 @@ body {
   
   .hero-content {
     text-align: center;
-    align-items: center; /* Centraliza conteúdo no mobile */
+    align-items: center; 
   }
   
   .hero-content h1 {
@@ -342,7 +342,7 @@ body {
   
   .hero-content p {
     font-size: 1rem;
-    max-width: 100%; /* Largura total em mobile */
+    max-width: 100%; 
   }
   
   .hero-image {
@@ -363,7 +363,7 @@ body {
   }
 }
 
-/* Mobile Small (até 600px) */
+
 @media (max-width: 600px) {
   .hero {
     padding: 20px 15px;
@@ -434,15 +434,15 @@ body {
   background: #0a5853;
 }
 
-/* ------------------- RESPONSIVIDADE HEADER ------------------- */
 
-/* Tablet (768px - 1024px) */
+
+
 @media (max-width: 1024px) {
   .topbar {
     padding: 0 15px;
     height: auto;
     min-height: 80px;
-    /* Gradiente mais equilibrado para tablets */
+    
     background: linear-gradient(90deg, #0F726C 20%, #0c5e59 35%);
   }
   
@@ -469,11 +469,11 @@ body {
   }
 }
 
-/* Mobile Large (601px - 768px) */
+
 @media (max-width: 768px) {
   .topbar {
     padding: 10px 15px;
-    /* Gradiente com mais área verde clara em mobile */
+    
     background: linear-gradient(90deg, #0F726C 25%, #0c5e59 45%);
   }
   
@@ -535,11 +535,11 @@ body {
   }
 }
 
-/* Mobile Small (480px - 600px) */
+
 @media (max-width: 600px) {
   .topbar {
     padding: 8px 10px;
-    /* Gradiente mais claro em telas muito pequenas */
+    
     background: linear-gradient(90deg, #0F726C 30%, #0c5e59 60%);
   }
   
@@ -597,11 +597,11 @@ body {
   }
 }
 
-/* Mobile Extra Small (até 480px) */
+
 @media (max-width: 480px) {
   .topbar {
     padding: 5px 8px;
-    /* Gradiente ainda mais claro para telas mínimas */
+    
     background: linear-gradient(90deg, #0F726C 35%, #0c5e59 70%);
   }
   
@@ -647,9 +647,9 @@ body {
 }
 
 
-/*------------------- Fim Body Home_Page ------------------------------------------------ */
 
-/*------------------- Estilos gerais do rodapé -------------------------------------------*/
+
+
 footer {
   background-color: #0F726C;
   color: #fff;
@@ -671,13 +671,13 @@ footer {
   margin-bottom: 20px;
 }
 
-/* Títulos */
+
 .footer-column h4 {
   font-size: 1.2rem;
   margin-bottom: 15px;
 }
 
-/* Links */
+
 .footer-column a {
   color: #fff;
   text-decoration: none;
@@ -698,7 +698,7 @@ footer {
   margin-bottom: 8px;
 }
 
-/* Formulário de contato */
+
 .contact-form .form-group {
   display: flex;
 }
@@ -731,7 +731,7 @@ footer {
   background-color: #0c5e59;
 }
 
-/* Seleção de idioma */
+
 .footer-column select {
   background-color: transparent;
   border: 1px solid #fff;
@@ -741,7 +741,7 @@ footer {
   cursor: pointer;
 }
 
-/* Ícones de redes sociais */
+
 .social-icons a {
   border: 1px solid #fff;
   border-radius: 50%;
@@ -758,9 +758,9 @@ footer {
   background-color: #0F726C;
 }
 
-/* Rodapé */ 
+ 
 
-/* Reset */
+
 * {
     margin: 0;
     padding: 0;
@@ -806,7 +806,7 @@ footer {
     text-decoration: underline;
   }
   
-  /* Idioma (select) */
+  
   .footer-section select {
     padding: 8px 12px;
     border: none;
@@ -816,7 +816,7 @@ footer {
     cursor: pointer;
   }
   
-  /* Formulário */
+  
   .contact-form {
     display: flex;
     gap: 5px;
@@ -844,7 +844,7 @@ footer {
     background: rgba(0, 0, 0, 0.6);
   }
   
-  /* Redes sociais */
+  
   .social-icons {
     display: flex;
     gap: 15px;
@@ -869,7 +869,7 @@ footer {
     border: 0.5px solid rgba(255, 255, 255, 0.4);
   }
 
-/* ------------------- Footer Responsivo ------------------- */
+
 
 
 @media (max-width: 768px) {

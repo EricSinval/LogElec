@@ -1,4 +1,4 @@
-// src/main/java/com/ads/LogElec/service/EmpresaService.java
+
 package com.ads.LogElec.service;
 
 import com.ads.LogElec.entity.Empresa;
@@ -40,39 +40,39 @@ public class EmpresaService {
     }
 
     public Empresa createEmpresa(@Valid Empresa empresa) {
-        // VALIDAÇÃO 1: Email único
+        
         if (empresaRepository.findByEmail(empresa.getEmail()).isPresent()) {
             throw new RuntimeException("Email já cadastrado");
         }
         
-        // VALIDAÇÃO 2: CNPJ único  
+        
         if (empresaRepository.findByCnpj(empresa.getCnpj()).isPresent()) {
             throw new RuntimeException("CNPJ já cadastrado");
         }
         
-        // VALIDAÇÃO 3: CNPJ matemático
+        
         if (!empresa.isCnpjValido()) {
             throw new RuntimeException("CNPJ inválido");
         }
         
-        // VALIDAÇÃO 4: Senha forte
+        
         if (empresa.getSenha().length() < 6) {
             throw new RuntimeException("Senha deve ter no mínimo 6 caracteres");
         }
         
-        // HASH DA SENHA ANTES DE SALVAR
+        
         String senhaHash = passwordEncoder.encode(empresa.getSenha());
         empresa.setSenha(senhaHash);
         
         return empresaRepository.save(empresa);
     }
 
-    // ✅ VERIFICAR SENHA (para autenticação e alteração)
+    
     public boolean verificarSenha(Empresa empresa, String senhaFornecida) {
         return passwordEncoder.matches(senhaFornecida, empresa.getSenha());
     }
 
-    // ✅ ATUALIZAR SENHA
+    
     public void atualizarSenha(Empresa empresa, String novaSenha) {
         if (novaSenha.length() < 6) {
             throw new RuntimeException("Senha deve ter no mínimo 6 caracteres");

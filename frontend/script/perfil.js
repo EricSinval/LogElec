@@ -1,16 +1,16 @@
-// perfil.js - Gerenciamento da página de perfil do usuário
+
 console.log('Perfil.js carregado!');
 
 let empresaOriginal = null;
 let modoEdicao = false;
 
-// Função para sair
+
 function sair() {
     localStorage.removeItem('empresaLogada');
     window.location.href = 'login.html';
 }
 
-// Carregar dados do usuário
+
 function carregarDadosUsuario() {
     const empresaLogada = JSON.parse(localStorage.getItem('empresaLogada'));
     
@@ -25,10 +25,10 @@ function carregarDadosUsuario() {
         return;
     }
 
-    // Guardar cópia original para cancelamento
+    
     empresaOriginal = JSON.parse(JSON.stringify(empresaLogada));
 
-    // Preencher campos do formulário
+    
     document.getElementById('nomeRazao').value = empresaLogada.nomeRazao || empresaLogada.nome || '';
     document.getElementById('tipo').value = empresaLogada.tipo === 'COLETA' ? 'Empresa de Coleta' : 'Empresa de Descarte';
     document.getElementById('cnpj').value = formatarCNPJ(empresaLogada.cnpj || '');
@@ -39,14 +39,14 @@ function carregarDadosUsuario() {
     console.log('Dados do usuário carregados:', empresaLogada);
 }
 
-// Formatar CNPJ
+
 function formatarCNPJ(cnpj) {
     if (!cnpj) return '';
     cnpj = cnpj.replace(/\D/g, '');
     return cnpj.replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})$/, '$1.$2.$3/$4-$5');
 }
 
-// Formatar Telefone
+
 function formatarTelefone(telefone) {
     if (!telefone) return '';
     telefone = telefone.replace(/\D/g, '');
@@ -58,18 +58,18 @@ function formatarTelefone(telefone) {
     return telefone;
 }
 
-// Ativar modo de edição
+
 function ativarModoEdicao() {
     modoEdicao = true;
     
-    // Habilitar campos editáveis (exceto os que devem permanecer desabilitados)
+    
     const camposEditaveis = ['email', 'telefone', 'endereco', 'senhaAtual', 'novaSenha', 'confirmarSenha'];
     camposEditaveis.forEach(id => {
         const campo = document.getElementById(id);
         if (campo) campo.disabled = false;
     });
 
-    // Mostrar/ocultar botões
+    
     document.getElementById('btnEditar').style.display = 'none';
     document.getElementById('btnSalvar').style.display = 'inline-block';
     document.getElementById('btnCancelar').style.display = 'inline-block';
@@ -77,26 +77,26 @@ function ativarModoEdicao() {
     console.log('Modo de edição ativado');
 }
 
-// Cancelar edição
+
 function cancelarEdicao() {
     modoEdicao = false;
     
-    // Desabilitar campos
+    
     const camposEditaveis = ['email', 'telefone', 'endereco', 'senhaAtual', 'novaSenha', 'confirmarSenha'];
     camposEditaveis.forEach(id => {
         const campo = document.getElementById(id);
         if (campo) campo.disabled = true;
     });
 
-    // Limpar campos de senha
+    
     document.getElementById('senhaAtual').value = '';
     document.getElementById('novaSenha').value = '';
     document.getElementById('confirmarSenha').value = '';
 
-    // Restaurar dados originais
+    
     carregarDadosUsuario();
 
-    // Mostrar/ocultar botões
+    
     document.getElementById('btnEditar').style.display = 'inline-block';
     document.getElementById('btnSalvar').style.display = 'none';
     document.getElementById('btnCancelar').style.display = 'none';
@@ -104,7 +104,7 @@ function cancelarEdicao() {
     console.log('Edição cancelada');
 }
 
-// Salvar alterações
+
 async function salvarAlteracoes(event) {
     event.preventDefault();
 
@@ -112,20 +112,20 @@ async function salvarAlteracoes(event) {
 
     const empresaLogada = JSON.parse(localStorage.getItem('empresaLogada'));
     
-    // Coletar dados do formulário
+    
     const dadosAtualizados = {
         email: document.getElementById('email').value.trim(),
         telefone: document.getElementById('telefone').value.replace(/\D/g, ''),
         endereco: document.getElementById('endereco').value.trim()
     };
 
-    // Validar campos obrigatórios
+    
     if (!dadosAtualizados.email) {
         showPopup('O email é obrigatório!', { type: 'error' });
         return;
     }
 
-    // Verificar alteração de senha
+    
     const senhaAtual = document.getElementById('senhaAtual').value;
     const novaSenha = document.getElementById('novaSenha').value;
     const confirmarSenha = document.getElementById('confirmarSenha').value;
@@ -162,10 +162,10 @@ async function salvarAlteracoes(event) {
             const empresaAtualizada = await response.json();
             console.log('✅ Perfil atualizado:', empresaAtualizada);
             
-            // Atualizar localStorage
+            
             localStorage.setItem('empresaLogada', JSON.stringify(empresaAtualizada));
             
-            // Limpar campos de senha
+            
             document.getElementById('senhaAtual').value = '';
             document.getElementById('novaSenha').value = '';
             document.getElementById('confirmarSenha').value = '';
@@ -191,14 +191,93 @@ async function salvarAlteracoes(event) {
     }
 }
 
-// Inicialização
+
 document.addEventListener('DOMContentLoaded', function() {
     console.log('👤 Página de perfil inicializada');
     
     carregarDadosUsuario();
 
-    // Event listeners para botões
+    
     document.getElementById('btnEditar').addEventListener('click', ativarModoEdicao);
     document.getElementById('btnCancelar').addEventListener('click', cancelarEdicao);
     document.getElementById('formPerfil').addEventListener('submit', salvarAlteracoes);
 });
+
+
+function confirmarExclusao() {
+    showPopup('Tem certeza que deseja excluir sua conta? Esta ação não pode ser desfeita.', {
+        type: 'error',
+        buttons: [
+            { text: 'Cancelar', onClick: () => {} },
+            { text: 'Continuar', onClick: () => pedirSenhaParaExclusao() }
+        ]
+    });
+}
+
+
+function pedirSenhaParaExclusao() {
+    showPopup(
+        '<strong>Confirme sua identidade</strong><br><br>' +
+        'Digite sua senha para excluir definitivamente a conta:<br>' +
+        '<input type="password" id="senhaConfirmacaoExclusao" placeholder="Sua senha" ' +
+        'style="width:100%;padding:10px;border:1px solid #ccc;border-radius:6px;font-size:14px;margin-top:10px;box-sizing:border-box;">',
+        {
+            type: 'error',
+            showCloseButton: true,
+            closeOnBackdrop: false,
+            buttons: [
+                { text: 'Cancelar', onClick: () => {} },
+                {
+                    text: 'Excluir definitivamente',
+                    onClick: () => {
+                        const senha = document.getElementById('senhaConfirmacaoExclusao')?.value;
+                        if (!senha) {
+                            setTimeout(() => showPopup('Digite sua senha para confirmar.', { type: 'error' }), 100);
+                            return;
+                        }
+                        excluirContaComSenha(senha);
+                    }
+                }
+            ]
+        }
+    );
+}
+
+
+async function excluirContaComSenha(senha) {
+    const empresaLogada = JSON.parse(localStorage.getItem('empresaLogada'));
+    if (!empresaLogada) return;
+
+    try {
+        
+        const loginResp = await fetch('http://localhost:8080/api/auth/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email: empresaLogada.email, senha })
+        });
+
+        if (!loginResp.ok) {
+            showPopup('Senha incorreta. Exclusão cancelada.', { type: 'error' });
+            return;
+        }
+
+        const response = await fetch(`http://localhost:8080/api/empresas/${empresaLogada.id}`, {
+            method: 'DELETE'
+        });
+
+        if (response.status === 204) {
+            localStorage.removeItem('empresaLogada');
+            showPopup('Conta excluída com sucesso.', {
+                type: 'success',
+                buttons: [{ text: 'OK', onClick: () => { window.location.href = 'login.html'; } }]
+            });
+        } else if (response.status === 409) {
+            const msg = await response.text();
+            showPopup(msg, { type: 'error' });
+        } else {
+            showPopup('Erro ao excluir conta. Tente novamente.', { type: 'error' });
+        }
+    } catch (error) {
+        showPopup('Erro de conexão com o servidor.', { type: 'error' });
+    }
+}

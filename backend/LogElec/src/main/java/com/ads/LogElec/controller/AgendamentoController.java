@@ -20,13 +20,13 @@ public class AgendamentoController {
     @Autowired
     private AgendamentoService agendamentoService;
 
-    // ✅ GET - LISTAR TODOS OS AGENDAMENTOS
+    
     @GetMapping
     public List<Agendamento> getAllAgendamentos() {
         return agendamentoService.findAll();
     }
 
-    // ✅ GET - BUSCAR AGENDAMENTO POR ID
+    
     @GetMapping("/{id}")
     public ResponseEntity<Agendamento> getAgendamentoById(@PathVariable Long id) {
         try {
@@ -37,44 +37,44 @@ public class AgendamentoController {
         }
     }
 
-    // ✅ GET - AGENDAMENTOS POR EMPRESA SOLICITANTE
+    
     @GetMapping("/solicitante/{empresaId}")
     public List<Agendamento> getAgendamentosBySolicitante(@PathVariable Long empresaId) {
         return agendamentoService.findByEmpresaSolicitante(empresaId);
     }
 
-    // ✅ GET - AGENDAMENTOS POR EMPRESA COLETORA
+    
     @GetMapping("/coletora/{empresaId}")
     public List<Agendamento> getAgendamentosByColetora(@PathVariable Long empresaId) {
         return agendamentoService.findByEmpresaColetora(empresaId);
     }
 
-    // ✅ GET - AGENDAMENTOS PENDENTES PARA UMA EMPRESA COLETORA
+    
     @GetMapping("/coletora/{empresaId}/pendentes")
     public List<Agendamento> getAgendamentosPendentesByColetora(@PathVariable Long empresaId) {
         return agendamentoService.findPendentesByEmpresaColetora(empresaId);
     }
 
-    // ✅ GET - AGENDAMENTOS FUTUROS
+    
     @GetMapping("/futuros")
     public List<Agendamento> getAgendamentosFuturos() {
         return agendamentoService.findAgendamentosFuturos();
     }
 
-    // ✅ GET - AGENDAMENTOS POR POSTAGEM
+    
     @GetMapping("/postagem/{postagemId}")
     public List<Agendamento> getAgendamentosByPostagem(@PathVariable Long postagemId) {
         return agendamentoService.findByPostagem(postagemId);
     }
 
-    // ✅ POST - CRIAR NOVO AGENDAMENTO
+    
     @PostMapping
     public ResponseEntity<?> criarAgendamento(@RequestBody Map<String, Object> body) {
         try {
-            // Log/inspeciona o payload recebido para ajudar debug
+            
             System.out.println("[DEBUG] criarAgendamento - body: " + body);
 
-            // Fazer binding defensivo: aceitar strings e converter para os tipos esperados
+            
             Long empresaSolicitanteId = body.get("empresaSolicitanteId") == null ? null : Long.valueOf(String.valueOf(body.get("empresaSolicitanteId")));
             Long empresaColetoraId = body.get("empresaColetoraId") == null ? null : Long.valueOf(String.valueOf(body.get("empresaColetoraId")));
             Long postagemId = body.get("postagemId") == null ? null : Long.valueOf(String.valueOf(body.get("postagemId")));
@@ -113,7 +113,7 @@ public class AgendamentoController {
         }
     }
 
-    // ✅ PUT - CONFIRMAR AGENDAMENTO
+    
     @PutMapping("/{id}/confirmar")
     public ResponseEntity<?> confirmarAgendamento(@PathVariable Long id) {
         try {
@@ -126,7 +126,7 @@ public class AgendamentoController {
         }
     }
 
-    // ✅ PUT - CANCELAR AGENDAMENTO
+    
     @PutMapping("/{id}/cancelar")
     public ResponseEntity<?> cancelarAgendamento(@PathVariable Long id) {
         try {
@@ -140,7 +140,7 @@ public class AgendamentoController {
     }
 
 
-    // ✅ PUT - CONCLUIR AGENDAMENTO
+    
     @PutMapping("/{id}/concluir")
     public ResponseEntity<?> concluirAgendamento(@PathVariable Long id) {
         try {
@@ -153,7 +153,7 @@ public class AgendamentoController {
         }
     }
 
-    // ✅ DELETE - EXCLUIR AGENDAMENTO
+    
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteAgendamento(@PathVariable Long id) {
         try {

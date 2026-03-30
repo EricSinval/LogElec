@@ -13,7 +13,7 @@
     position: relative;
     padding: 0 24px;
 }
-/* logos */
+
 .logo {
   display: flex;
   align-items: center;
@@ -50,7 +50,7 @@
   color: #F3F4F6;
 }
 
-/* Search bar - Busca */
+
 .search-bar {
 display: flex;
 align-items: center;
@@ -58,7 +58,7 @@ background-color: rgba(255, 255, 255, 0.14);
 padding: 8px 12px;
 border-radius: 8px;
 width: 432px;
-height: 47px; /* Arredondado para facilitar */
+height: 47px; 
 
  max-width: 500px;
  margin: 0 24px;
@@ -67,26 +67,26 @@ height: 47px; /* Arredondado para facilitar */
 
 .search-bar img {
 width: 25px;
-height: 25px; /* Arredondado para facilitar */
+height: 25px; 
 
 object-fit: contain;
-margin-left: 10px;  /* Mantém o espaçamento à esquerda */
-margin-right: 10px; /* Mantém o espaçamento à direita */
+margin-left: 10px;  
+margin-right: 10px; 
  }
 
  .search-bar input {
-  /* Dimensões */
+  
   width: 300px;
   height: 28px;
 
-  /* Estilo da fonte */
+  
   font-family: 'Roboto', sans-serif;
-  font-weight: 500; /* Medium */
+  font-weight: 500; 
   font-size: 16px;
-  line-height: 175%; /* Ajusta a altura da linha */
+  line-height: 175%; 
 
-  /* Outras propriedades */
-  flex: 1; /* Permite que o campo de texto se expanda */
+  
+  flex: 1; 
   border: none;
   background: transparent;
   color: #F3F4F6;
@@ -97,7 +97,7 @@ margin-right: 10px; /* Mantém o espaçamento à direita */
   color: #D1D5DB;
 }
 
-/* Icons */
+
 .header-icons {
 display: flex;
  align-items: center;
@@ -113,13 +113,13 @@ position: relative;
 }
 
 .header-icons img {
- width: auto; /* Aumentado para 35px */
-height: 100px; /* Aumentado para 35px, mantendo proporção */
-object-fit: contain; /* Garante que a imagem não seja cortada e mantenha suas proporções */
+ width: auto; 
+height: 100px; 
+object-fit: contain; 
  cursor: pointer;
 }
 
-    /*dropdown - Caixa de info*/
+    
 .dropdown {
     display: none;
     flex-direction: column;
@@ -152,12 +152,12 @@ object-fit: contain; /* Garante que a imagem não seja cortada e mantenha suas p
   background: rgba(255, 255, 255, 0.12);
 }
 
-/* Remove a borda do último item para não ter uma linha extra no final */
+
 .dropdown a:last-child {
   border-bottom: none;
 }
 
-/* Estilos gerais do rodapé */
+
 footer {
   background-color: #0F726C;
   color: #fff;
@@ -179,13 +179,13 @@ footer {
   margin-bottom: 20px;
 }
 
-/* Títulos */
+
 .footer-column h4 {
   font-size: 1.2rem;
   margin-bottom: 15px;
 }
 
-/* Links */
+
 .footer-column a {
   color: #fff;
   text-decoration: none;
@@ -206,7 +206,7 @@ footer {
   margin-bottom: 8px;
 }
 
-/* Formulário de contato */
+
 .contact-form .form-group {
   display: flex;
 }
@@ -239,7 +239,7 @@ footer {
   background-color: #0c5e59;
 }
 
-/* Seleção de idioma */
+
 .footer-column select {
   background-color: transparent;
   border: 1px solid #fff;
@@ -249,7 +249,7 @@ footer {
   cursor: pointer;
 }
 
-/* Ícones de redes sociais */
+
 .social-icons a {
   border: 1px solid #fff;
   border-radius: 50%;

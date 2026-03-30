@@ -174,7 +174,7 @@ body {
   }
 }
 
-/* LISTA DE POSTAGENS */
+
 .lista-postagens-container h3,
 .formulario-container h3 {
   font-size: 18px;
@@ -227,7 +227,7 @@ body {
   padding: 24px;
 }
 
-/* FORMULÁRIO DE EDIÇÃO */
+
 .formulario-container {
   display: flex;
   flex-direction: column;

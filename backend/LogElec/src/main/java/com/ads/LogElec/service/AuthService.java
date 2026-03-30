@@ -21,7 +21,7 @@ public class AuthService {
         
         if (empresaOpt.isPresent()) {
             Empresa empresa = empresaOpt.get();
-            // ✅ CORRETO: Compara senha em texto com hash usando BCrypt
+            
             if (passwordEncoder.matches(senha, empresa.getSenha())) {
                 return empresa;
             } else {

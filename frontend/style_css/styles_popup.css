@@ -92,6 +92,14 @@
 .ui-btn-primary:hover {
   background: #0a5047;
 }
+.ui-btn-detalhes {
+  background: #6c757d;
+  color: #ffffff;
+  border: none;
+}
+.ui-btn-detalhes:hover {
+  background: #545b62;
+}
 .ui-info .ui-popup-message { color: #444444; }
 .ui-success .ui-popup-message { color: #444444; }
 .ui-error .ui-popup-message { color: #444444; }

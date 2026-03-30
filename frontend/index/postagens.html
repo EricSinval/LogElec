@@ -16,9 +16,7 @@
   <script defer src="../script/postagens.js"></script>
 </head>
 <body>
-  <!-- ==========================
-       CABEÇALHO
-  =========================== -->
+  
   <header class="topbar">
     <a href="postagens.html" class="logo">
       <img src="../img/Logo.png" alt="Logo LogElec" />
@@ -34,6 +32,7 @@
       <span class="icon menu-icon" onclick="toggleMenu()">☰</span>
       <img src="../img/Icon_User.png" alt="icon user-icon" onclick="window.location.href='perfil.html'" style="cursor:pointer;">
       <div class="dropdown" id="dropdown">
+        <a href="agendamento.html">Agendamentos</a>
         <a id="linkPostagensTipo" href="postagens.html">Postagens</a>
         <a href="cadastro_postagens.html">Cadastro de postagens</a>
         <a href="editar_postagens.html">Editar Postagens</a>
@@ -44,28 +43,24 @@
     </div>
   </header>
 
-  <!-- ==========================
-       CONTEÚDO PRINCIPAL
-  =========================== -->
+  
   <main class="content">
     <h1 id="tituloPostagens">Seja bem vindo <span id="nomeUsuario"></span></h1>
     <p class="subtitle" id="subtituloPostagens">
       Empresas que buscam realizar o descarte correto de seus resíduos eletrônicos.
     </p>
 
-    <!-- Grid de cards dinâmico -->
+    
     <section class="cards" id="listaPostagens">
-      <!-- Os cards serão carregados dinamicamente via JavaScript -->
+      
     </section>
   </main>
 
-  <!-- ==========================
-       RODAPÉ
-  =========================== -->
+  
   <footer class="footer">
     <div class="footer-container">
       
-      <!-- Coluna Descubra -->
+      
       <div class="footer-section">
         <h3>Descubra</h3>
         <ul>
@@ -75,7 +70,7 @@
         </ul>
       </div>
 
-      <!-- Coluna Idioma -->
+      
       <div class="footer-section">
         <h3>Idioma</h3>
         <select>
@@ -85,7 +80,7 @@
         </select>
       </div>
 
-      <!-- Coluna Contato -->
+      
       <div class="footer-section">
         <h3>Entre em contato conosco!</h3>
         <form class="contact-form">
@@ -94,7 +89,7 @@
         </form>
       </div>
 
-      <!-- Coluna Redes Sociais -->
+      
       <div class="footer-section">
         <h3>Redes sociais</h3>
         <div class="social-icons">
@@ -109,21 +104,21 @@
     <hr>
   </footer>
 
-  <!-- POPUP DE AGENDAMENTO -->
+  
   <div id="popupAgendamento" class="popup-agendamento hidden">
     <div class="popup-agendamento-overlay" onclick="fecharPopupAgendamento()"></div>
     <div class="popup-agendamento-content">
       <button class="popup-close-btn" onclick="fecharPopupAgendamento()">✕</button>
       
-      <h2>Verificar Disponibilidade</h2>
+      <h2>Agendamento</h2>
       <p class="subtitle">Selecione um horário para agendamento</p>
 
-      <!-- Informações da Postagem Selecionada -->
+      
       <div id="postagemAgendamentoInfo" class="postagem-agendamento-info">
-        <!-- Será preenchido dinamicamente -->
+        
       </div>
 
-      <!-- Seletores de Dia e Horário -->
+      
       <div id="seletoresAgendamento" class="seletores-agendamento" style="display: none;">
         <div class="form-group">
           <label for="diaAgendamento">Dia de Agendamento</label>
@@ -140,7 +135,7 @@
         </div>
 
         <div class="button-group">
-          <button onclick="confirmarAgendamentoPopup()" class="btn-confirmar">Confirmar Agendamento</button>
+          <button onclick="confirmarAgendamentoPopup()" class="btn-confirmar">Enviar proposta de agendamento</button>
           <button onclick="fecharPopupAgendamento()" class="btn-cancelar">Cancelar</button>
         </div>
       </div>
