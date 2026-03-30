@@ -1,0 +1,286 @@
+2026-03-30T15:42:54.963Z [INFO] ----------------------invoke appmod-report-event----------------------
+2026-03-30T15:42:54.964Z [INFO] [Tool.invoke]({name: appmod-report-event, input: {
+  "projectPath": "c:\\Users\\Nicolas\\Documents\\USCS\\PE\\LogElec\\backend\\LogElec",
+  "event": "precheckCompleted",
+  "phase": "precheck",
+  "status": "succeeded"
+}}).
+2026-03-30T15:42:54.964Z [INFO] [Tool.invoke] do invoke.
+2026-03-30T15:42:54.967Z [INFO] [Tool.invoke]({result: {
+  "message": "Event 'precheckCompleted' reported!\nSession ID: 20260330154254,\nSession Dir: c:\\Users\\Nicolas\\Documents\\USCS\\PE\\LogElec\\backend\\LogElec\\.github\\java-upgrade\\20260330154254"
+}}).
+2026-03-30T15:42:54.968Z [INFO] ----------------------invoked appmod-report-event----------------------
+2026-03-30T15:44:09.142Z [INFO] ---------------------prepare appmod-list-jdks----------------------
+2026-03-30T15:44:09.142Z [INFO] [Tool.prepareInvocation]({name: appmod-list-jdks, input: {
+  "sessionId": "20260330154254",
+  "projectPath": "c:\\Users\\Nicolas\\Documents\\USCS\\PE\\LogElec\\backend\\LogElec"
+}}).
+2026-03-30T15:44:09.143Z [INFO] [Tool.prepareInvocation] do prepare invocation.
+2026-03-30T15:44:09.143Z [INFO] [Tool.prepareInvocation]({result: {
+  "invocationMessage": "List jdks"
+}}).
+2026-03-30T15:44:09.144Z [INFO] ----------------------prepared appmod-list-jdks----------------------
+2026-03-30T15:44:09.187Z [INFO] ----------------------invoke appmod-list-jdks----------------------
+2026-03-30T15:44:09.187Z [INFO] [Tool.invoke]({name: appmod-list-jdks, input: {
+  "sessionId": "20260330154254",
+  "projectPath": "c:\\Users\\Nicolas\\Documents\\USCS\\PE\\LogElec\\backend\\LogElec"
+}}).
+2026-03-30T15:44:09.187Z [INFO] [Tool.invoke] do invoke.
+2026-03-30T15:44:09.199Z [INFO] [Tool.invoke]({result: {
+  "message": "We found following jdks in your system:\n\n1. Java 21.0.8\n   📁 Path: C:\\Program Files\\Java\\jdk-21\\bin\n   🏷️ Source: others\n\nTotal: 1 JDK installation(s) found"
+}}).
+2026-03-30T15:44:09.199Z [INFO] ----------------------invoked appmod-list-jdks----------------------
+2026-03-30T15:44:09.207Z [INFO] ---------------------prepare appmod-list-mavens----------------------
+2026-03-30T15:44:09.208Z [INFO] [Tool.prepareInvocation]({name: appmod-list-mavens, input: {
+  "sessionId": "20260330154254",
+  "projectPath": "c:\\Users\\Nicolas\\Documents\\USCS\\PE\\LogElec\\backend\\LogElec"
+}}).
+2026-03-30T15:44:09.208Z [INFO] [Tool.prepareInvocation] do prepare invocation.
+2026-03-30T15:44:09.208Z [INFO] [Tool.prepareInvocation]({result: {
+  "invocationMessage": "List mavens"
+}}).
+2026-03-30T15:44:09.208Z [INFO] ----------------------prepared appmod-list-mavens----------------------
+2026-03-30T15:44:09.246Z [INFO] ----------------------invoke appmod-list-mavens----------------------
+2026-03-30T15:44:09.246Z [INFO] [Tool.invoke]({name: appmod-list-mavens, input: {
+  "sessionId": "20260330154254",
+  "projectPath": "c:\\Users\\Nicolas\\Documents\\USCS\\PE\\LogElec\\backend\\LogElec"
+}}).
+2026-03-30T15:44:09.247Z [INFO] [Tool.invoke] do invoke.
+2026-03-30T15:44:09.249Z [INFO] [Tool.invoke]({result: {
+  "message": "No Maven installations found."
+}}).
+2026-03-30T15:44:09.249Z [INFO] ----------------------invoked appmod-list-mavens----------------------
+2026-03-30T15:45:33.801Z [INFO] ---------------------prepare appmod-report-event----------------------
+2026-03-30T15:45:33.801Z [INFO] [Tool.prepareInvocation]({name: appmod-report-event, input: {
+  "event": "environmentAnalyzed",
+  "phase": "plan",
+  "sessionId": "20260330154254",
+  "projectPath": "c:\\Users\\Nicolas\\Documents\\USCS\\PE\\LogElec\\backend\\LogElec",
+  "status": "succeeded"
+}}).
+2026-03-30T15:45:33.801Z [INFO] [Tool.prepareInvocation] do prepare invocation.
+2026-03-30T15:45:33.801Z [INFO] [Tool.prepareInvocation]({result: {
+  "invocationMessage": "Report upgrade event"
+}}).
+2026-03-30T15:45:33.802Z [INFO] ----------------------prepared appmod-report-event----------------------
+2026-03-30T15:45:33.834Z [INFO] ----------------------invoke appmod-report-event----------------------
+2026-03-30T15:45:33.834Z [INFO] [Tool.invoke]({name: appmod-report-event, input: {
+  "event": "environmentAnalyzed",
+  "phase": "plan",
+  "sessionId": "20260330154254",
+  "projectPath": "c:\\Users\\Nicolas\\Documents\\USCS\\PE\\LogElec\\backend\\LogElec",
+  "status": "succeeded"
+}}).
+2026-03-30T15:45:33.835Z [INFO] [Tool.invoke] do invoke.
+2026-03-30T15:45:33.835Z [INFO] [Tool.invoke]({result: {
+  "message": "Event 'environmentAnalyzed' reported!\nSession ID: 20260330154254,\nSession Dir: c:\\Users\\Nicolas\\Documents\\USCS\\PE\\LogElec\\backend\\LogElec\\.github\\java-upgrade\\20260330154254"
+}}).
+2026-03-30T15:45:33.835Z [INFO] ----------------------invoked appmod-report-event----------------------
+2026-03-30T15:47:20.441Z [INFO] ---------------------prepare appmod-report-event----------------------
+2026-03-30T15:47:20.442Z [INFO] [Tool.prepareInvocation]({name: appmod-report-event, input: {
+  "event": "dependenciesAnalyzed",
+  "phase": "plan",
+  "projectPath": "c:\\Users\\Nicolas\\Documents\\USCS\\PE\\LogElec\\backend\\LogElec",
+  "sessionId": "20260330154254",
+  "status": "succeeded"
+}}).
+2026-03-30T15:47:20.442Z [INFO] [Tool.prepareInvocation] do prepare invocation.
+2026-03-30T15:47:20.442Z [INFO] [Tool.prepareInvocation]({result: {
+  "invocationMessage": "Report upgrade event"
+}}).
+2026-03-30T15:47:20.442Z [INFO] ----------------------prepared appmod-report-event----------------------
+2026-03-30T15:47:20.476Z [INFO] ----------------------invoke appmod-report-event----------------------
+2026-03-30T15:47:20.477Z [INFO] [Tool.invoke]({name: appmod-report-event, input: {
+  "event": "dependenciesAnalyzed",
+  "phase": "plan",
+  "projectPath": "c:\\Users\\Nicolas\\Documents\\USCS\\PE\\LogElec\\backend\\LogElec",
+  "sessionId": "20260330154254",
+  "status": "succeeded"
+}}).
+2026-03-30T15:47:20.477Z [INFO] [Tool.invoke] do invoke.
+2026-03-30T15:47:20.478Z [INFO] [Tool.invoke]({result: {
+  "message": "Event 'dependenciesAnalyzed' reported!\nSession ID: 20260330154254,\nSession Dir: c:\\Users\\Nicolas\\Documents\\USCS\\PE\\LogElec\\backend\\LogElec\\.github\\java-upgrade\\20260330154254"
+}}).
+2026-03-30T15:47:20.478Z [INFO] ----------------------invoked appmod-report-event----------------------
+2026-03-30T15:47:23.789Z [INFO] ---------------------prepare appmod-report-event----------------------
+2026-03-30T15:47:23.789Z [INFO] [Tool.prepareInvocation]({name: appmod-report-event, input: {
+  "event": "upgradePathDesigned",
+  "phase": "plan",
+  "projectPath": "c:\\Users\\Nicolas\\Documents\\USCS\\PE\\LogElec\\backend\\LogElec",
+  "sessionId": "20260330154254",
+  "status": "succeeded"
+}}).
+2026-03-30T15:47:23.789Z [INFO] [Tool.prepareInvocation] do prepare invocation.
+2026-03-30T15:47:23.790Z [INFO] [Tool.prepareInvocation]({result: {
+  "invocationMessage": "Report upgrade event"
+}}).
+2026-03-30T15:47:23.790Z [INFO] ----------------------prepared appmod-report-event----------------------
+2026-03-30T15:47:23.823Z [INFO] ----------------------invoke appmod-report-event----------------------
+2026-03-30T15:47:23.824Z [INFO] [Tool.invoke]({name: appmod-report-event, input: {
+  "event": "upgradePathDesigned",
+  "phase": "plan",
+  "projectPath": "c:\\Users\\Nicolas\\Documents\\USCS\\PE\\LogElec\\backend\\LogElec",
+  "sessionId": "20260330154254",
+  "status": "succeeded"
+}}).
+2026-03-30T15:47:23.824Z [INFO] [Tool.invoke] do invoke.
+2026-03-30T15:47:23.825Z [INFO] [Tool.invoke]({result: {
+  "message": "Event 'upgradePathDesigned' reported!\nSession ID: 20260330154254,\nSession Dir: c:\\Users\\Nicolas\\Documents\\USCS\\PE\\LogElec\\backend\\LogElec\\.github\\java-upgrade\\20260330154254"
+}}).
+2026-03-30T15:47:23.825Z [INFO] ----------------------invoked appmod-report-event----------------------
+2026-03-30T15:47:28.633Z [INFO] ---------------------prepare appmod-report-event----------------------
+2026-03-30T15:47:28.633Z [INFO] [Tool.prepareInvocation]({name: appmod-report-event, input: {
+  "event": "planReviewed",
+  "phase": "plan",
+  "projectPath": "c:\\Users\\Nicolas\\Documents\\USCS\\PE\\LogElec\\backend\\LogElec",
+  "sessionId": "20260330154254",
+  "status": "succeeded"
+}}).
+2026-03-30T15:47:28.634Z [INFO] [Tool.prepareInvocation] do prepare invocation.
+2026-03-30T15:47:28.634Z [INFO] [Tool.prepareInvocation]({result: {
+  "invocationMessage": "Report upgrade event"
+}}).
+2026-03-30T15:47:28.634Z [INFO] ----------------------prepared appmod-report-event----------------------
+2026-03-30T15:47:28.665Z [INFO] ----------------------invoke appmod-report-event----------------------
+2026-03-30T15:47:28.665Z [INFO] [Tool.invoke]({name: appmod-report-event, input: {
+  "event": "planReviewed",
+  "phase": "plan",
+  "projectPath": "c:\\Users\\Nicolas\\Documents\\USCS\\PE\\LogElec\\backend\\LogElec",
+  "sessionId": "20260330154254",
+  "status": "succeeded"
+}}).
+2026-03-30T15:47:28.665Z [INFO] [Tool.invoke] do invoke.
+2026-03-30T15:47:28.666Z [INFO] [Tool.invoke]({result: {
+  "message": "Event 'planReviewed' reported!\nSession ID: 20260330154254,\nSession Dir: c:\\Users\\Nicolas\\Documents\\USCS\\PE\\LogElec\\backend\\LogElec\\.github\\java-upgrade\\20260330154254"
+}}).
+2026-03-30T15:47:28.666Z [INFO] ----------------------invoked appmod-report-event----------------------
+2026-03-30T15:47:45.015Z [INFO] ---------------------prepare appmod-confirm-upgrade-plan----------------------
+2026-03-30T15:47:45.016Z [INFO] [Tool.prepareInvocation]({name: appmod-confirm-upgrade-plan, input: {
+  "sessionId": "20260330154254"
+}}).
+2026-03-30T15:47:45.016Z [INFO] [Tool.prepareInvocation] do prepare invocation.
+2026-03-30T15:47:45.017Z [INFO] [Tool.prepareInvocation]({result: {
+  "invocationMessage": "Review [upgrade plan](file:///c:/Users/Nicolas/Documents/USCS/PE/LogElec/backend/LogElec/.github/java-upgrade/20260330154254/plan.md)",
+  "confirmationMessages": {
+    "title": "Plan generated",
+    "message": "Please review the generated plan and make any necessary adjustments before proceeding. You can modify the generated [`plan.md`](file:///c:/Users/Nicolas/Documents/USCS/PE/LogElec/backend/LogElec/.github/java-upgrade/20260330154254/plan.md) directly."
+  }
+}}).
+2026-03-30T15:47:45.017Z [INFO] ----------------------prepared appmod-confirm-upgrade-plan----------------------
+2026-03-30T15:51:02.047Z [INFO] ----------------------invoke appmod-confirm-upgrade-plan----------------------
+2026-03-30T15:51:02.061Z [INFO] [Tool.invoke]({name: appmod-confirm-upgrade-plan, input: {
+  "sessionId": "20260330154254"
+}}).
+2026-03-30T15:51:02.062Z [INFO] [Tool.invoke] do invoke.
+2026-03-30T15:51:02.062Z [INFO] Upgrade plan confirmed successfully.
+2026-03-30T15:51:02.064Z [INFO] [Tool.invoke]({result: {
+  "message": "Generated plan is reviewed and confirmed by the user! the upgrade process will start now and be tracked in markdown file: c:\\Users\\Nicolas\\Documents\\USCS\\PE\\LogElec\\backend\\LogElec\\.github\\java-upgrade\\20260330154254\\progress.md."
+}}).
+2026-03-30T15:51:02.064Z [INFO] ----------------------invoked appmod-confirm-upgrade-plan----------------------
+2026-03-30T15:51:06.588Z [INFO] ---------------------prepare appmod-report-event----------------------
+2026-03-30T15:51:06.589Z [INFO] [Tool.prepareInvocation]({name: appmod-report-event, input: {
+  "event": "planConfirmed",
+  "phase": "plan",
+  "projectPath": "c:\\Users\\Nicolas\\Documents\\USCS\\PE\\LogElec\\backend\\LogElec",
+  "sessionId": "20260330154254",
+  "status": "succeeded"
+}}).
+2026-03-30T15:51:06.590Z [INFO] [Tool.prepareInvocation] do prepare invocation.
+2026-03-30T15:51:06.591Z [INFO] [Tool.prepareInvocation]({result: {
+  "invocationMessage": "Report upgrade event"
+}}).
+2026-03-30T15:51:06.592Z [INFO] ----------------------prepared appmod-report-event----------------------
+2026-03-30T15:51:06.682Z [INFO] ----------------------invoke appmod-report-event----------------------
+2026-03-30T15:51:06.683Z [INFO] [Tool.invoke]({name: appmod-report-event, input: {
+  "event": "planConfirmed",
+  "phase": "plan",
+  "projectPath": "c:\\Users\\Nicolas\\Documents\\USCS\\PE\\LogElec\\backend\\LogElec",
+  "sessionId": "20260330154254",
+  "status": "succeeded"
+}}).
+2026-03-30T15:51:06.683Z [INFO] [Tool.invoke] do invoke.
+2026-03-30T15:51:06.684Z [INFO] [Tool.invoke]({result: {
+  "message": "Event 'planConfirmed' reported!\nSession ID: 20260330154254,\nSession Dir: c:\\Users\\Nicolas\\Documents\\USCS\\PE\\LogElec\\backend\\LogElec\\.github\\java-upgrade\\20260330154254"
+}}).
+2026-03-30T15:51:06.685Z [INFO] ----------------------invoked appmod-report-event----------------------
+2026-03-30T15:51:53.626Z [INFO] ---------------------prepare appmod-report-event----------------------
+2026-03-30T15:51:53.626Z [INFO] [Tool.prepareInvocation]({name: appmod-report-event, input: {
+  "event": "planExecutionStarted",
+  "phase": "execute",
+  "projectPath": "c:\\Users\\Nicolas\\Documents\\USCS\\PE\\LogElec\\backend\\LogElec",
+  "sessionId": "20260330154254",
+  "status": "succeeded"
+}}).
+2026-03-30T15:51:53.626Z [INFO] [Tool.prepareInvocation] do prepare invocation.
+2026-03-30T15:51:53.626Z [INFO] [Tool.prepareInvocation]({result: {
+  "invocationMessage": "Report upgrade event"
+}}).
+2026-03-30T15:51:53.627Z [INFO] ----------------------prepared appmod-report-event----------------------
+2026-03-30T15:51:53.668Z [INFO] ----------------------invoke appmod-report-event----------------------
+2026-03-30T15:51:53.669Z [INFO] [Tool.invoke]({name: appmod-report-event, input: {
+  "event": "planExecutionStarted",
+  "phase": "execute",
+  "projectPath": "c:\\Users\\Nicolas\\Documents\\USCS\\PE\\LogElec\\backend\\LogElec",
+  "sessionId": "20260330154254",
+  "status": "succeeded"
+}}).
+2026-03-30T15:51:53.669Z [INFO] [Tool.invoke] do invoke.
+2026-03-30T15:51:53.762Z [INFO] [Tool.invoke]({result: {
+  "message": "Event 'planExecutionStarted' reported!\nSession ID: 20260330154254,\nSession Dir: c:\\Users\\Nicolas\\Documents\\USCS\\PE\\LogElec\\backend\\LogElec\\.github\\java-upgrade\\20260330154254"
+}}).
+2026-03-30T15:51:53.763Z [INFO] ----------------------invoked appmod-report-event----------------------
+2026-03-30T15:52:01.833Z [INFO] ---------------------prepare appmod-install-jdk----------------------
+2026-03-30T15:52:01.833Z [INFO] [Tool.prepareInvocation]({name: appmod-install-jdk, input: {
+  "projectPath": "c:\\Users\\Nicolas\\Documents\\USCS\\PE\\LogElec\\backend\\LogElec",
+  "sessionId": "20260330154254",
+  "version": "25"
+}}).
+2026-03-30T15:52:01.833Z [INFO] [Tool.prepareInvocation] do prepare invocation.
+2026-03-30T15:52:02.011Z [INFO] [Tool.prepareInvocation]({result: {
+  "invocationMessage": "Download and install JDK",
+  "confirmationMessages": {
+    "title": "Download and install JDK",
+    "message": "\nThis tool will download and install JDK 25 from Adoptium with below settings.\n- **Version**: 25\n- **Vendor**: Adoptium\n- **Url**: https://github.com/adoptium/temurin25-binaries/releases/download/jdk-25.0.2%2B10/OpenJDK25U-jdk_x64_windows_hotspot_25.0.2_10.zip\n- **Destination**: `C:\\Users\\Nicolas\\.jdk`\n- **Checksum**: SHA256: 06ac5f5444a1269dd11d11cbb7ab6ebaecedc60dc1caca82cdb56f29100b7b8c\n- **Signature**: https://github.com/adoptium/temurin25-binaries/releases/download/jdk-25.0.2%2B10/OpenJDK25U-jdk_x64_windows_hotspot_25.0.2_10.zip.sig\n- **Public Key**: https://packages.adoptium.net/artifactory/api/gpg/key/public\n"
+  }
+}}).
+2026-03-30T15:52:02.011Z [INFO] ----------------------prepared appmod-install-jdk----------------------
+2026-03-30T15:52:37.139Z [INFO] ----------------------invoke appmod-install-jdk----------------------
+2026-03-30T15:52:37.139Z [INFO] [Tool.invoke]({name: appmod-install-jdk, input: {
+  "projectPath": "c:\\Users\\Nicolas\\Documents\\USCS\\PE\\LogElec\\backend\\LogElec",
+  "sessionId": "20260330154254",
+  "version": "25"
+}}).
+2026-03-30T15:52:37.139Z [INFO] [Tool.invoke] do invoke.
+2026-03-30T15:52:50.984Z [INFO] [Tool.invoke]({result: {
+  "result": {
+    "name": "java",
+    "path": "C:\\Users\\Nicolas\\.jdk\\jdk-25\\bin",
+    "version": "25"
+  },
+  "message": "JDK 25 is installed at C:\\Users\\Nicolas\\.jdk\\jdk-25\\bin",
+  "telemetry": {
+    "tool": "JDK",
+    "version": "25"
+  }
+}}).
+2026-03-30T15:52:50.984Z [INFO] ----------------------invoked appmod-install-jdk----------------------
+2026-03-30T15:52:55.172Z [INFO] ---------------------prepare appmod-list-jdks----------------------
+2026-03-30T15:52:55.173Z [INFO] [Tool.prepareInvocation]({name: appmod-list-jdks, input: {
+  "projectPath": "c:\\Users\\Nicolas\\Documents\\USCS\\PE\\LogElec\\backend\\LogElec",
+  "sessionId": "20260330154254"
+}}).
+2026-03-30T15:52:55.173Z [INFO] [Tool.prepareInvocation] do prepare invocation.
+2026-03-30T15:52:55.174Z [INFO] [Tool.prepareInvocation]({result: {
+  "invocationMessage": "List jdks"
+}}).
+2026-03-30T15:52:55.174Z [INFO] ----------------------prepared appmod-list-jdks----------------------
+2026-03-30T15:52:55.218Z [INFO] ----------------------invoke appmod-list-jdks----------------------
+2026-03-30T15:52:55.219Z [INFO] [Tool.invoke]({name: appmod-list-jdks, input: {
+  "projectPath": "c:\\Users\\Nicolas\\Documents\\USCS\\PE\\LogElec\\backend\\LogElec",
+  "sessionId": "20260330154254"
+}}).
+2026-03-30T15:52:55.219Z [INFO] [Tool.invoke] do invoke.
+2026-03-30T15:52:55.306Z [INFO] [Tool.invoke]({result: {
+  "message": "We found following jdks in your system:\n\n1. Java 21.0.8\n   📁 Path: C:\\Program Files\\Java\\jdk-21\\bin\n   🏷️ Source: others\n\n2. Java 25.0.2\n   📁 Path: C:\\Users\\Nicolas\\.jdk\\jdk-25\\bin\n   🏷️ Source: install\n\nTotal: 2 JDK installation(s) found"
+}}).
+2026-03-30T15:52:55.306Z [INFO] ----------------------invoked appmod-list-jdks----------------------
