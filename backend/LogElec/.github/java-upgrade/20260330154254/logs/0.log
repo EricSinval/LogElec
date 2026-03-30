@@ -284,3 +284,265 @@
   "message": "We found following jdks in your system:\n\n1. Java 21.0.8\n   📁 Path: C:\\Program Files\\Java\\jdk-21\\bin\n   🏷️ Source: others\n\n2. Java 25.0.2\n   📁 Path: C:\\Users\\Nicolas\\.jdk\\jdk-25\\bin\n   🏷️ Source: install\n\nTotal: 2 JDK installation(s) found"
 }}).
 2026-03-30T15:52:55.306Z [INFO] ----------------------invoked appmod-list-jdks----------------------
+2026-03-30T15:53:33.932Z [INFO] ---------------------prepare appmod-report-event----------------------
+2026-03-30T15:53:33.932Z [INFO] [Tool.prepareInvocation]({name: appmod-report-event, input: {
+  "event": "environmentSetup",
+  "phase": "execute",
+  "projectPath": "c:\\Users\\Nicolas\\Documents\\USCS\\PE\\LogElec\\backend\\LogElec",
+  "sessionId": "20260330154254",
+  "status": "succeeded",
+  "details": {
+    "jdkPath": "C:\\Users\\Nicolas\\.jdk\\jdk-25\\bin",
+    "buildToolPath": "."
+  }
+}}).
+2026-03-30T15:53:33.932Z [INFO] [Tool.prepareInvocation] do prepare invocation.
+2026-03-30T15:53:33.933Z [INFO] [Tool.prepareInvocation]({result: {
+  "invocationMessage": "Report upgrade event"
+}}).
+2026-03-30T15:53:33.933Z [INFO] ----------------------prepared appmod-report-event----------------------
+2026-03-30T15:53:33.971Z [INFO] ----------------------invoke appmod-report-event----------------------
+2026-03-30T15:53:33.971Z [INFO] [Tool.invoke]({name: appmod-report-event, input: {
+  "event": "environmentSetup",
+  "phase": "execute",
+  "projectPath": "c:\\Users\\Nicolas\\Documents\\USCS\\PE\\LogElec\\backend\\LogElec",
+  "sessionId": "20260330154254",
+  "status": "succeeded",
+  "details": {
+    "jdkPath": "C:\\Users\\Nicolas\\.jdk\\jdk-25\\bin",
+    "buildToolPath": "."
+  }
+}}).
+2026-03-30T15:53:33.972Z [INFO] [Tool.invoke] do invoke.
+2026-03-30T15:53:33.972Z [INFO] Project c:\Users\Nicolas\Documents\USCS\PE\LogElec\backend\LogElec is a maven project, try to get java version from pom.xml
+2026-03-30T15:53:34.002Z [INFO] Project java version: 21
+2026-03-30T15:53:34.003Z [INFO] Maven project detected.
+2026-03-30T15:53:34.003Z [INFO] Build tool type: mvnw
+2026-03-30T15:53:34.003Z [INFO] JDK: {
+  "name": "java",
+  "path": "C:\\Users\\Nicolas\\.jdk\\jdk-25\\bin",
+  "version": "21"
+}
+2026-03-30T15:53:34.003Z [INFO] Build tool: {
+  "name": "mvnw",
+  "path": ".",
+  "version": ""
+}
+2026-03-30T15:53:34.004Z [INFO] Project config: {
+  "buildTool": {
+    "path": ".",
+    "name": "mvnw",
+    "version": ""
+  },
+  "jdk": {
+    "path": "C:\\Users\\Nicolas\\.jdk\\jdk-25\\bin",
+    "name": "java",
+    "version": "21"
+  },
+  "name": "LogElec",
+  "dir": "c:\\Users\\Nicolas\\Documents\\USCS\\PE\\LogElec\\backend\\LogElec"
+}
+2026-03-30T15:54:25.531Z [INFO] [Tool.invoke]({result: {
+  "message": "Event 'environmentSetup' reported!\nSession ID: 20260330154254,\nSession Dir: c:\\Users\\Nicolas\\Documents\\USCS\\PE\\LogElec\\backend\\LogElec\\.github\\java-upgrade\\20260330154254"
+}}).
+2026-03-30T15:54:25.532Z [INFO] ----------------------invoked appmod-report-event----------------------
+2026-03-30T15:57:13.003Z [INFO] ---------------------prepare appmod-report-event----------------------
+2026-03-30T15:57:13.003Z [INFO] [Tool.prepareInvocation]({name: appmod-report-event, input: {
+  "event": "buildCompleted",
+  "phase": "execute",
+  "projectPath": "c:\\Users\\Nicolas\\Documents\\USCS\\PE\\LogElec\\backend\\LogElec",
+  "sessionId": "20260330154254",
+  "status": "succeeded"
+}}).
+2026-03-30T15:57:13.003Z [INFO] [Tool.prepareInvocation] do prepare invocation.
+2026-03-30T15:57:13.004Z [INFO] [Tool.prepareInvocation]({result: {
+  "invocationMessage": "Report upgrade event"
+}}).
+2026-03-30T15:57:13.004Z [INFO] ----------------------prepared appmod-report-event----------------------
+2026-03-30T15:57:13.037Z [INFO] ----------------------invoke appmod-report-event----------------------
+2026-03-30T15:57:13.037Z [INFO] [Tool.invoke]({name: appmod-report-event, input: {
+  "event": "buildCompleted",
+  "phase": "execute",
+  "projectPath": "c:\\Users\\Nicolas\\Documents\\USCS\\PE\\LogElec\\backend\\LogElec",
+  "sessionId": "20260330154254",
+  "status": "succeeded"
+}}).
+2026-03-30T15:57:13.037Z [INFO] [Tool.invoke] do invoke.
+2026-03-30T15:57:13.037Z [INFO] Project c:\Users\Nicolas\Documents\USCS\PE\LogElec\backend\LogElec is a maven project, try to get java version from pom.xml
+2026-03-30T15:57:13.038Z [INFO] Project java version: 21
+2026-03-30T15:57:13.038Z [INFO] Maven project detected.
+2026-03-30T15:57:13.039Z [INFO] Build tool type: mvnw
+2026-03-30T15:57:13.065Z [INFO] JDK: {
+  "name": "java",
+  "path": "C:\\Program Files\\Java\\jdk-21\\bin",
+  "version": "21"
+}
+2026-03-30T15:57:13.066Z [INFO] Build tool: {
+  "name": "mvnw",
+  "path": ".",
+  "version": ""
+}
+2026-03-30T15:57:13.066Z [INFO] Project config: {
+  "buildTool": {
+    "path": ".",
+    "name": "mvnw",
+    "version": ""
+  },
+  "jdk": {
+    "path": "C:\\Program Files\\Java\\jdk-21\\bin",
+    "name": "java",
+    "version": "21"
+  },
+  "name": "LogElec",
+  "dir": "c:\\Users\\Nicolas\\Documents\\USCS\\PE\\LogElec\\backend\\LogElec"
+}
+2026-03-30T15:57:13.066Z [INFO] [MavenBuildTool] Getting all module coordinates of c:\Users\Nicolas\Documents\USCS\PE\LogElec\backend\LogElec
+2026-03-30T15:57:13.066Z [INFO] [MavenBuildTool] Getting effective POMs of c:\Users\Nicolas\Documents\USCS\PE\LogElec\backend\LogElec
+2026-03-30T15:57:13.067Z [INFO] [Environment] Running command (Java undefined): mvnw help:effective-pom -Doutput=effective-pom-9c90f918-8e14-42b3-99ab-455963673722.log
+[INFO] Scanning for projects...
+[WARNING] 
+[WARNING] Some problems were encountered while building the effective model for com.ads:LogElec:jar:0.0.1-SNAPSHOT
+[WARNING] 'dependencies.dependency.(groupId:artifactId:type:classifier)' must be unique: org.springframework.boot:spring-boot-starter-validation:jar -> duplicate declaration of version (?) @ line 80, column 17
+[WARNING] 
+[WARNING] It is highly recommended to fix these problems because they threaten the stability of your build.
+[WARNING] 
+[WARNING] For this reason, future Maven versions might no longer support building such malformed projects.
+[WARNING] 
+[INFO] 
+[INFO] --------------------------< com.ads:LogElec >---------------------------
+[INFO] Building LogElec 0.0.1-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- help:3.5.1:effective-pom (default-cli) @ LogElec ---
+[INFO] Effective-POM written to: c:\Users\Nicolas\Documents\USCS\PE\LogElec\backend\LogElec\effective-pom-9c90f918-8e14-42b3-99ab-455963673722.log
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  1.380 s
+[INFO] Finished at: 2026-03-30T12:57:16-03:00
+[INFO] ------------------------------------------------------------------------
+2026-03-30T15:57:16.508Z [INFO] [BaseBuildTool] Found 1 modules: .
+2026-03-30T15:57:16.531Z [INFO] [BaseBuildTool] Finish counting Java and class files
+2026-03-30T15:57:16.532Z [INFO] [MavenBuildTool] Cleaning c:\Users\Nicolas\Documents\USCS\PE\LogElec\backend\LogElec using Maven
+2026-03-30T15:57:16.533Z [INFO] [Environment] Running command (Java undefined): mvnw clean -q -B -fn
+2026-03-30T15:57:18.863Z [INFO] [Tool.invoke]({result: {
+  "message": "Event 'buildCompleted' reported!\nSession ID: 20260330154254,\nSession Dir: c:\\Users\\Nicolas\\Documents\\USCS\\PE\\LogElec\\backend\\LogElec\\.github\\java-upgrade\\20260330154254"
+}}).
+2026-03-30T15:57:18.863Z [INFO] ----------------------invoked appmod-report-event----------------------
+2026-03-30T15:57:18.870Z [INFO] ---------------------prepare appmod-report-event----------------------
+2026-03-30T15:57:18.871Z [INFO] [Tool.prepareInvocation]({name: appmod-report-event, input: {
+  "event": "testCompleted",
+  "phase": "execute",
+  "projectPath": "c:\\Users\\Nicolas\\Documents\\USCS\\PE\\LogElec\\backend\\LogElec",
+  "sessionId": "20260330154254",
+  "status": "succeeded"
+}}).
+2026-03-30T15:57:18.871Z [INFO] [Tool.prepareInvocation] do prepare invocation.
+2026-03-30T15:57:18.871Z [INFO] [Tool.prepareInvocation]({result: {
+  "invocationMessage": "Report upgrade event"
+}}).
+2026-03-30T15:57:18.871Z [INFO] ----------------------prepared appmod-report-event----------------------
+2026-03-30T15:57:18.903Z [INFO] ----------------------invoke appmod-report-event----------------------
+2026-03-30T15:57:18.904Z [INFO] [Tool.invoke]({name: appmod-report-event, input: {
+  "event": "testCompleted",
+  "phase": "execute",
+  "projectPath": "c:\\Users\\Nicolas\\Documents\\USCS\\PE\\LogElec\\backend\\LogElec",
+  "sessionId": "20260330154254",
+  "status": "succeeded"
+}}).
+2026-03-30T15:57:18.904Z [INFO] [Tool.invoke] do invoke.
+2026-03-30T15:57:18.904Z [INFO] Project c:\Users\Nicolas\Documents\USCS\PE\LogElec\backend\LogElec is a maven project, try to get java version from pom.xml
+2026-03-30T15:57:18.905Z [INFO] Project java version: 21
+2026-03-30T15:57:18.905Z [INFO] Maven project detected.
+2026-03-30T15:57:18.906Z [INFO] Build tool type: mvnw
+2026-03-30T15:57:18.925Z [INFO] JDK: {
+  "name": "java",
+  "path": "C:\\Program Files\\Java\\jdk-21\\bin",
+  "version": "21"
+}
+2026-03-30T15:57:18.926Z [INFO] Build tool: {
+  "name": "mvnw",
+  "path": ".",
+  "version": ""
+}
+2026-03-30T15:57:18.926Z [INFO] Project config: {
+  "buildTool": {
+    "path": ".",
+    "name": "mvnw",
+    "version": ""
+  },
+  "jdk": {
+    "path": "C:\\Program Files\\Java\\jdk-21\\bin",
+    "name": "java",
+    "version": "21"
+  },
+  "name": "LogElec",
+  "dir": "c:\\Users\\Nicolas\\Documents\\USCS\\PE\\LogElec\\backend\\LogElec"
+}
+2026-03-30T15:57:18.926Z [INFO] [BaseBuildTool] Gathering test results...
+2026-03-30T15:57:18.933Z [INFO] [BaseBuildTool] Summarizing surefire reports.
+2026-03-30T15:57:18.933Z [INFO] [Tool.invoke]({result: {
+  "message": "Event 'testCompleted' reported!\nSession ID: 20260330154254,\nSession Dir: c:\\Users\\Nicolas\\Documents\\USCS\\PE\\LogElec\\backend\\LogElec\\.github\\java-upgrade\\20260330154254"
+}}).
+2026-03-30T15:57:18.934Z [INFO] ----------------------invoked appmod-report-event----------------------
+2026-03-30T15:57:23.570Z [INFO] ---------------------prepare appmod-report-event----------------------
+2026-03-30T15:57:23.571Z [INFO] [Tool.prepareInvocation]({name: appmod-report-event, input: {
+  "event": "baselineSetup",
+  "phase": "execute",
+  "projectPath": "c:\\Users\\Nicolas\\Documents\\USCS\\PE\\LogElec\\backend\\LogElec",
+  "sessionId": "20260330154254",
+  "status": "succeeded"
+}}).
+2026-03-30T15:57:23.571Z [INFO] [Tool.prepareInvocation] do prepare invocation.
+2026-03-30T15:57:23.571Z [INFO] [Tool.prepareInvocation]({result: {
+  "invocationMessage": "Report upgrade event"
+}}).
+2026-03-30T15:57:23.571Z [INFO] ----------------------prepared appmod-report-event----------------------
+2026-03-30T15:57:23.604Z [INFO] ----------------------invoke appmod-report-event----------------------
+2026-03-30T15:57:23.605Z [INFO] [Tool.invoke]({name: appmod-report-event, input: {
+  "event": "baselineSetup",
+  "phase": "execute",
+  "projectPath": "c:\\Users\\Nicolas\\Documents\\USCS\\PE\\LogElec\\backend\\LogElec",
+  "sessionId": "20260330154254",
+  "status": "succeeded"
+}}).
+2026-03-30T15:57:23.605Z [INFO] [Tool.invoke] do invoke.
+2026-03-30T15:57:23.605Z [INFO] [Tool.invoke]({result: {
+  "message": "Event 'baselineSetup' reported!\nSession ID: 20260330154254,\nSession Dir: c:\\Users\\Nicolas\\Documents\\USCS\\PE\\LogElec\\backend\\LogElec\\.github\\java-upgrade\\20260330154254"
+}}).
+2026-03-30T15:57:23.605Z [INFO] ----------------------invoked appmod-report-event----------------------
+2026-03-30T15:57:59.135Z [INFO] ---------------------prepare appmod-report-event----------------------
+2026-03-30T15:57:59.135Z [INFO] [Tool.prepareInvocation]({name: appmod-report-event, input: {
+  "details": {
+    "stepNumber": 3,
+    "stepTitle": "Upgrade Java to 25 and Maven Wrapper to 4.0.x"
+  },
+  "event": "upgradeStepStarted",
+  "phase": "execute",
+  "projectPath": "c:\\Users\\Nicolas\\Documents\\USCS\\PE\\LogElec\\backend\\LogElec",
+  "sessionId": "20260330154254",
+  "status": "succeeded"
+}}).
+2026-03-30T15:57:59.136Z [INFO] [Tool.prepareInvocation] do prepare invocation.
+2026-03-30T15:57:59.136Z [INFO] [Tool.prepareInvocation]({result: {
+  "invocationMessage": "Report upgrade event"
+}}).
+2026-03-30T15:57:59.136Z [INFO] ----------------------prepared appmod-report-event----------------------
+2026-03-30T15:57:59.248Z [INFO] ----------------------invoke appmod-report-event----------------------
+2026-03-30T15:57:59.249Z [INFO] [Tool.invoke]({name: appmod-report-event, input: {
+  "details": {
+    "stepNumber": 3,
+    "stepTitle": "Upgrade Java to 25 and Maven Wrapper to 4.0.x"
+  },
+  "event": "upgradeStepStarted",
+  "phase": "execute",
+  "projectPath": "c:\\Users\\Nicolas\\Documents\\USCS\\PE\\LogElec\\backend\\LogElec",
+  "sessionId": "20260330154254",
+  "status": "succeeded"
+}}).
+2026-03-30T15:57:59.250Z [INFO] [Tool.invoke] do invoke.
+2026-03-30T15:57:59.251Z [INFO] [Tool.invoke]({result: {
+  "message": "Event 'upgradeStepStarted' reported!\nSession ID: 20260330154254,\nSession Dir: c:\\Users\\Nicolas\\Documents\\USCS\\PE\\LogElec\\backend\\LogElec\\.github\\java-upgrade\\20260330154254"
+}}).
+2026-03-30T15:57:59.251Z [INFO] ----------------------invoked appmod-report-event----------------------
