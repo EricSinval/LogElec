@@ -25,8 +25,9 @@ function formatarDataHora(valor) {
 
 function labelStatus(status) {
     if (status === 'AGENDADA') return 'Pendente';
-    if (status === 'CONFIRMADA') return 'Aceito';
-    if (status === 'CANCELADA') return 'Recusado';
+    if (status === 'CONFIRMADA') return 'Em andamento';
+    if (status === 'CANCELADA') return 'Cancelado';
+    if (status === 'RECUSADO') return 'Recusado';
     if (status === 'REALIZADA') return 'Concluído';
     return status || 'Não informado';
 }
@@ -34,7 +35,8 @@ function labelStatus(status) {
 function classeStatus(status) {
     if (status === 'AGENDADA') return 'pendente';
     if (status === 'CONFIRMADA') return 'aceito';
-    if (status === 'CANCELADA') return 'recusado';
+    if (status === 'CANCELADA') return 'cancelado';
+    if (status === 'RECUSADO') return 'recusado';
     if (status === 'REALIZADA') return 'concluido';
     return 'pendente';
 }
@@ -85,21 +87,20 @@ function atualizarContadores(categorias) {
 function atualizarLinkMensagens(categorias) {
     const link = document.getElementById('linkMensagens');
     if (!link) return;
-    const possuiContatoLiberado = categorias.andamento.length > 0 || categorias.historico.some(a => a.status === 'REALIZADA') || categorias.propostas.some(a => a.status === 'CONFIRMADA');
+    const possuiContatoLiberado = categorias.andamento.length > 0 || categorias.historico.some(a => a.status === 'REALIZADA');
     link.classList.toggle('disabled-link', !possuiContatoLiberado);
 }
 
 function construirCategorias(coletora, solicitante) {
-    const agora = new Date();
     const todos = [...coletora, ...solicitante].reduce((acc, item) => {
         if (!acc.some(x => x.id === item.id)) acc.push(item);
         return acc;
     }, []);
 
     const aguardando = coletora.filter(a => a.status === 'AGENDADA');
-    const propostas = solicitante.filter(a => ['AGENDADA', 'CONFIRMADA', 'CANCELADA'].includes(a.status));
-    const andamento = todos.filter(a => a.status === 'CONFIRMADA' && new Date(a.dataHora) <= agora);
-    const historico = todos.filter(a => a.status === 'REALIZADA' || a.status === 'CANCELADA');
+    const propostas = solicitante.filter(a => a.status === 'AGENDADA');
+    const andamento = todos.filter(a => a.status === 'CONFIRMADA');
+    const historico = todos.filter(a => ['REALIZADA', 'CANCELADA', 'RECUSADO'].includes(a.status));
 
     return { aguardando, propostas, andamento, historico, todos };
 }
@@ -177,7 +178,7 @@ function renderAcoesAgendamento(agendamento) {
 
     if (agendamento.status === 'AGENDADA' && isColetora) {
         acoes.push('<button class="acao-primaria" onclick="atualizarStatusAgendamento(' + agendamento.id + ',\'confirmar\')">Aceitar proposta</button>');
-        acoes.push('<button class="acao-perigo" onclick="atualizarStatusAgendamento(' + agendamento.id + ',\'cancelar\')">Recusar proposta</button>');
+        acoes.push('<button class="acao-perigo" onclick="atualizarStatusAgendamento(' + agendamento.id + ',\'recusar\')">Recusar proposta</button>');
     }
 
     if (agendamento.status === 'AGENDADA' && isSolicitante) {
@@ -393,7 +394,10 @@ function confirmarAgendamento() {
         })
         .then(async () => {
             await carregarAgendamentosPainel();
-            showPopup(`Proposta enviada para ${diaSelecionado} às ${horarioSelecionado}.`, { type: 'success' });
+            const nomeEmpresa = postagemSelecionada && postagemSelecionada.empresa
+                ? (postagemSelecionada.empresa.nomeRazao || postagemSelecionada.empresa.nome || 'Empresa')
+                : 'Empresa';
+            showPopup(`Proposta enviada para empresa ${nomeEmpresa}, aguarde uma resposta e monitore em "Agendamento"`, { type: 'success' });
         })
         .catch(err => {
             showPopup(err.message || 'Erro ao criar agendamento', { type: 'error' });

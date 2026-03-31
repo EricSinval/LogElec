@@ -4,6 +4,18 @@
         "/^\\$files = Get-ChildItem backend,frontend -Recurse -File \\| Where-Object \\{ \\$_\\.FullName -notmatch '\\\\\\\\target\\\\\\\\\\|\\\\\\\\\\.git\\\\\\\\\\|\\\\\\\\node_modules\\\\\\\\' -and @\\('\\.java','\\.js','\\.css'\\) -contains \\$_\\.Extension\\.ToLower\\(\\) \\}; foreach\\(\\$f in \\$files\\)\\{ Select-String -Path \\$f\\.FullName -Pattern '\\^\\\\s\\*//\\|\\^\\\\s\\*/\\\\\\*\\|\\^\\\\s\\*\\\\\\*/' \\| ForEach-Object \\{ \"\\{0\\}:\\{1\\}:\\{2\\}\" -f \\$f\\.FullName\\.Replace\\(\\(Get-Location\\)\\.Path\\+'\\\\',''\\), \\$_\\.LineNumber, \\$_\\.Line\\.Trim\\(\\) \\} \\} \\| Select-Object -First 200$/": {
             "approve": true,
             "matchCommandLine": true
-        }
-    }
+        },
+        "git checkout": true,
+        "git commit": true,
+        "git rev-parse": true,
+        "mysql": true,
+        "/^docker --version; if \\(\\$LASTEXITCODE -eq 0\\) \\{ docker compose ps \\}$/": {
+            "approve": true,
+            "matchCommandLine": true
+        },
+        ".\\mvnw.cmd": true,
+        "java": true,
+        "docker compose": true
+    },
+    "java.compile.nullAnalysis.mode": "disabled"
 }

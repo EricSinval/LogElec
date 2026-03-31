@@ -103,10 +103,10 @@ public class AgendamentoService {
         }
 
         
-        List<Agendamento> conflitos = agendamentoRepository.findByEmpresaColetoraAndDataHoraAndStatusNot(
-                empresaColetora,
-                dataHoraAgendamento,
-                StatusAgendamento.CANCELADA
+        List<Agendamento> conflitos = agendamentoRepository.findByEmpresaColetoraAndDataHoraAndStatusNotIn(
+            empresaColetora,
+            dataHoraAgendamento,
+            List.of(StatusAgendamento.CANCELADA, StatusAgendamento.RECUSADO)
         );
 
         if (!conflitos.isEmpty()) {
@@ -139,6 +139,17 @@ public class AgendamentoService {
         return agendamentoRepository.save(agendamento);
     }
     
+    
+    public Agendamento recusarAgendamento(Long id) {
+        Agendamento agendamento = findById(id);
+        if (agendamento.getStatus() != StatusAgendamento.AGENDADA) {
+            throw new RuntimeException("Só é possível recusar agendamentos com status AGENDADA");
+        }
+        agendamento.setStatus(StatusAgendamento.RECUSADO);
+        agendamento.setUpdatedAt(LocalDateTime.now());
+        return agendamentoRepository.save(agendamento);
+    }
+
     
     public Agendamento cancelarAgendamento(Long id) {
         Agendamento agendamento = findById(id);

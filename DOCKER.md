@@ -30,7 +30,7 @@ Se subir sem erro, acessar:
 
 - Frontend: `http://localhost:8081`
 - Backend: `http://localhost:8080`
-- Banco (MySQL): `localhost:3306` (ou a porta definida no `.env`)
+- Banco (MySQL): `localhost:3307` (ou a porta definida no `.env`)
 
 ---
 

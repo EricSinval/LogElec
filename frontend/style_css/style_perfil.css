@@ -3,10 +3,13 @@
   --card-bg: #ffffff;
   --text: #1f2937;
   --muted: #6b7280;
+  --text-disabled: #6b7280;
   --primary: #0F726C;
   --primary-600: #0c5e59;
+  --primary-light: #67a48f;
   --secondary: #f3f4f6;
   --secondary-hover: #e5e7eb;
+  --input-disabled-bg: #f9fafb;
   --ring: rgba(15,114,108,0.35);
   --border: #e5e7eb;
   --shadow: 0 10px 30px rgba(0,0,0,0.12);
@@ -203,6 +206,12 @@ input, select {
 input:disabled {
   background: #f9fafb;
   color: var(--muted);
+  cursor: not-allowed;
+}
+
+select:disabled {
+  background: var(--input-disabled-bg);
+  color: var(--text-disabled);
   cursor: not-allowed;
 }
 

@@ -43,6 +43,12 @@ public interface AgendamentoRepository extends JpaRepository<Agendamento, Long> 
         LocalDateTime dataHora,
         StatusAgendamento status
     );
+
+    List<Agendamento> findByEmpresaColetoraAndDataHoraAndStatusNotIn(
+        Empresa empresaColetora,
+        LocalDateTime dataHora,
+        List<StatusAgendamento> statuses
+    );
     
     
     @Query("SELECT a FROM Agendamento a WHERE a.dataHora > :dataAtual ORDER BY a.dataHora ASC")

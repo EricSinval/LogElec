@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Rodapé</title>
   <link rel="stylesheet" href="/style_css/stylesrodape.css">
+  <link rel="stylesheet" href="/style_css/styles_system.css">
   
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
@@ -25,7 +26,7 @@
       
       <div class="footer-section">
         <h3>Idioma</h3>
-        <select>
+        <select aria-label="Selecionar idioma">
           <option selected>Português</option>
           <option>Inglês</option>
           <option>Espanhol</option>
@@ -36,7 +37,7 @@
       <div class="footer-section">
         <h3>Entre em contato conosco!</h3>
         <form class="contact-form">
-          <input type="email" placeholder="Seu email aqui" required>
+          <input type="email" placeholder="Seu email aqui" aria-label="Seu e-mail para contato" autocomplete="email" inputmode="email" required>
           <button type="submit">Enviar</button>
         </form>
       </div>

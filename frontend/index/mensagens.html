@@ -7,13 +7,14 @@
   <link rel="stylesheet" href="../style_css/style_mensagens.css">
   <link rel="stylesheet" href="../style_css/styles_popup.css">
   <link rel="stylesheet" href="../style_css/stylescabecalho.css">
+  <link rel="stylesheet" href="../style_css/styles_system.css">
   <script defer src="../script/cabecalho.js"></script>
   <script defer src="../script/mensagens.js"></script>
 </head>
 <body>
   <header class="topbar">
     <a href="postagens.html" class="logo">
-      <img src="../img/Logo.png" alt="Logo LogElec" />
+      <img src="../img/LOGO.png" alt="Logo LogElec" />
       <span class="logotext">LogElec</span>
     </a>
 
@@ -51,7 +52,7 @@
       </div>
 
       <form id="formMensagem" class="area-envio" style="display:none;">
-        <input id="inputMensagem" type="text" maxlength="1000" placeholder="Digite sua mensagem..." required>
+        <input id="inputMensagem" type="text" maxlength="1000" placeholder="Digite sua mensagem..." aria-label="Digite sua mensagem" autocomplete="off" required>
         <button type="submit">Enviar</button>
       </form>
     </section>

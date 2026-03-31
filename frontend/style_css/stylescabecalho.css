@@ -18,6 +18,9 @@
   display: flex;
   align-items: center;
   gap: 10px;
+  min-height: 62px;
+  min-width: 240px;
+  text-decoration: none;
 }
 
 .logo img {
@@ -97,6 +100,14 @@ margin-right: 10px;
   color: #D1D5DB;
 }
 
+.search-bar input:focus-visible,
+.dropdown a:focus-visible,
+.icon:focus-visible,
+.logo:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.92);
+  outline-offset: 3px;
+}
+
 
 .header-icons {
 display: flex;
@@ -155,6 +166,10 @@ object-fit: contain;
 
 .dropdown a:last-child {
   border-bottom: none;
+}
+
+.dropdown.active {
+  display: flex;
 }
 
 
@@ -264,4 +279,80 @@ footer {
 
 .social-icons a:hover {
   background-color: #0F726C;
+}
+
+@media (max-width: 960px) {
+  .topbar {
+    height: auto;
+    padding: 14px 16px;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .logo {
+    min-width: auto;
+    min-height: auto;
+    gap: 12px;
+  }
+
+  .logo img,
+  .logotext {
+    position: static;
+    width: auto;
+    height: auto;
+  }
+
+  .logo img {
+    width: 52px;
+    height: 52px;
+  }
+
+  .logotext {
+    font-size: 34px;
+    line-height: 1;
+  }
+
+  .search-bar {
+    order: 3;
+    width: 100%;
+    max-width: none;
+    margin: 0;
+  }
+
+  .search-bar input {
+    width: 100%;
+  }
+
+  .header-icons {
+    margin-left: auto;
+  }
+
+  .header-icons img {
+    height: 72px;
+  }
+
+  .dropdown {
+    top: calc(100% + 8px);
+    right: 0;
+  }
+}
+
+@media (max-width: 640px) {
+  .topbar {
+    padding: 12px;
+  }
+
+  .logotext {
+    font-size: 28px;
+  }
+
+  .header-icons {
+    width: 100%;
+    justify-content: flex-end;
+  }
+
+  .dropdown {
+    width: min(100%, 280px);
+    right: 0;
+  }
 }

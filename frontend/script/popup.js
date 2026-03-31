@@ -2,21 +2,59 @@ function ensurePopupRoot() {
   if (document.getElementById('ui-popup-root')) return;
   const root = document.createElement('div');
   root.id = 'ui-popup-root';
+  root.style.position = 'fixed';
+  root.style.inset = '0';
+  root.style.zIndex = '2147483647';
+  root.style.pointerEvents = 'none';
   document.body.appendChild(root);
+}
+
+function resolveFrontendPath(path) {
+  const normalizedPath = String(path || '').replace(/^\/+/, '');
+  const protocol = window.location.protocol || 'http:';
+  const hostname = window.location.hostname || 'localhost';
+  const isLegacyLiveServer = window.location.port === '5500';
+  const port = isLegacyLiveServer ? '8081' : window.location.port;
+  const origin = `${protocol}//${hostname}${port ? `:${port}` : ''}`;
+
+  return `${origin}/index/${normalizedPath}`;
 }
 
 let activePopupOverlay = null;
 
+function inferPopupButtonClass(buttonConfig, index, total, type) {
+  if (buttonConfig.className && String(buttonConfig.className).trim()) {
+    return String(buttonConfig.className).trim();
+  }
+
+  const label = String(buttonConfig.text || '').toLowerCase();
+  const isDanger = /(excluir|deletar|apagar|remover)/.test(label);
+  const isSecondary = /(cancelar|voltar|fechar|manter)/.test(label);
+
+  if (isDanger) return 'ui-btn-danger';
+  if (isSecondary) return 'ui-btn-secondary';
+  if (total > 1 && index === 0) return 'ui-btn-secondary';
+  if (type === 'warning' && total > 1 && index === total - 1) return 'ui-btn-primary';
+
+  return 'ui-btn-primary';
+}
+
 function createPopupElement(message, options = {}) {
-  const { type = 'info', buttons = [], showCloseButton = true, closeOnBackdrop = true } = options;
+  const { type = 'info', buttons = [], showCloseButton = true, closeOnBackdrop = true, onClose = null } = options;
 
   const overlay = document.createElement('div');
   overlay.className = 'ui-popup-overlay';
   overlay.setAttribute('role', 'dialog');
   overlay.setAttribute('aria-modal', 'true');
+  overlay.style.zIndex = '2147483647';
+  overlay.style.pointerEvents = 'auto';
+  overlay._onClose = typeof onClose === 'function' ? onClose : null;
+  overlay._onCloseCalled = false;
 
   const modal = document.createElement('div');
   modal.className = 'ui-popup-modal ' + (type ? `ui-${type}` : '');
+  modal.style.position = 'relative';
+  modal.style.zIndex = '2147483647';
 
   if (showCloseButton) {
     const closeBtn = document.createElement('button');
@@ -43,10 +81,10 @@ function createPopupElement(message, options = {}) {
     ok.addEventListener('click', () => closePopup(overlay));
     actions.appendChild(ok);
   } else {
-    buttons.forEach(b => {
+    buttons.forEach((b, index) => {
       const btn = document.createElement('button');
       btn.type = 'button';
-      btn.className = 'ui-btn ' + (b.className || '');
+      btn.className = 'ui-btn ' + inferPopupButtonClass(b, index, buttons.length, type);
       btn.textContent = b.text || 'OK';
       btn.addEventListener('click', () => {
         try { if (typeof b.onClick === 'function') b.onClick(); } catch (e) { console.error(e); }
@@ -99,7 +137,13 @@ function closePopup(overlay) {
     activePopupOverlay = null;
   }
   overlay.classList.add('ui-popup-hide');
-  setTimeout(() => { if (overlay.parentNode) overlay.parentNode.removeChild(overlay); }, 200);
+  setTimeout(() => {
+    if (overlay.parentNode) overlay.parentNode.removeChild(overlay);
+    if (!overlay._onCloseCalled && typeof overlay._onClose === 'function') {
+      overlay._onCloseCalled = true;
+      try { overlay._onClose(); } catch (error) { console.error(error); }
+    }
+  }, 200);
 }
 
 
@@ -133,3 +177,4 @@ function showPopup(message, options = {}) {
 
 window.showPopup = showPopup;
 window.closePopup = closePopup;
+window.resolveFrontendPath = resolveFrontendPath;

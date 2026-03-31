@@ -2,10 +2,12 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>LogElec - Cadastro</title>
   <link rel="stylesheet" href="../style_css/style_cadastro.css">
   <link rel="stylesheet" href="../style_css/styles_popup.css">
   <link rel="stylesheet" href="../style_css/stylescabecalho.css">
+  <link rel="stylesheet" href="../style_css/styles_system.css">
   <script defer src="../script/cabecalho.js"></script>
 </head>
 <body>
@@ -24,19 +26,29 @@
           <div class="tipo-erro" id="tipoError"></div>
         </div>
 
-        <input type="text" id="nomeRazao" name="nomeRazao" placeholder="Nome/Razão Social" required>
-        <input type="text" id="cnpj" name="cnpj" placeholder="CNPJ" required>
-        <input type="email" id="email" name="email" placeholder="E-mail" required>
-        <input type="password" id="senha" name="senha" placeholder="Senha" required>
+        <label for="nomeRazao">Nome/Razão Social</label>
+        <input type="text" id="nomeRazao" name="nomeRazao" placeholder="Nome/Razão Social" autocomplete="organization" required>
 
-        <input type="text" id="endereco" name="endereco" placeholder="Endereço" required>
-        <input type="tel" id="telefone" name="telefone" placeholder="Telefone">
+        <label for="cnpj">CNPJ</label>
+        <input type="text" id="cnpj" name="cnpj" placeholder="CNPJ" inputmode="numeric" autocomplete="off" required>
+
+        <label for="email">E-mail</label>
+        <input type="email" id="email" name="email" placeholder="E-mail" autocomplete="email" inputmode="email" required>
+
+        <label for="senha">Senha</label>
+        <input type="password" id="senha" name="senha" placeholder="Senha" autocomplete="new-password" required>
+
+        <label for="endereco">Endereço</label>
+        <input type="text" id="endereco" name="endereco" placeholder="Endereço" autocomplete="street-address" required>
+
+        <label for="telefone">Telefone</label>
+        <input type="tel" id="telefone" name="telefone" placeholder="Telefone" autocomplete="tel" inputmode="tel">
         <button type="submit">Cadastrar</button>
       </form>
     </div>
   </div>
 
   <script src="../script/popup.js"></script>
-  <script src="../script/cadastro.js"></script>
+  <script src="../script/Cadastro.js"></script>
 </body>
 </html>

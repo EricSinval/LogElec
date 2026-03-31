@@ -15,6 +15,18 @@ function truncarTexto(texto, limite = 140) {
     return `${resumo.trim()}...`;
 }
 
+function formatarPeso(peso) {
+    if (peso === null || peso === undefined || peso === '') return 'Nao informado';
+
+    const valor = Number(peso);
+    if (Number.isNaN(valor)) return 'Nao informado';
+
+    return `${valor.toLocaleString('pt-BR', {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 2
+    })} kg`;
+}
+
 
 function verificarLogin() {
     const empresaLogada = localStorage.getItem('empresaLogada');
@@ -132,30 +144,29 @@ function exibirPostagens(postagens) {
         const empresa = postagem.empresa || {};
         const nomeEmpresa = empresa.nomeRazao || empresa.nome || 'Empresa';
         const tipoResiduo = postagem.tipoResiduo || 'Não especificado';
-        const endereco = postagem.enderecoRetirada || 'Não informado';
         const status = postagem.status || 'ABERTA';
         const descricao = postagem.descricao || 'Sem descrição disponível';
-        const enderecoResumo = truncarTexto(endereco, 90);
-        const descricaoResumo = truncarTexto(descricao, 140);
+        const descricaoResumo = descricao;
+        const pesoFormatado = formatarPeso(postagem.peso);
         
         
-        const imagemPadrao = '../img/sem-imagem.png'; 
+        const imagemPadrao = '../img/sem-imagem.png';
         const imagemPorTipo = obterImagemPorTipoResiduo(tipoResiduo);
         const imagem = (empresa.tipo === 'COLETA')
-            ? (postagem.fotoEmpresa || imagemPadrao) 
-            : (postagem.fotoResiduos || imagemPadrao);   
+            ? (postagem.fotoEmpresa || imagemPorTipo || imagemPadrao)
+            : (postagem.fotoResiduos || imagemPorTipo || imagemPadrao);
         
         return `
         <div class="card" data-id="${postagem.id}">
-                <img src="${imagem}" alt="${tipoResiduo}" style="object-fit: cover; width: 100%; height: 250px;">
+                <img src="${imagem}" alt="${tipoResiduo}" class="card-media">
             <div class="card-header">
-                <h3 style="text-align:left; flex:1;">${nomeEmpresa}</h3>
-                <span class="tipo-empresa ${empresa.tipo === 'DESCARTE' ? 'descarte' : 'coleta'}" style="margin-left:auto;">${empresa.tipo === 'DESCARTE' ? 'Descarte' : 'Coleta'}</span>
+                <h3>${nomeEmpresa}</h3>
             </div>
             <div class="card-content">
+                <p><strong>Tipo de residuos:</strong> ${tipoResiduo}</p>
+                <p><strong>Peso:</strong> ${pesoFormatado}</p>
+                <p class="descricao-resumo"><strong>Descrição:</strong> ${descricaoResumo}</p>
                 <p class="status-linha"><strong>Status:</strong> <span class="status ${status.toLowerCase()}">${formatarStatus(status)}</span></p>
-                <p class="localizacao-resumo" title="${endereco.replace(/"/g, '&quot;')}"><strong>Localização:</strong> ${enderecoResumo}</p>
-                <p class="descricao-resumo" title="${descricao.replace(/"/g, '&quot;')}"><strong>Descrição:</strong> ${descricaoResumo}</p>
             </div>
             <div class="card-actions">
                 <button onclick="verDetalhesPostagem(${postagem.id})" class="btn-detalhes">
@@ -195,8 +206,10 @@ function obterImagemPorTipoResiduo(tipoResiduo) {
 function formatarStatus(status) {
     const statusMap = {
         'ABERTA': 'Aberta',
-        'CANCELADA': 'Cancelada', 
-        'FINALIZADA': 'Finalizada'
+        'PAUSADA': 'Pausada',
+        'ENCERRADA': 'Encerrada',
+        'CANCELADA': 'Cancelada',
+        'FINALIZADA': 'Encerrada'
     };
     return statusMap[status] || status;
 }
@@ -227,10 +240,13 @@ function solicitarAgendamento(postagemId) {
 
 function confirmarAgendamento(postagemId, empresaId) {
     console.log('Confirmando agendamento:', { postagemId, empresaId });
-    
-    
-    
-    showPopup('Solicitação de agendamento enviada com sucesso! A empresa será notificada.', { 
+
+    const postagem = todasPostagens.find(p => p.id === postagemId);
+    const nomeEmpresa = postagem && postagem.empresa
+        ? (postagem.empresa.nomeRazao || postagem.empresa.nome || 'Empresa')
+        : 'Empresa';
+
+    showPopup(`Proposta enviada para empresa ${nomeEmpresa}, aguarde uma resposta e monitore em "Agendamento"`, { 
         type: 'success',
         buttons: [
             {
@@ -607,6 +623,20 @@ async function preencherHorariosPopup(postagem) {
     }
 }
 
+function exibirAvisoAgendamentoERetomar(mensagem) {
+    if (!postagemAgendamento || !postagemAgendamento.id) {
+        showPopup(mensagem, { type: 'info' });
+        return;
+    }
+
+    const postagemId = postagemAgendamento.id;
+    fecharPopupAgendamento();
+    showPopup(mensagem, {
+        type: 'info',
+        onClose: () => abrirPopupAgendamento(postagemId)
+    });
+}
+
 
 async function confirmarAgendamentoPopup() {
     const diaSelect = document.getElementById('diaAgendamento');
@@ -614,8 +644,18 @@ async function confirmarAgendamentoPopup() {
     const diaSelecionado = diaSelect.value;
     const horarioSelecionado = horarioSelect.value;
     
-    if (!diaSelecionado || !horarioSelecionado || !postagemAgendamento) {
-        showPopup('⚠️ Selecione um dia e horário', { type: 'info' });
+    if (!postagemAgendamento) {
+        showPopup('⚠️ Não foi possível identificar a postagem para o agendamento', { type: 'error' });
+        return;
+    }
+
+    if (!diaSelecionado) {
+        exibirAvisoAgendamentoERetomar('⚠️ Selecione um dia antes de enviar uma proposta de agendamento');
+        return;
+    }
+
+    if (!horarioSelecionado) {
+        exibirAvisoAgendamentoERetomar('⚠️ Selecione um horário antes de enviar uma proposta de agendamento');
         return;
     }
     
@@ -650,8 +690,11 @@ async function confirmarAgendamentoPopup() {
         if (response.ok) {
             const data = await response.json();
             console.log('Agendamento criado:', data);
+            const empresa = postagemAgendamento.empresa || {};
+            const nomeEmpresa = empresa.nomeRazao || empresa.nome || 'não informada';
             fecharPopupAgendamento();
-            showPopup(`Agendamento confirmado para ${diaSelect.options[diaSelect.selectedIndex].text} às ${horarioSelecionado}!`, { 
+
+            showPopup(`Proposta enviada para a empresa ${nomeEmpresa}, aguarde confirmação de agendamento na tela de agendamentos`, {
                 type: 'success'
             });
         } else {

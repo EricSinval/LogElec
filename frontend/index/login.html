@@ -2,9 +2,11 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>LogElec - Login</title>
   <link rel="stylesheet" href="../style_css/style_login.css">
   <link rel="stylesheet" href="../style_css/styles_popup.css">
+  <link rel="stylesheet" href="../style_css/styles_system.css">
 </head>
 <body>
 
@@ -17,18 +19,18 @@
     <form id="loginForm">
       <label for="email">Email</label>
       
-      <input type="email" id="email" name="email" placeholder="Insira" required>
+      <input type="email" id="email" name="email" placeholder="Insira seu e-mail" autocomplete="email" inputmode="email" required>
 
       <label for="senha">Senha</label>
       
-      <input type="password" id="senha" name="senha" placeholder="Insira" required>
+      <input type="password" id="senha" name="senha" placeholder="Insira sua senha" autocomplete="current-password" required>
       
-      <button type="submit">Enviar</button>
+      <button type="submit">Entrar</button>
       <a href="esqueci_senha.html" style="display:block;text-align:center;margin-top:12px;font-size:14px;color:#0F726C;text-decoration:none;">Esqueci minha senha</a>
     </form>
   </div>
 
   <script src="../script/popup.js"></script>
-  <script src="../script/login.js"></script>
+  <script src="../script/Login.js"></script>
 </body>
 </html>

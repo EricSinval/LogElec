@@ -219,8 +219,7 @@ function pedirSenhaParaExclusao() {
     showPopup(
         '<strong>Confirme sua identidade</strong><br><br>' +
         'Digite sua senha para excluir definitivamente a conta:<br>' +
-        '<input type="password" id="senhaConfirmacaoExclusao" placeholder="Sua senha" ' +
-        'style="width:100%;padding:10px;border:1px solid #ccc;border-radius:6px;font-size:14px;margin-top:10px;box-sizing:border-box;">',
+        '<input type="password" id="senhaConfirmacaoExclusao" class="ui-popup-inline-input" placeholder="Sua senha" autocomplete="current-password">',
         {
             type: 'error',
             showCloseButton: true,

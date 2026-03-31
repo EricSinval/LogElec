@@ -33,6 +33,20 @@ function obterTipoEmpresa() {
     return (empresaLogadaAtual && (empresaLogadaAtual.tipo || empresaLogadaAtual.tipoEmpresa)) || '';
 }
 
+function normalizarStatusPostagem(status) {
+    const statusNormalizado = (status || 'ABERTA').toString().toUpperCase();
+
+    if (statusNormalizado === 'FECHADA' || statusNormalizado === 'FINALIZADA') {
+        return 'ENCERRADA';
+    }
+
+    if (['ABERTA', 'PAUSADA', 'ENCERRADA', 'CANCELADA'].includes(statusNormalizado)) {
+        return statusNormalizado;
+    }
+
+    return 'ABERTA';
+}
+
 function configurarCamposPorTipo() {
     const isColeta = obterTipoEmpresa() === 'COLETA';
     const labelEndereco = document.querySelector('label[for="enderecoRetirada"]');
@@ -132,7 +146,7 @@ function preencherFormulario(postagem) {
     document.getElementById('enderecoRetirada').value = postagem.enderecoRetirada || '';
     document.getElementById('horaInicio').value = postagem.horaInicio || '';
     document.getElementById('horaFim').value = postagem.horaFim || '';
-    document.getElementById('status').value = postagem.status || 'ABERTA';
+    document.getElementById('status').value = normalizarStatusPostagem(postagem.status);
 
     
     document.querySelectorAll('input[name="dia"]').forEach(checkbox => {
@@ -198,7 +212,7 @@ document.getElementById('formEdicaoPostagem').addEventListener('submit', async f
         enderecoRetirada: isColeta ? null : document.getElementById('enderecoRetirada').value,
         horaInicio: document.getElementById('horaInicio').value || null,
         horaFim: document.getElementById('horaFim').value || null,
-        status: document.getElementById('status').value,
+        status: normalizarStatusPostagem(document.getElementById('status').value),
         diasDisponibilidade: diasSelecionados
     };
 

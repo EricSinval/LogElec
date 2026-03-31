@@ -106,4 +106,49 @@
     margin-top: 30px;
     border: 0.5px solid rgba(255, 255, 255, 0.4);
   }
+
+  .footer-section a:focus-visible,
+  .footer-section select:focus-visible,
+  .contact-form input:focus-visible,
+  .contact-form button:focus-visible,
+  .social-icons a:focus-visible {
+    outline: 2px solid rgba(255, 255, 255, 0.92);
+    outline-offset: 3px;
+  }
+
+  @media (max-width: 900px) {
+    .footer {
+      padding: 36px 24px;
+    }
+
+    .footer-container {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 24px;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .footer {
+      padding: 28px 18px;
+    }
+
+    .footer-container {
+      grid-template-columns: 1fr;
+    }
+
+    .contact-form {
+      flex-direction: column;
+    }
+
+    .contact-form input,
+    .contact-form button,
+    .footer-section select {
+      width: 100%;
+      border-radius: 6px;
+    }
+
+    .social-icons {
+      flex-wrap: wrap;
+    }
+  }
   

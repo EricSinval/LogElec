@@ -9,6 +9,7 @@ body {
   justify-content: center;
   align-items: center;
   min-height: 100vh;
+  padding: 24px 16px;
 }
 
 
@@ -79,6 +80,10 @@ body {
   text-align: center;
 }
 
+.card h2 {
+  color: #172126;
+}
+
 h2 {
   margin-bottom: 10px;
   font-size: 22px;
@@ -87,6 +92,13 @@ h2 {
 .login-link {
   font-size: 14px;
   margin-bottom: 20px;
+  color: #475569;
+}
+
+.login-link a {
+  color: #0F726C;
+  font-weight: 600;
+  text-underline-offset: 2px;
 }
 
 form {
@@ -157,6 +169,14 @@ input {
   border-radius: 6px;
   width: 100%;
   box-sizing: border-box;
+  font-size: 15px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+input:focus-visible {
+  outline: none;
+  border-color: #0F726C;
+  box-shadow: 0 0 0 4px rgba(15, 114, 108, 0.18);
 }
 
 button[type="submit"] {
@@ -189,4 +209,25 @@ button[type="submit"]:hover {
 
 .btn-enviar:hover {
   background: #0a5450;
+}
+
+button:focus-visible,
+a:focus-visible,
+.tipo-btn:focus-visible {
+  outline: 2px solid #0F726C;
+  outline-offset: 3px;
+}
+
+button:active {
+  transform: translateY(1px);
+}
+
+@media (max-width: 480px) {
+  .card {
+    padding: 24px 20px;
+  }
+
+  .tipo-opcoes {
+    grid-template-columns: 1fr;
+  }
 }

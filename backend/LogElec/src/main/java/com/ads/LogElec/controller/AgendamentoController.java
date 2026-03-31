@@ -127,6 +127,19 @@ public class AgendamentoController {
     }
 
     
+    @PutMapping("/{id}/recusar")
+    public ResponseEntity<?> recusarAgendamento(@PathVariable Long id) {
+        try {
+            Agendamento agendamento = agendamentoService.recusarAgendamento(id);
+            return ResponseEntity.ok(agendamento);
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body("Erro interno do servidor");
+        }
+    }
+
+    
     @PutMapping("/{id}/cancelar")
     public ResponseEntity<?> cancelarAgendamento(@PathVariable Long id) {
         try {

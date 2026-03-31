@@ -48,7 +48,7 @@ async function fazerLogin(event) {
             console.log('Login success:', empresa);
 
             localStorage.setItem('empresaLogada', JSON.stringify(empresa));
-            showPopup('Login realizado com sucesso!', { type: 'success', buttons: [ { text: 'Continuar', onClick: () => { window.location.href = 'postagens.html'; } } ] });
+            showPopup('Login realizado com sucesso!', { type: 'success', buttons: [ { text: 'Continuar', onClick: () => { window.location.href = window.resolveFrontendPath ? window.resolveFrontendPath('postagens.html') : 'postagens.html'; } } ] });
         } else {
             const error = await response.text();
             console.log('Login error:', error);

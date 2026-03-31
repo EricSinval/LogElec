@@ -396,6 +396,11 @@ body {
   color: #991b1b;
 }
 
+.status-chip.cancelado {
+  background: #f3f4f6;
+  color: #6b7280;
+}
+
 .status-chip.concluido {
   background: #e5e7eb;
   color: #111827;

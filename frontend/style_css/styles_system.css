@@ -1,0 +1,281 @@
+:root {
+  --sys-primary: #0F726C;
+  --sys-primary-hover: #0C5E59;
+  --sys-primary-pressed: #094741;
+  --sys-secondary-bg: #F8FAFC;
+  --sys-secondary-bg-hover: #EEF2F7;
+  --sys-secondary-border: #CBD5E1;
+  --sys-danger: #B42318;
+  --sys-danger-hover: #912018;
+  --sys-focus: rgba(15, 114, 108, 0.18);
+  --sys-border: #D1D5DB;
+  --sys-border-strong: #94A3B8;
+  --sys-surface: #FFFFFF;
+  --sys-disabled-bg: #F8FAFC;
+  --sys-disabled-text: #6B7280;
+  --sys-text: #111827;
+  --sys-muted: #64748B;
+  --sys-radius-md: 10px;
+}
+
+:where(
+  input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="file"]),
+  select,
+  textarea,
+  .ui-popup-inline-input
+) {
+  width: 100%;
+  min-height: 44px;
+  padding: 12px 14px;
+  border: 1px solid var(--sys-border);
+  border-radius: var(--sys-radius-md);
+  background: var(--sys-surface);
+  color: var(--sys-text);
+  font: inherit;
+  line-height: 1.4;
+  box-shadow: 0 1px 1px rgba(15, 23, 42, 0.03);
+  transition: border-color 0.18s ease, box-shadow 0.18s ease, background 0.18s ease, color 0.18s ease;
+}
+
+:where(
+  input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="file"]),
+  textarea,
+  .ui-popup-inline-input
+)::placeholder {
+  color: #94A3B8;
+  opacity: 1;
+}
+
+:where(
+  input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="file"]),
+  select,
+  textarea,
+  .ui-popup-inline-input
+):hover {
+  border-color: var(--sys-border-strong);
+}
+
+:where(
+  input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="file"]),
+  select,
+  textarea,
+  .ui-popup-inline-input
+):focus,
+:where(
+  input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="file"]),
+  select,
+  textarea,
+  .ui-popup-inline-input
+):focus-visible {
+  outline: none;
+  border-color: var(--sys-primary);
+  box-shadow: 0 0 0 4px var(--sys-focus), 0 1px 1px rgba(15, 23, 42, 0.04);
+}
+
+:where(
+  input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="file"]),
+  select,
+  textarea,
+  .ui-popup-inline-input
+):disabled {
+  background: var(--sys-disabled-bg);
+  color: var(--sys-disabled-text);
+  border-color: #E5E7EB;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+:where(input[type="file"]) {
+  min-height: 44px;
+  padding: 8px;
+  border: 1px dashed var(--sys-border);
+  border-radius: var(--sys-radius-md);
+  background: var(--sys-disabled-bg);
+  font: inherit;
+}
+
+:where(input[type="file"]::file-selector-button) {
+  margin-right: 12px;
+  padding: 10px 14px;
+  border: none;
+  border-radius: 8px;
+  background: #E8F5F4;
+  color: var(--sys-primary);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+:where(input[type="checkbox"], input[type="radio"]) {
+  accent-color: var(--sys-primary);
+}
+
+:where(.hint, .form-hint, small.hint) {
+  color: var(--sys-muted);
+  line-height: 1.45;
+}
+
+:where(
+  button:not(.ui-popup-close):not(.popup-close-btn),
+  .button-login,
+  .button-Saiba-Mais,
+  .button-descarte,
+  .button-coleta,
+  .btn-nova-postagem
+) {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border-radius: var(--sys-radius-md);
+  border: 1px solid transparent;
+  font: inherit;
+  font-weight: 600;
+  line-height: 1.2;
+  text-decoration: none;
+  transition: background 0.18s ease, border-color 0.18s ease, color 0.18s ease, box-shadow 0.18s ease, transform 0.08s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+:where(
+  button:not(.ui-popup-close):not(.popup-close-btn),
+  .button-login,
+  .button-Saiba-Mais,
+  .button-descarte,
+  .button-coleta,
+  .btn-nova-postagem,
+  .tipo-btn,
+  .ui-btn
+):focus-visible {
+  outline: 2px solid var(--sys-primary);
+  outline-offset: 3px;
+}
+
+:where(
+  button:not(.ui-popup-close):not(.popup-close-btn):disabled,
+  .ui-btn:disabled,
+  [aria-disabled="true"]
+) {
+  opacity: 0.56;
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+}
+
+:where(
+  button:not(.ui-popup-close):not(.popup-close-btn):active,
+  .button-login:active,
+  .button-Saiba-Mais:active,
+  .button-descarte:active,
+  .button-coleta:active,
+  .btn-nova-postagem:active,
+  .ui-btn:active
+) {
+  transform: translateY(1px);
+}
+
+button[type="submit"],
+.btn-primary,
+.btn-salvar,
+.btn-agendar,
+.btn-confirmar,
+.button-login,
+.button-Saiba-Mais,
+.button-descarte,
+.button-coleta,
+.btn-nova-postagem,
+.ui-btn-primary {
+  background: var(--sys-primary);
+  color: #FFFFFF;
+  border-color: transparent;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.08);
+}
+
+button[type="submit"]:hover,
+.btn-primary:hover,
+.btn-salvar:hover,
+.btn-agendar:hover,
+.btn-confirmar:hover,
+.button-login:hover,
+.button-Saiba-Mais:hover,
+.button-descarte:hover,
+.button-coleta:hover,
+.btn-nova-postagem:hover,
+.ui-btn-primary:hover {
+  background: var(--sys-primary-hover);
+}
+
+button[type="submit"]:active,
+.btn-primary:active,
+.btn-salvar:active,
+.btn-agendar:active,
+.btn-confirmar:active,
+.button-login:active,
+.button-Saiba-Mais:active,
+.button-descarte:active,
+.button-coleta:active,
+.btn-nova-postagem:active,
+.ui-btn-primary:active {
+  background: var(--sys-primary-pressed);
+}
+
+.btn-secondary,
+.btn-cancelar,
+.btn-detalhes,
+.ui-btn-secondary,
+.ui-btn-detalhes {
+  background: var(--sys-secondary-bg);
+  color: var(--sys-text);
+  border-color: var(--sys-secondary-border);
+  box-shadow: none;
+}
+
+.btn-secondary:hover,
+.btn-cancelar:hover,
+.btn-detalhes:hover,
+.ui-btn-secondary:hover,
+.ui-btn-detalhes:hover {
+  background: var(--sys-secondary-bg-hover);
+}
+
+.btn-danger,
+.btn-deletar,
+.ui-btn-danger {
+  background: var(--sys-danger);
+  color: #FFFFFF;
+  border-color: transparent;
+}
+
+.btn-danger:hover,
+.btn-deletar:hover,
+.ui-btn-danger:hover {
+  background: var(--sys-danger-hover);
+}
+
+.tipo-btn {
+  min-height: 44px;
+  border-radius: var(--sys-radius-md);
+  font-weight: 600;
+}
+
+.ui-popup-inline-input {
+  margin-top: 12px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :where(
+    input,
+    select,
+    textarea,
+    button,
+    .button-login,
+    .button-Saiba-Mais,
+    .button-descarte,
+    .button-coleta,
+    .btn-nova-postagem,
+    .ui-btn
+  ) {
+    transition: none;
+  }
+}
