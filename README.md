@@ -1,187 +1,169 @@
 # LogElec
 
-Sistema web de intermediação para descarte e coleta de resíduos eletroeletrônicos. Conecta empresas geradoras de resíduo com empresas coletoras licenciadas, permitindo cadastro, postagem de resíduos disponíveis para coleta, agendamento e comunicação entre as partes.
+Sistema web para intermediação de descarte e coleta de resíduos eletroeletrônicos entre empresas.
+
+## Escopo desta entrega
+
+Esta versão foi organizada para atender a primeira entrega da disciplina, com foco nos seguintes itens:
+
+- README do projeto
+- interface de Login
+- interface Esqueci a Senha
+- CRUD do cadastro de usuário
+- publicação do código no GitHub
+
+O repositório já contém módulos adicionais, como postagens, agendamentos e mensagens, mas a apresentação desta etapa deve priorizar o fluxo de autenticação e gerenciamento do usuário.
+
+## Funcionalidades da primeira entrega
+
+- Cadastro de empresa usuária
+- Login por email e senha
+- Recuperação de senha por email e CNPJ
+- Visualização dos dados do usuário
+- Atualização de email, telefone, endereço e senha
+- Exclusão da conta, respeitando as regras de vínculo do sistema
+
+## Tipos de empresa
+
+| Tipo | Descrição |
+|------|-----------|
+| `DESCARTE` | Empresa que deseja descartar resíduos eletroeletrônicos |
+| `COLETA` | Empresa que realiza coleta de resíduos eletroeletrônicos |
 
 ## Tecnologias
 
-| Camada     | Tecnologia                                    |
-|------------|-----------------------------------------------|
-| Backend    | Java 25 + Spring Boot 4.0.0-SNAPSHOT          |
-| Build      | Maven 3.9.11 (wrapper `mvnw`)                 |
-| Banco      | MySQL 8                                       |
-| Segurança  | Spring Security Crypto (BCrypt)               |
-| Frontend   | HTML5 + CSS3 + JavaScript (vanilla, sem framework) |
-| Servidor   | Nginx (apenas no Docker)                      |
-| Container  | Docker + Docker Compose                       |
+| Camada | Tecnologia |
+|--------|------------|
+| Backend | Java 25 + Spring Boot 4.0.0-SNAPSHOT |
+| Build | Maven Wrapper (`mvnw`) |
+| Banco | MySQL 8 |
+| Segurança | BCrypt (`spring-security-crypto`) |
+| Frontend | HTML5 + CSS3 + JavaScript puro |
+| Servidor web | Nginx no ambiente Docker |
+| Containerização | Docker + Docker Compose |
 
-## Pré-requisitos
+## Estrutura principal
 
-- **JDK 25** — [Download Temurin 25](https://adoptium.net/)
-- **MySQL 8** em execução local na porta `3306`
-- **Maven 3.9+** ou use o wrapper `mvnw` incluído no projeto
-- Navegador moderno para o frontend
-
-## Configuração do Banco de Dados
-
-```sql
--- Execute como root no MySQL:
-CREATE DATABASE logelec;
-```
-
-Em seguida aplique os scripts na ordem:
-
-```bash
-mysql -u root -p logelec < database/admin_setup.sql
-mysql -u root -p logelec < database/seed.sql
-```
-
-As credenciais padrão configuradas em `backend/LogElec/src/main/resources/application.properties`:
-
-| Parâmetro | Valor                     |
-|-----------|---------------------------|
-| URL       | `jdbc:mysql://localhost:3306/logelec` |
-| Usuário   | `root`                    |
-| Senha     | `74123LogElec`            |
-
-> ⚠️ Para desenvolvimento, copie `application-dev.properties` e ajuste as credenciais locais.
-
-## Como Rodar
-
-### Backend
-
-```bash
-cd backend/LogElec
-./mvnw spring-boot:run          # Linux/Mac
-mvnw.cmd spring-boot:run        # Windows
-```
-
-A API ficará disponível em `http://localhost:8080`.
-
-### Frontend
-
-Abra qualquer arquivo `frontend/index/*.html` diretamente no navegador ou sirva com um servidor estático simples:
-
-```bash
-# Com Python
-python -m http.server 5500 --directory frontend
-
-# Com Node.js (npx)
-npx serve frontend -l 5500
-```
-
-Acesse `http://localhost:5500/index/login.html`.
-
-### Via Docker Compose
-
-```bash
-docker-compose up --build
-```
-
-Sobe backend (porta 8080), banco MySQL e frontend via Nginx.
-
-## Estrutura do Projeto
-
-```
+```text
 LogElec/
-├── backend/LogElec/            # API Spring Boot
-│   ├── src/main/java/          # Código-fonte Java
-│   │   └── com/ads/LogElec/
-│   │       ├── controller/     # Endpoints REST
-│   │       ├── service/        # Regras de negócio
-│   │       ├── repository/     # Acesso ao banco (Spring Data JPA)
-│   │       ├── entity/         # Entidades JPA
-│   │       ├── dto/            # Objetos de transferência de dados
-│   │       └── config/         # Configurações (CORS, etc.)
-│   └── src/main/resources/     # application.properties
+├── backend/LogElec/
+│   ├── src/main/java/com/ads/LogElec/
+│   │   ├── controller/
+│   │   ├── service/
+│   │   ├── repository/
+│   │   ├── entity/
+│   │   └── dto/
+│   └── src/main/resources/
 ├── frontend/
-│   ├── index/                  # Páginas HTML
-│   ├── script/                 # JavaScript por página
-│   ├── style_css/              # CSS por página
-│   └── img/                    # Imagens e assets
+│   ├── index/
+│   ├── script/
+│   ├── style_css/
+│   └── img/
 ├── database/
-│   ├── admin_setup.sql         # DDL e permissões
-│   └── seed.sql                # Dados iniciais
-└── docker-compose.yml
+│   └── seed.sql
+├── docker-compose.yml
+└── README.md
 ```
 
-## Endpoints da API
+## Como executar
 
-### Autenticação — `/api/auth`
+### Opção recomendada: Docker Compose
 
-| Método | Rota                    | Descrição                                                   |
-|--------|-------------------------|-------------------------------------------------------------|
-| POST   | `/api/auth/login`       | Login por email + senha. Retorna objeto `Empresa`.          |
-| POST   | `/api/auth/recuperar-senha` | Redefine senha verificando email + CNPJ. Body: `{email, cnpj, novaSenha}` |
+Na raiz do projeto:
 
-### Empresas — `/api/empresas`
+```powershell
+Copy-Item .env.example .env
+docker compose up --build -d
+```
 
-| Método | Rota                          | Descrição                                       |
-|--------|-------------------------------|-------------------------------------------------|
-| POST   | `/api/empresas`               | Cadastrar nova empresa                          |
-| GET    | `/api/empresas`               | Listar todas as empresas                        |
-| GET    | `/api/empresas/coletoras`     | Listar apenas empresas coletoras                |
-| GET    | `/api/empresas/{id}`          | Buscar empresa por ID                           |
-| GET    | `/api/empresas/email/{email}` | Buscar empresa por e-mail                       |
-| PUT    | `/api/empresas/{id}`          | Atualizar dados/senha da empresa                |
-| DELETE | `/api/empresas/{id}`          | Remover empresa (retorna 409 se houver vínculos)|
+Acessos padrão:
 
-### Postagens — `/api/postagens`
+- Frontend: `http://localhost:8081/index/login.html`
+- Backend: `http://localhost:8080`
+- Banco MySQL: `localhost:3307`
 
-| Método | Rota                              | Descrição                            |
-|--------|-----------------------------------|--------------------------------------|
-| GET    | `/api/postagens`                  | Listar todas as postagens            |
-| GET    | `/api/postagens/{id}`             | Buscar postagem por ID               |
-| GET    | `/api/postagens/search`           | Buscar postagens por termo           |
-| GET    | `/api/postagens/empresa/{id}`     | Postagens de uma empresa             |
-| GET    | `/api/postagens/status/{status}`  | Filtrar por status                   |
-| POST   | `/api/postagens`                  | Criar postagem                       |
-| PUT    | `/api/postagens/{id}`             | Atualizar postagem                   |
-| DELETE | `/api/postagens/{id}`             | Remover postagem                     |
+Se quiser carregar os dados iniciais do banco:
 
-### Agendamentos — `/api/agendamentos`
+```powershell
+docker exec -i logelec-db mysql -uroot -p74123LogElec logelec < database/seed.sql
+```
 
-| Método | Rota                                          | Descrição                                    |
-|--------|-----------------------------------------------|----------------------------------------------|
-| GET    | `/api/agendamentos`                           | Listar todos                                 |
-| GET    | `/api/agendamentos/{id}`                      | Buscar por ID                                |
-| GET    | `/api/agendamentos/solicitante/{empresaId}`   | Agendamentos feitos por uma empresa          |
-| GET    | `/api/agendamentos/coletora/{empresaId}`      | Agendamentos recebidos por coletora          |
-| GET    | `/api/agendamentos/coletora/{id}/pendentes`   | Agendamentos pendentes da coletora           |
-| GET    | `/api/agendamentos/futuros`                   | Agendamentos futuros                         |
-| GET    | `/api/agendamentos/postagem/{postagemId}`     | Agendamentos de uma postagem                 |
-| POST   | `/api/agendamentos`                           | Criar agendamento                            |
-| PUT    | `/api/agendamentos/{id}/confirmar`            | Confirmar agendamento                        |
-| PUT    | `/api/agendamentos/{id}/cancelar`             | Cancelar agendamento                         |
-| PUT    | `/api/agendamentos/{id}/concluir`             | Concluir agendamento                         |
-| DELETE | `/api/agendamentos/{id}`                      | Remover agendamento                          |
+### Opção local
 
-### Mensagens — `/api/mensagens`
+Backend:
 
-| Método | Rota                                          | Descrição                              |
-|--------|-----------------------------------------------|----------------------------------------|
-| GET    | `/api/mensagens`                              | Listar todas                           |
-| GET    | `/api/mensagens/agendamento/{id}`             | Mensagens de um agendamento            |
-| GET    | `/api/mensagens/empresa/{empresaId}`          | Mensagens de uma empresa               |
-| GET    | `/api/mensagens/contatos-confirmados/{id}`    | Contatos com agendamentos confirmados  |
-| GET    | `/api/mensagens/conversa`                     | Conversa entre duas empresas           |
-| GET    | `/api/mensagens/nao-lidas/{empresaId}`        | Mensagens não lidas                    |
-| POST   | `/api/mensagens`                              | Criar mensagem                         |
-| POST   | `/api/mensagens/enviar`                       | Enviar mensagem                        |
-| PUT    | `/api/mensagens/{id}/ler`                     | Marcar como lida                       |
-| DELETE | `/api/mensagens/{id}`                         | Remover mensagem                       |
+```powershell
+cd backend/LogElec
+mvnw.cmd spring-boot:run
+```
 
-## Funcionalidades
+Frontend estático:
 
-- **Cadastro e Login** — Registro de empresas geradoras e coletoras com senha criptografada (BCrypt)
-- **Recuperação de Senha** — Verificação por e-mail + CNPJ, sem necessidade de servidor de e-mail
-- **Postagens de Resíduo** — Empresas publicam resíduos disponíveis para coleta com descrição e status
-- **Agendamento de Coleta** — Coletoras solicitam coleta de postagens; fluxo: pendente → confirmado → concluído/cancelado
-- **Mensagens** — Chat interno entre empresa geradora e coletora vinculado a agendamentos
-- **Perfil** — Atualização de dados cadastrais e troca de senha
+```powershell
+python -m http.server 5500 --directory frontend
+```
 
-## Tipos de Empresa
+Depois acesse:
 
-| Tipo       | Descrição                                    |
-|------------|----------------------------------------------|
-| `GERADORA` | Empresa que gera resíduo e busca coleta      |
-| `COLETA`   | Empresa licenciada para coletar o resíduo    |
+- `http://localhost:5500/index/login.html`
+
+## Telas principais desta entrega
+
+- `frontend/index/login.html`
+- `frontend/index/esqueci_senha.html`
+- `frontend/index/cadastro.html`
+- `frontend/index/perfil.html`
+
+## CRUD de usuário
+
+O CRUD do usuário está distribuído entre cadastro inicial, autenticação e tela de perfil:
+
+| Operação | Implementação |
+|----------|---------------|
+| Create | cadastro da empresa em `frontend/index/cadastro.html` + `POST /api/empresas` |
+| Read | leitura dos dados no perfil em `frontend/index/perfil.html` + `GET /api/empresas/{id}` |
+| Update | edição de dados no perfil + `PUT /api/empresas/{id}` |
+| Delete | exclusão de conta no perfil + `DELETE /api/empresas/{id}` |
+
+## Endpoints principais desta entrega
+
+### Autenticação
+
+| Método | Rota | Descrição |
+|--------|------|-----------|
+| POST | `/api/auth/login` | Realiza login com email e senha |
+| POST | `/api/auth/recuperar-senha` | Redefine a senha com email, CNPJ e nova senha |
+
+### Empresas
+
+| Método | Rota | Descrição |
+|--------|------|-----------|
+| POST | `/api/empresas` | Cadastra uma empresa |
+| GET | `/api/empresas/{id}` | Busca empresa por ID |
+| GET | `/api/empresas/email/{email}` | Busca empresa por email |
+| PUT | `/api/empresas/{id}` | Atualiza dados cadastrais e senha |
+| DELETE | `/api/empresas/{id}` | Exclui a conta se não houver vínculos bloqueantes |
+
+## Regras importantes para demonstração
+
+- o login retorna os dados da empresa autenticada
+- a recuperação de senha depende da combinação correta de email e CNPJ
+- a exclusão da conta pode retornar bloqueio se a empresa tiver vínculos com postagens, agendamentos ou mensagens
+- o sistema usa `DESCARTE` e `COLETA` como tipos finais de empresa
+
+## GitHub
+
+O projeto deve ser entregue como código-fonte publicado no GitHub. Antes da apresentação, confirme:
+
+- que a branch de entrega contém o estado final do projeto
+- que o commit final foi enviado ao remoto
+- que o README está alinhado ao escopo da primeira entrega
+
+## Observação final
+
+Apesar de esta etapa exigir foco em autenticação e cadastro de usuário, o repositório já contém evolução funcional além do escopo mínimo. Para a apresentação em sala, a recomendação é demonstrar nesta ordem:
+
+1. Cadastro de usuário
+2. Login
+3. Perfil como leitura, edição e exclusão
+4. Esqueci a senha
