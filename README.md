@@ -286,7 +286,3 @@ No ambiente Docker, o backend se conecta ao serviço `db` via rede interna do Co
 ## Situação do projeto
 
 O LogElec está em reta final de implementação e já contém um conjunto funcional acima do escopo mínimo inicial da disciplina. O foco acadêmico do sistema está em demonstrar uma solução aplicada para organização do fluxo de descarte e coleta de resíduos eletroeletrônicos, com regras de negócio, persistência, autenticação e integração entre frontend e backend.
-
-## Repositório
-
-O projeto deve ser disponibilizado no GitHub como entrega de código-fonte, mantendo o histórico de evolução e a organização do trabalho em branches e commits.
