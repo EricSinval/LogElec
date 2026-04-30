@@ -1,13 +1,17 @@
 package com.ads.LogElec.controller;
 
+import com.ads.LogElec.entity.Empresa;
 import com.ads.LogElec.entity.Postagem;
 import com.ads.LogElec.entity.StatusPostagem;
+import com.ads.LogElec.repository.EmpresaRepository;
+import com.ads.LogElec.security.EmpresaSessionPrincipal;
 import com.ads.LogElec.service.PostagemService;
 import java.math.BigDecimal;
 import java.time.LocalTime;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
@@ -18,6 +22,9 @@ public class PostagemController {
 
     @Autowired
     private PostagemService postagemService;
+
+    @Autowired
+    private EmpresaRepository empresaRepository;
 
     @GetMapping
     public List<Postagem> getAllPostagens() {
@@ -51,9 +58,26 @@ public class PostagemController {
         return postagem.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
 
+    @GetMapping("/empresa/me")
+    public ResponseEntity<?> getMinhasPostagens(@AuthenticationPrincipal EmpresaSessionPrincipal principal) {
+        if (principal == null) {
+            return naoAutenticado();
+        }
+
+        return ResponseEntity.ok(postagemService.findByEmpresaId(principal.getId()));
+    }
+
     @GetMapping("/empresa/{empresaId}")
-    public List<Postagem> getPostagensByEmpresa(@PathVariable Long empresaId) {
-        return postagemService.findByEmpresaId(empresaId);
+    public ResponseEntity<?> getPostagensByEmpresa(@PathVariable Long empresaId, @AuthenticationPrincipal EmpresaSessionPrincipal principal) {
+        if (principal == null) {
+            return naoAutenticado();
+        }
+
+        if (!podeAcessarEmpresa(principal, empresaId)) {
+            return acessoNegado("Acesso restrito às suas próprias postagens.");
+        }
+
+        return ResponseEntity.ok(postagemService.findByEmpresaId(empresaId));
     }
 
     @GetMapping("/status/{status}")
@@ -62,8 +86,17 @@ public class PostagemController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createPostagem(@RequestBody Map<String, Object> body) {
+    public ResponseEntity<?> createPostagem(@RequestBody Map<String, Object> body, @AuthenticationPrincipal EmpresaSessionPrincipal principal) {
         try {
+            if (principal == null) {
+                return naoAutenticado();
+            }
+
+            Optional<Empresa> empresaAutenticada = empresaRepository.findById(principal.getId());
+            if (empresaAutenticada.isEmpty()) {
+                return ResponseEntity.status(404).body("Empresa autenticada não encontrada.");
+            }
+
             System.out.println("[DEBUG] createPostagem - raw body: " + body);
             Postagem postagem = new Postagem();
             if (body.containsKey("titulo")) postagem.setTitulo((String) body.get("titulo"));
@@ -71,15 +104,7 @@ public class PostagemController {
             if (body.containsKey("tipoResiduo")) postagem.setTipoResiduo((String) body.get("tipoResiduo"));
             if (body.containsKey("peso")) postagem.setPeso(new java.math.BigDecimal(body.get("peso").toString()));
             if (body.containsKey("enderecoRetirada")) postagem.setEnderecoRetirada((String) body.get("enderecoRetirada"));
-            if (body.containsKey("empresa") && body.get("empresa") instanceof Map) {
-                Map<String, Object> empresaMap = (Map<String, Object>) body.get("empresa");
-                com.ads.LogElec.entity.Empresa empresa = new com.ads.LogElec.entity.Empresa();
-                if (empresaMap.containsKey("id")) {
-                    Long empresaId = Long.valueOf(empresaMap.get("id").toString());
-                    empresa.setId(empresaId);
-                    postagem.setEmpresa(empresa);
-                }
-            }
+            postagem.setEmpresa(empresaAutenticada.get());
             if (body.containsKey("fotoResiduos") && body.get("fotoResiduos") != null) {
                 postagem.setFotoResiduos(body.get("fotoResiduos").toString());
                 System.out.println("[DEBUG] fotoResiduos set, length: " + postagem.getFotoResiduos().length());
@@ -130,8 +155,21 @@ public class PostagemController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updatePostagem(@PathVariable Long id, @RequestBody Map<String, Object> body) {
+    public ResponseEntity<?> updatePostagem(@PathVariable Long id, @RequestBody Map<String, Object> body, @AuthenticationPrincipal EmpresaSessionPrincipal principal) {
         try {
+            if (principal == null) {
+                return naoAutenticado();
+            }
+
+            Optional<Postagem> postagemAtual = postagemService.findById(id);
+            if (postagemAtual.isEmpty()) {
+                return ResponseEntity.notFound().build();
+            }
+
+            if (!podeGerenciarPostagem(principal, postagemAtual.get())) {
+                return acessoNegado("Você só pode editar as suas próprias postagens.");
+            }
+
             Postagem postagemDetails = new Postagem();
 
             if (body.containsKey("titulo") && body.get("titulo") != null) {
@@ -187,8 +225,21 @@ public class PostagemController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deletePostagem(@PathVariable Long id) {
+    public ResponseEntity<?> deletePostagem(@PathVariable Long id, @AuthenticationPrincipal EmpresaSessionPrincipal principal) {
         try {
+            if (principal == null) {
+                return naoAutenticado();
+            }
+
+            Optional<Postagem> postagemAtual = postagemService.findById(id);
+            if (postagemAtual.isEmpty()) {
+                return ResponseEntity.notFound().build();
+            }
+
+            if (!podeGerenciarPostagem(principal, postagemAtual.get())) {
+                return acessoNegado("Você só pode excluir as suas próprias postagens.");
+            }
+
             postagemService.deleteById(id);
             return ResponseEntity.noContent().build();
         } catch (RuntimeException e) {
@@ -196,5 +247,26 @@ public class PostagemController {
         } catch (Exception e) {
             return ResponseEntity.internalServerError().body("Erro ao excluir postagem");
         }
+    }
+
+    private boolean podeAcessarEmpresa(EmpresaSessionPrincipal principal, Long empresaId) {
+        return principal != null
+            && principal.getId() != null
+            && (principal.isAdministrador() || principal.getId().equals(empresaId));
+    }
+
+    private boolean podeGerenciarPostagem(EmpresaSessionPrincipal principal, Postagem postagem) {
+        return principal != null
+            && postagem.getEmpresa() != null
+            && postagem.getEmpresa().getId() != null
+            && (principal.isAdministrador() || postagem.getEmpresa().getId().equals(principal.getId()));
+    }
+
+    private ResponseEntity<String> naoAutenticado() {
+        return ResponseEntity.status(401).body("Não autenticado.");
+    }
+
+    private ResponseEntity<String> acessoNegado(String mensagem) {
+        return ResponseEntity.status(403).body(mensagem);
     }
 }

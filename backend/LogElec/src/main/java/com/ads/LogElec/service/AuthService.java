@@ -1,6 +1,7 @@
 package com.ads.LogElec.service;
 
 import com.ads.LogElec.entity.Empresa;
+import com.ads.LogElec.entity.StatusConta;
 import com.ads.LogElec.repository.EmpresaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -21,6 +22,10 @@ public class AuthService {
         
         if (empresaOpt.isPresent()) {
             Empresa empresa = empresaOpt.get();
+
+            if (empresa.getStatusConta() == StatusConta.BLOQUEADA) {
+                throw new RuntimeException("Conta bloqueada pela administração da plataforma");
+            }
             
             if (passwordEncoder.matches(senha, empresa.getSenha())) {
                 return empresa;

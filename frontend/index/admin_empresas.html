@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LogElec - Administração de Empresas</title>
+  <link rel="stylesheet" href="../style_css/style_admin.css">
+  <link rel="stylesheet" href="../style_css/styles_popup.css">
+  <link rel="stylesheet" href="../style_css/styles_system.css">
+</head>
+<body data-admin-page="empresas">
+  <div class="admin-shell">
+    <aside class="admin-sidebar">
+      <a class="admin-brand" href="admin_dashboard.html">
+        <strong>LogElec Admin</strong>
+        <small>Gestão da plataforma</small>
+      </a>
+      <nav class="admin-nav">
+        <a class="admin-nav-link" data-page="dashboard" href="admin_dashboard.html">Visão geral</a>
+        <a class="admin-nav-link" data-page="empresas" href="admin_empresas.html">Contas de empresas</a>
+        <a class="admin-nav-link" data-page="publicacoes" href="admin_publicacoes.html">Moderação de publicações</a>
+        <a class="admin-nav-link" data-page="agendamentos" href="admin_agendamentos.html">Coletas e agendamentos</a>
+      </nav>
+      <div class="admin-user">
+        <strong id="adminNome">Administrador</strong>
+        <span>Conta interna da plataforma</span>
+        <button id="adminSair" type="button">Sair</button>
+      </div>
+    </aside>
+
+    <main class="admin-main">
+      <section class="admin-page-header">
+        <h1>Gerenciamento de contas de empresas</h1>
+        <p>Visualize, edite, bloqueie ou exclua cadastros que não estejam de acordo com as regras da plataforma.</p>
+      </section>
+
+      <section class="admin-grid-two">
+        <section class="admin-panel">
+          <h2 id="empresaFormTitulo">Editar conta selecionada</h2>
+          <form id="empresaForm" class="admin-form">
+            <input type="hidden" id="empresaId">
+            <label for="empresaNome">Nome da empresa</label>
+            <input type="text" id="empresaNome" placeholder="Nome da empresa">
+
+            <label for="empresaEmail">E-mail</label>
+            <input type="email" id="empresaEmail" placeholder="email@empresa.com">
+
+            <label for="empresaTelefone">Telefone</label>
+            <input type="text" id="empresaTelefone" placeholder="(11) 99999-9999">
+
+            <label for="empresaEndereco">Endereço</label>
+            <textarea id="empresaEndereco" rows="4" placeholder="Endereço da empresa"></textarea>
+
+            <div class="admin-form-actions">
+              <button type="submit" class="btn-primary">Salvar alterações</button>
+              <button type="button" id="cancelarEdicaoEmpresa" class="btn-secondary">Limpar</button>
+            </div>
+          </form>
+        </section>
+
+        <section class="admin-panel">
+          <div class="admin-toolbar">
+            <input type="search" id="buscaEmpresa" placeholder="Buscar por nome, e-mail, CNPJ ou endereço">
+          </div>
+          <div class="admin-table-wrapper">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Empresa</th>
+                  <th>Tipo</th>
+                  <th>Status</th>
+                  <th>Telefone</th>
+                  <th>Endereço</th>
+                  <th>Ações</th>
+                </tr>
+              </thead>
+              <tbody id="tabelaEmpresasBody"></tbody>
+            </table>
+          </div>
+        </section>
+      </section>
+    </main>
+  </div>
+
+  <script src="../script/popup.js"></script>
+  <script src="../script/auth.js"></script>
+  <script src="../script/admin_common.js"></script>
+  <script src="../script/admin_empresas.js"></script>
+</body>
+</html>

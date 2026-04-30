@@ -5,8 +5,13 @@ let empresaLogada = null;
 let mapaAgendamentos = new Map();
 let agendamentoSelecionadoId = null;
 
-function sair() {
-    localStorage.removeItem('empresaLogada');
+async function sair() {
+    if (window.authApp && typeof window.authApp.encerrarSessao === 'function') {
+        await window.authApp.encerrarSessao();
+    } else {
+        localStorage.removeItem('empresaLogada');
+    }
+
     window.location.href = 'login.html';
 }
 
@@ -110,8 +115,8 @@ async function carregarAgendamentosPainel() {
 
     try {
         const [respColetora, respSolicitante] = await Promise.all([
-            fetch(`http://localhost:8080/api/agendamentos/coletora/${empresaLogada.id}`),
-            fetch(`http://localhost:8080/api/agendamentos/solicitante/${empresaLogada.id}`)
+            fetch('http://localhost:8080/api/agendamentos/coletora/me'),
+            fetch('http://localhost:8080/api/agendamentos/solicitante/me')
         ]);
 
         const coletora = respColetora.ok ? await respColetora.json() : [];
@@ -175,6 +180,8 @@ function renderAcoesAgendamento(agendamento) {
     const acoes = [];
     const isColetora = agendamento.empresaColetora && agendamento.empresaColetora.id === empresaLogada.id;
     const isSolicitante = agendamento.empresaSolicitante && agendamento.empresaSolicitante.id === empresaLogada.id;
+    const isEmpresaColeta = empresaLogada && empresaLogada.tipo === 'COLETA';
+    const podeConcluirColeta = isEmpresaColeta && (isColetora || isSolicitante);
 
     if (agendamento.status === 'AGENDADA' && isColetora) {
         acoes.push('<button class="acao-primaria" onclick="atualizarStatusAgendamento(' + agendamento.id + ',\'confirmar\')">Aceitar proposta</button>');
@@ -187,7 +194,7 @@ function renderAcoesAgendamento(agendamento) {
 
     if (agendamento.status === 'CONFIRMADA') {
         acoes.push('<button class="acao-primaria" onclick="abrirMensagens()">Abrir mensagens</button>');
-        if (isColetora) {
+        if (podeConcluirColeta) {
             acoes.push('<button class="acao-secundaria" onclick="atualizarStatusAgendamento(' + agendamento.id + ',\'concluir\')">Concluir coleta</button>');
         }
     }
@@ -312,7 +319,7 @@ async function preencherHorarios(postagem) {
 
     let agendamentosExistentes = [];
     try {
-        const response = await fetch(`http://localhost:8080/api/agendamentos/postagem/${postagem.id}`);
+        const response = await fetch(`http://localhost:8080/api/agendamentos/postagem/${postagem.id}/horarios-ocupados`);
         if (response.ok) agendamentosExistentes = await response.json();
     } catch (error) {
         console.error(error);
@@ -374,8 +381,6 @@ function confirmarAgendamento() {
     }
 
     const payload = {
-        empresaSolicitanteId: empresaLogada.id,
-        empresaColetoraId: postagemSelecionada.empresa ? postagemSelecionada.empresa.id : postagemSelecionada.empresaId,
         postagemId: postagemSelecionada.id,
         dataAgendamento: dataAgendamentoDate.toISOString().slice(0, 10),
         horaAgendamento: horarioSelecionado,
@@ -445,15 +450,28 @@ function toggleMenu() {
 }
 
 document.addEventListener('DOMContentLoaded', async function () {
-    const salvo = localStorage.getItem('empresaLogada');
-    if (!salvo) {
-        showPopup('Você precisa fazer login primeiro!', {
-            type: 'info',
-            buttons: [{ text: 'Ir para login', onClick: () => { window.location.href = 'login.html'; } }]
+    if (window.authApp && typeof window.authApp.exigirSessao === 'function') {
+        const usuario = await window.authApp.exigirSessao({
+            redirectPath: 'login.html',
+            message: 'Você precisa fazer login primeiro!'
         });
-        return;
+        if (!usuario) {
+            return;
+        }
+
+        empresaLogada = usuario;
+    } else {
+        const salvo = localStorage.getItem('empresaLogada');
+        if (!salvo) {
+            showPopup('Você precisa fazer login primeiro!', {
+                type: 'info',
+                buttons: [{ text: 'Ir para login', onClick: () => { window.location.href = 'login.html'; } }]
+            });
+            return;
+        }
+
+        empresaLogada = JSON.parse(salvo);
     }
 
-    empresaLogada = JSON.parse(salvo);
     await Promise.all([carregarPostagens(), carregarAgendamentosPainel()]);
 });

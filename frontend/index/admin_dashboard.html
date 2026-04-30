@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LogElec - Painel Administrativo</title>
+  <link rel="stylesheet" href="../style_css/style_admin.css">
+  <link rel="stylesheet" href="../style_css/styles_popup.css">
+  <link rel="stylesheet" href="../style_css/styles_system.css">
+</head>
+<body data-admin-page="dashboard">
+  <div class="admin-shell">
+    <aside class="admin-sidebar">
+      <a class="admin-brand" href="admin_dashboard.html">
+        <strong>LogElec Admin</strong>
+        <small>Gestão da plataforma</small>
+      </a>
+
+      <nav class="admin-nav">
+        <a class="admin-nav-link" data-page="dashboard" href="admin_dashboard.html">Visão geral</a>
+        <a class="admin-nav-link" data-page="empresas" href="admin_empresas.html">Contas de empresas</a>
+        <a class="admin-nav-link" data-page="publicacoes" href="admin_publicacoes.html">Moderação de publicações</a>
+        <a class="admin-nav-link" data-page="agendamentos" href="admin_agendamentos.html">Coletas e agendamentos</a>
+      </nav>
+
+      <div class="admin-user">
+        <strong id="adminNome">Administrador</strong>
+        <span>Conta interna da plataforma</span>
+        <button id="adminSair" type="button">Sair</button>
+      </div>
+    </aside>
+
+    <main class="admin-main">
+      <section class="admin-page-header">
+        <h1>Painel administrativo</h1>
+        <p>Acompanhe o uso da plataforma, visualize indicadores operacionais e atue nas pendências de moderação.</p>
+      </section>
+
+      <section class="admin-summary-grid">
+        <article class="admin-card"><span>Empresas cadastradas</span><strong id="totalEmpresas">0</strong></article>
+        <article class="admin-card"><span>Contas bloqueadas</span><strong id="contasBloqueadas">0</strong></article>
+        <article class="admin-card"><span>Total de publicações</span><strong id="totalPostagens">0</strong></article>
+        <article class="admin-card"><span>Pendências de moderação</span><strong id="pendenciasModeracao">0</strong></article>
+        <article class="admin-card"><span>Publicações bloqueadas</span><strong id="publicacoesBloqueadas">0</strong></article>
+        <article class="admin-card"><span>Agendamentos registrados</span><strong id="totalAgendamentos">0</strong></article>
+      </section>
+
+      <section class="admin-grid-two">
+        <section class="admin-panel">
+          <h2>Publicações aguardando avaliação</h2>
+          <div id="listaPendencias" class="admin-list"></div>
+        </section>
+
+        <section class="admin-panel">
+          <h2>Agendamentos recentes</h2>
+          <div id="listaAgendamentosRecentes" class="admin-list"></div>
+        </section>
+      </section>
+    </main>
+  </div>
+
+  <script src="../script/popup.js"></script>
+  <script src="../script/auth.js"></script>
+  <script src="../script/admin_common.js"></script>
+  <script src="../script/admin_dashboard.js"></script>
+</body>
+</html>

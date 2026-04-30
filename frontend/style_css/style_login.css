@@ -12,22 +12,27 @@ body {
 }
 
 .container {
-  max-width: 500px;
-  width: 90%;
+  max-width: 560px;
+  width: min(560px, calc(100% - 32px));
   margin: 0;
-  padding: 30px 40px;
-  background: #ffffff; 
-  border-radius: 10px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  padding: 40px 48px 36px;
+  background: rgba(255, 255, 255, 0.96);
+  border-radius: 16px;
+  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.18);
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .container h2 {
-  margin-bottom: 20px;
+  width: min(100%, 420px);
+  margin-bottom: 16px;
   color: #172126;
 }
 
 .login-link {
+  width: min(100%, 420px);
   font-size: 14px;
   margin-bottom: 20px;
   color: #475569;
@@ -43,7 +48,26 @@ form a {
 form {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 14px;
+  width: min(100%, 420px);
+  margin: 8px auto 0;
+  text-align: left;
+}
+
+label {
+  display: block;
+  width: 100%;
+  margin-bottom: -4px;
+  color: #172126;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+form a {
+  display: block;
+  width: 100%;
+  margin-top: 8px;
+  text-align: center;
 }
 
 input {
@@ -88,8 +112,9 @@ button:active {
 
 @media (max-width: 480px) {
   .container {
-    padding: 20px;
-    width: calc(100% - 40px);
+    padding: 28px 22px;
+    width: calc(100% - 24px);
+    border-radius: 14px;
   }
 
   input {

@@ -15,6 +15,20 @@ function formatarHora(iso) {
 }
 
 function garantirLogin() {
+  if (window.authApp && typeof window.authApp.exigirSessao === 'function') {
+    return window.authApp.exigirSessao({
+      redirectPath: 'login.html',
+      message: 'Você precisa fazer login primeiro!'
+    }).then(usuario => {
+      if (!usuario) {
+        return false;
+      }
+
+      empresaLogada = usuario;
+      return true;
+    });
+  }
+
   const salvo = localStorage.getItem('empresaLogada');
   if (!salvo) {
     window.location.href = 'login.html';
@@ -35,7 +49,7 @@ async function carregarContatos() {
   const lista = document.getElementById('listaContatos');
 
   try {
-    const response = await fetch(`http://localhost:8080/api/mensagens/contatos-confirmados/${empresaLogada.id}`);
+    const response = await fetch('http://localhost:8080/api/mensagens/contatos-confirmados/me');
     if (!response.ok) {
       if (response.status === 404) {
         lista.innerHTML = '<p class="vazio">Sem contatos disponíveis. Confirme um agendamento para liberar mensagens.</p>';
@@ -80,7 +94,7 @@ async function carregarConversa() {
   const lista = document.getElementById('listaMensagens');
 
   try {
-    const response = await fetch(`http://localhost:8080/api/mensagens/conversa?empresaAId=${empresaLogada.id}&empresaBId=${contatoAtivo.empresaId}`);
+    const response = await fetch(`http://localhost:8080/api/mensagens/conversa/${contatoAtivo.empresaId}`);
     if (!response.ok) {
       if (response.status === 404) {
         lista.innerHTML = '<div class="estado-inicial">Conversa indisponível no momento.</div>';
@@ -136,7 +150,6 @@ async function enviarMensagem(event) {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        remetenteId: empresaLogada.id,
         destinatarioId: contatoAtivo.empresaId,
         conteudo
       })
@@ -155,7 +168,7 @@ async function enviarMensagem(event) {
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
-  if (!garantirLogin()) return;
+  if (!await garantirLogin()) return;
   atualizarLinkPostagens();
 
   const form = document.getElementById('formMensagem');

@@ -2,6 +2,8 @@
 package com.ads.LogElec.service;
 
 import com.ads.LogElec.entity.Empresa;
+import com.ads.LogElec.entity.PerfilAcesso;
+import com.ads.LogElec.entity.StatusConta;
 import com.ads.LogElec.entity.TipoEmpresa;
 import com.ads.LogElec.repository.EmpresaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +42,14 @@ public class EmpresaService {
     }
 
     public Empresa createEmpresa(@Valid Empresa empresa) {
+        if (empresa.getPerfilAcesso() == null) {
+            empresa.setPerfilAcesso(PerfilAcesso.EMPRESA);
+        }
+
+        if (empresa.getStatusConta() == null) {
+            empresa.setStatusConta(StatusConta.ATIVA);
+        }
+
         
         if (empresaRepository.findByEmail(empresa.getEmail()).isPresent()) {
             throw new RuntimeException("Email já cadastrado");

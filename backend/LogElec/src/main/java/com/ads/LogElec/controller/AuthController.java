@@ -2,12 +2,23 @@ package com.ads.LogElec.controller;
 
 import com.ads.LogElec.dto.LoginDTO;
 import com.ads.LogElec.dto.RecuperarSenhaDTO;
+import com.ads.LogElec.dto.SessaoUsuarioDTO;
 import com.ads.LogElec.entity.Empresa;
 import com.ads.LogElec.repository.EmpresaRepository;
+import com.ads.LogElec.security.EmpresaSessionPrincipal;
 import com.ads.LogElec.service.AuthService;
 import com.ads.LogElec.service.EmpresaService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -27,15 +38,44 @@ public class AuthController {
     private EmpresaService empresaService;
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginDTO loginDTO) {
+    public ResponseEntity<?> login(@RequestBody LoginDTO loginDTO, HttpServletRequest request) {
         try {
             Empresa empresa = authService.login(loginDTO.getEmail(), loginDTO.getSenha());
-            return ResponseEntity.ok(empresa);
+            EmpresaSessionPrincipal principal = EmpresaSessionPrincipal.fromEmpresa(empresa);
+            Authentication authentication = UsernamePasswordAuthenticationToken.authenticated(
+                principal,
+                null,
+                principal.getAuthorities()
+            );
+
+            SecurityContext context = SecurityContextHolder.createEmptyContext();
+            context.setAuthentication(authentication);
+            SecurityContextHolder.setContext(context);
+
+            HttpSession session = request.getSession(true);
+            session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, context);
+
+            return ResponseEntity.ok(SessaoUsuarioDTO.fromPrincipal(principal));
         } catch (RuntimeException e) {
             return ResponseEntity.status(401).body(e.getMessage());
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Erro interno do servidor");
         }
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<?> me(@org.springframework.security.core.annotation.AuthenticationPrincipal EmpresaSessionPrincipal principal) {
+        if (principal == null) {
+            return ResponseEntity.status(401).body("Não autenticado.");
+        }
+
+        return ResponseEntity.ok(SessaoUsuarioDTO.fromPrincipal(principal));
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<?> logout(HttpServletRequest request, HttpServletResponse response) {
+        new SecurityContextLogoutHandler().logout(request, response, SecurityContextHolder.getContext().getAuthentication());
+        return ResponseEntity.ok("Sessão encerrada com sucesso.");
     }
 
     @PostMapping("/recuperar-senha")

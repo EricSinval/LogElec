@@ -11,16 +11,40 @@ function ensurePopupRoot() {
 
 function resolveFrontendPath(path) {
   const normalizedPath = String(path || '').replace(/^\/+/, '');
-  const protocol = window.location.protocol || 'http:';
-  const hostname = window.location.hostname || 'localhost';
-  const isLegacyLiveServer = window.location.port === '5500';
-  const port = isLegacyLiveServer ? '8081' : window.location.port;
-  const origin = `${protocol}//${hostname}${port ? `:${port}` : ''}`;
 
-  return `${origin}/index/${normalizedPath}`;
+  if (!normalizedPath) {
+    return window.location.href;
+  }
+
+  try {
+    return new URL(normalizedPath, window.location.href).href;
+  } catch (error) {
+    console.warn('Não foi possível resolver o caminho do frontend:', error);
+    return normalizedPath;
+  }
 }
 
 let activePopupOverlay = null;
+
+function inferPopupTitle(type, buttonCount) {
+  const normalizedType = String(type || 'info').toLowerCase();
+  const isDecision = Number(buttonCount || 0) > 1;
+
+  if (normalizedType === 'success') return 'Operação concluída';
+  if (normalizedType === 'error') return isDecision ? 'Confirmar ação' : 'Não foi possível concluir';
+  if (normalizedType === 'warning') return isDecision ? 'Atenção necessária' : 'Atenção';
+
+  return isDecision ? 'Confirme para continuar' : 'Informação';
+}
+
+function inferPopupSymbol(type) {
+  const normalizedType = String(type || 'info').toLowerCase();
+
+  if (normalizedType === 'success') return 'OK';
+  if (normalizedType === 'error' || normalizedType === 'warning') return '!';
+
+  return 'i';
+}
 
 function inferPopupButtonClass(buttonConfig, index, total, type) {
   if (buttonConfig.className && String(buttonConfig.className).trim()) {
@@ -40,7 +64,17 @@ function inferPopupButtonClass(buttonConfig, index, total, type) {
 }
 
 function createPopupElement(message, options = {}) {
-  const { type = 'info', buttons = [], showCloseButton = true, closeOnBackdrop = true, onClose = null } = options;
+  const {
+    type = 'info',
+    title = '',
+    subtitle = '',
+    buttons = [],
+    showCloseButton = true,
+    closeOnBackdrop = true,
+    onClose = null
+  } = options;
+  const resolvedTitle = title || inferPopupTitle(type, buttons.length);
+  const resolvedSymbol = inferPopupSymbol(type);
 
   const overlay = document.createElement('div');
   overlay.className = 'ui-popup-overlay';
@@ -68,7 +102,17 @@ function createPopupElement(message, options = {}) {
 
   const content = document.createElement('div');
   content.className = 'ui-popup-content';
-  content.innerHTML = `<div class="ui-popup-message">${message}</div>`;
+  content.innerHTML = `
+    <div class="ui-popup-stack">
+      <div class="ui-popup-header">
+        <div class="ui-popup-status" aria-hidden="true">${resolvedSymbol}</div>
+        <div class="ui-popup-header-copy">
+          <h2 class="ui-popup-title">${resolvedTitle}</h2>
+          ${subtitle ? `<p class="ui-popup-subtitle">${subtitle}</p>` : ''}
+        </div>
+      </div>
+      <div class="ui-popup-message">${message}</div>
+    </div>`;
 
   const actions = document.createElement('div');
   actions.className = 'ui-popup-actions';
@@ -86,9 +130,24 @@ function createPopupElement(message, options = {}) {
       btn.type = 'button';
       btn.className = 'ui-btn ' + inferPopupButtonClass(b, index, buttons.length, type);
       btn.textContent = b.text || 'OK';
-      btn.addEventListener('click', () => {
-        try { if (typeof b.onClick === 'function') b.onClick(); } catch (e) { console.error(e); }
-        closePopup(overlay);
+      btn.addEventListener('click', async () => {
+        let shouldClose = b.closeOnClick !== false;
+
+        try {
+          if (typeof b.onClick === 'function') {
+            const result = await b.onClick();
+            if (result === false) {
+              shouldClose = false;
+            }
+          }
+        } catch (e) {
+          console.error(e);
+          shouldClose = false;
+        }
+
+        if (shouldClose) {
+          closePopup(overlay);
+        }
       });
       actions.appendChild(btn);
     });
@@ -164,9 +223,14 @@ function showPopup(message, options = {}) {
   activePopupOverlay = overlay;
   document.addEventListener('keydown', overlay._keyHandler, true);
 
-  const firstActionButton = overlay.querySelector('.ui-popup-actions .ui-btn');
-  if (firstActionButton) {
-    firstActionButton.focus();
+  const initialFocusElement = options.initialFocusSelector
+    ? overlay.querySelector(options.initialFocusSelector)
+    : overlay.querySelector('.ui-popup-actions .ui-btn-primary')
+      || overlay.querySelector('.ui-popup-actions .ui-btn')
+      || overlay.querySelector('.ui-popup-close');
+
+  if (initialFocusElement) {
+    requestAnimationFrame(() => initialFocusElement.focus());
   }
 
   if (options.autoClose && typeof options.autoClose === 'number') {

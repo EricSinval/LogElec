@@ -354,32 +354,35 @@ async function fazerLoginAutomatico(email, senha) {
             email: email,
             senha: senha
         };
-        
+
+        if (window.authApp && typeof window.authApp.autenticar === 'function') {
+            const empresa = await window.authApp.autenticar(loginData);
+            console.log('Login automático bem-sucedido:', empresa);
+            window.location.href = 'postagens.html';
+            return true;
+        }
+
         const response = await fetch('http://localhost:8080/api/auth/login', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(loginData)
         });
-        
+
         console.log('Status resposta login:', response.status);
-        
+
         if (response.ok) {
             const empresa = await response.json();
             console.log('Login automático bem-sucedido:', empresa);
-            
-            
+
             localStorage.setItem('empresaLogada', JSON.stringify(empresa));
-            
-            
             window.location.href = 'postagens.html';
             return true;
-        } else {
-            const error = await response.text();
-            console.error('Erro no login automático:', error);
-            
-            window.location.href = 'login.html';
-            return false;
         }
+
+        const error = await response.text();
+        console.error('Erro no login automático:', error);
+        window.location.href = 'login.html';
+        return false;
     } catch (error) {
         console.error('Erro na conexão do login automático:', error);
         window.location.href = 'login.html';

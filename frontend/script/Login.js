@@ -35,34 +35,25 @@ async function fazerLogin(event) {
     console.log('Dados login:', loginData);
 
     try {
-        const response = await fetch('http://localhost:8080/api/auth/login', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(loginData)
-        });
+        const empresa = await window.authApp.autenticar(loginData);
+        console.log('Login success:', empresa);
 
-        console.log('Status response:', response.status);
-
-        if (response.ok) {
-            const empresa = await response.json();
-            console.log('Login success:', empresa);
-
-            localStorage.setItem('empresaLogada', JSON.stringify(empresa));
-            showPopup('Login realizado com sucesso!', { type: 'success', buttons: [ { text: 'Continuar', onClick: () => { window.location.href = window.resolveFrontendPath ? window.resolveFrontendPath('postagens.html') : 'postagens.html'; } } ] });
-        } else {
-            const error = await response.text();
-            console.log('Login error:', error);
-            showPopup('Erro no login: ' + error, { type: 'error' });
-        }
+        const destino = window.authApp.obterDestinoPosLogin(empresa);
+        showPopup('Login realizado com sucesso!', { type: 'success', buttons: [ { text: 'Continuar', onClick: () => { window.location.href = window.resolveFrontendPath ? window.resolveFrontendPath(destino) : destino; } } ] });
     } catch (error) {
-        showPopup('Erro de conexão com o servidor.', { type: 'error' });
+        if (error && error.message) {
+            console.log('Login error:', error.message);
+            showPopup('Erro no login: ' + error.message, { type: 'error' });
+        } else {
+            showPopup('Erro de conexão com o servidor.', { type: 'error' });
+        }
     } finally {
         if (form) {
             form.dataset.submitting = 'false';
         }
         if (submitButton) {
             submitButton.disabled = false;
-            submitButton.textContent = 'Enviar';
+            submitButton.textContent = 'Entrar';
         }
     }
 }

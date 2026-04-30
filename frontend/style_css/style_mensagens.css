@@ -11,18 +11,27 @@
 body {
   margin: 0;
   font-family: 'Roboto', sans-serif;
-  background: var(--bg);
+  background: url("../img/fundo.png") no-repeat center center fixed;
+  background-size: cover;
   color: var(--text);
 }
 
 .mensagens-layout {
-  height: calc(100vh - 93px);
+  width: min(1320px, calc(100% - 48px));
+  min-height: calc(100vh - 149px);
+  height: auto;
+  margin: 24px auto 32px;
   display: grid;
   grid-template-columns: 340px 1fr;
+  background: rgba(255, 255, 255, 0.18);
+  border-radius: 24px;
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.16);
 }
 
 .painel-contatos {
-  background: var(--panel);
+  background: rgba(255, 255, 255, 0.94);
   border-right: 1px solid var(--border);
   display: flex;
   flex-direction: column;
@@ -77,7 +86,7 @@ body {
 }
 
 .cabecalho-conversa {
-  background: #fff;
+  background: rgba(255, 255, 255, 0.92);
   border-bottom: 1px solid var(--border);
   padding: 14px 18px;
 }
@@ -131,7 +140,7 @@ body {
 }
 
 .area-envio {
-  background: #fff;
+  background: rgba(255, 255, 255, 0.94);
   border-top: 1px solid var(--border);
   padding: 12px;
   display: grid;
@@ -168,6 +177,9 @@ body {
 
 @media (max-width: 900px) {
   .mensagens-layout {
+    width: calc(100% - 24px);
+    min-height: 0;
+    margin: 12px auto 24px;
     grid-template-columns: 1fr;
   }
 

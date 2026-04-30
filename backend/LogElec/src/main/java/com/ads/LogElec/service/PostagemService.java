@@ -1,12 +1,14 @@
 package com.ads.LogElec.service;
 
 import com.ads.LogElec.entity.Postagem;
+import com.ads.LogElec.entity.StatusModeracaoPostagem;
 import com.ads.LogElec.entity.StatusPostagem;
 import com.ads.LogElec.repository.AgendamentoRepository;
 import com.ads.LogElec.repository.PostagemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,6 +43,9 @@ public class PostagemService {
     }
 
     public Postagem save(Postagem postagem) {
+        if (postagem.getStatusModeracao() == null) {
+            postagem.setStatusModeracao(StatusModeracaoPostagem.PENDENTE);
+        }
         return postagemRepository.save(postagem);
     }
 
@@ -48,18 +53,72 @@ public class PostagemService {
         Postagem postagem = postagemRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Postagem não encontrada com id: " + id));
 
-        if (postagemDetails.getTitulo() != null) postagem.setTitulo(postagemDetails.getTitulo());
-        if (postagemDetails.getDescricao() != null) postagem.setDescricao(postagemDetails.getDescricao());
-        if (postagemDetails.getTipoResiduo() != null) postagem.setTipoResiduo(postagemDetails.getTipoResiduo());
-        if (postagemDetails.getPeso() != null) postagem.setPeso(postagemDetails.getPeso());
-        if (postagemDetails.getMaxPesoColeta() != null) postagem.setMaxPesoColeta(postagemDetails.getMaxPesoColeta());
-        if (postagemDetails.getEnderecoRetirada() != null) postagem.setEnderecoRetirada(postagemDetails.getEnderecoRetirada());
-        if (postagemDetails.getFotoEmpresa() != null) postagem.setFotoEmpresa(postagemDetails.getFotoEmpresa());
-        if (postagemDetails.getFotoResiduos() != null) postagem.setFotoResiduos(postagemDetails.getFotoResiduos());
-        if (postagemDetails.getDiasDisponibilidade() != null) postagem.setDiasDisponibilidade(postagemDetails.getDiasDisponibilidade());
-        if (postagemDetails.getHoraInicio() != null) postagem.setHoraInicio(postagemDetails.getHoraInicio());
-        if (postagemDetails.getHoraFim() != null) postagem.setHoraFim(postagemDetails.getHoraFim());
+        boolean conteudoAlterado = false;
+
+        if (postagemDetails.getTitulo() != null) {
+            postagem.setTitulo(postagemDetails.getTitulo());
+            conteudoAlterado = true;
+        }
+        if (postagemDetails.getDescricao() != null) {
+            postagem.setDescricao(postagemDetails.getDescricao());
+            conteudoAlterado = true;
+        }
+        if (postagemDetails.getTipoResiduo() != null) {
+            postagem.setTipoResiduo(postagemDetails.getTipoResiduo());
+            conteudoAlterado = true;
+        }
+        if (postagemDetails.getPeso() != null) {
+            postagem.setPeso(postagemDetails.getPeso());
+            conteudoAlterado = true;
+        }
+        if (postagemDetails.getMaxPesoColeta() != null) {
+            postagem.setMaxPesoColeta(postagemDetails.getMaxPesoColeta());
+            conteudoAlterado = true;
+        }
+        if (postagemDetails.getEnderecoRetirada() != null) {
+            postagem.setEnderecoRetirada(postagemDetails.getEnderecoRetirada());
+            conteudoAlterado = true;
+        }
+        if (postagemDetails.getFotoEmpresa() != null) {
+            postagem.setFotoEmpresa(postagemDetails.getFotoEmpresa());
+            conteudoAlterado = true;
+        }
+        if (postagemDetails.getFotoResiduos() != null) {
+            postagem.setFotoResiduos(postagemDetails.getFotoResiduos());
+            conteudoAlterado = true;
+        }
+        if (postagemDetails.getDiasDisponibilidade() != null) {
+            postagem.setDiasDisponibilidade(postagemDetails.getDiasDisponibilidade());
+            conteudoAlterado = true;
+        }
+        if (postagemDetails.getHoraInicio() != null) {
+            postagem.setHoraInicio(postagemDetails.getHoraInicio());
+            conteudoAlterado = true;
+        }
+        if (postagemDetails.getHoraFim() != null) {
+            postagem.setHoraFim(postagemDetails.getHoraFim());
+            conteudoAlterado = true;
+        }
         if (postagemDetails.getStatus() != null) postagem.setStatus(postagemDetails.getStatus());
+
+        if (conteudoAlterado) {
+            postagem.setStatusModeracao(StatusModeracaoPostagem.PENDENTE);
+            postagem.setMotivoModeracao(null);
+            postagem.setModeradoEm(null);
+            postagem.setModeradoPor(null);
+        }
+
+        return postagemRepository.save(postagem);
+    }
+
+    public Postagem moderarPostagem(Long id, StatusModeracaoPostagem statusModeracao, String motivoModeracao, String moderadoPor) {
+        Postagem postagem = postagemRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Postagem não encontrada com id: " + id));
+
+        postagem.setStatusModeracao(statusModeracao);
+        postagem.setMotivoModeracao(motivoModeracao == null || motivoModeracao.isBlank() ? null : motivoModeracao.trim());
+        postagem.setModeradoPor(moderadoPor);
+        postagem.setModeradoEm(LocalDateTime.now());
 
         return postagemRepository.save(postagem);
     }

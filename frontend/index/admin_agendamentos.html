@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LogElec - Coletas e Agendamentos</title>
+  <link rel="stylesheet" href="../style_css/style_admin.css">
+  <link rel="stylesheet" href="../style_css/styles_popup.css">
+  <link rel="stylesheet" href="../style_css/styles_system.css">
+</head>
+<body data-admin-page="agendamentos">
+  <div class="admin-shell">
+    <aside class="admin-sidebar">
+      <a class="admin-brand" href="admin_dashboard.html">
+        <strong>LogElec Admin</strong>
+        <small>Gestão da plataforma</small>
+      </a>
+      <nav class="admin-nav">
+        <a class="admin-nav-link" data-page="dashboard" href="admin_dashboard.html">Visão geral</a>
+        <a class="admin-nav-link" data-page="empresas" href="admin_empresas.html">Contas de empresas</a>
+        <a class="admin-nav-link" data-page="publicacoes" href="admin_publicacoes.html">Moderação de publicações</a>
+        <a class="admin-nav-link" data-page="agendamentos" href="admin_agendamentos.html">Coletas e agendamentos</a>
+      </nav>
+      <div class="admin-user">
+        <strong id="adminNome">Administrador</strong>
+        <span>Conta interna da plataforma</span>
+        <button id="adminSair" type="button">Sair</button>
+      </div>
+    </aside>
+
+    <main class="admin-main">
+      <section class="admin-page-header">
+        <h1>Visualização de coletas e publicações vinculadas</h1>
+        <p>Acompanhe todas as coletas agendadas ou realizadas na plataforma, com visão centralizada para supervisão operacional.</p>
+      </section>
+
+      <section class="admin-panel">
+        <div class="admin-toolbar">
+          <select id="filtroAgendamento">
+            <option value="">Todos os status</option>
+            <option value="AGENDADA">Agendadas</option>
+            <option value="CONFIRMADA">Confirmadas</option>
+            <option value="REALIZADA">Realizadas</option>
+            <option value="RECUSADO">Recusadas</option>
+            <option value="CANCELADA">Canceladas</option>
+          </select>
+        </div>
+
+        <div id="listaAgendamentosAdmin" class="admin-list"></div>
+      </section>
+    </main>
+  </div>
+
+  <script src="../script/popup.js"></script>
+  <script src="../script/auth.js"></script>
+  <script src="../script/admin_common.js"></script>
+  <script src="../script/admin_agendamentos.js"></script>
+</body>
+</html>

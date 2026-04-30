@@ -5,14 +5,28 @@ let empresaOriginal = null;
 let modoEdicao = false;
 
 
-function sair() {
-    localStorage.removeItem('empresaLogada');
+async function sair() {
+    if (window.authApp && typeof window.authApp.encerrarSessao === 'function') {
+        await window.authApp.encerrarSessao();
+    } else {
+        localStorage.removeItem('empresaLogada');
+    }
+
     window.location.href = 'login.html';
 }
 
 
-function carregarDadosUsuario() {
-    const empresaLogada = JSON.parse(localStorage.getItem('empresaLogada'));
+function obterEmpresaLogada() {
+    if (window.authApp && typeof window.authApp.obterSessaoLogada === 'function') {
+        return window.authApp.obterSessaoLogada();
+    }
+
+    const salvo = localStorage.getItem('empresaLogada');
+    return salvo ? JSON.parse(salvo) : null;
+}
+
+
+function carregarDadosUsuario(empresaLogada = obterEmpresaLogada()) {
     
     if (!empresaLogada) {
         showPopup('Você precisa fazer login primeiro!', { 
@@ -110,7 +124,11 @@ async function salvarAlteracoes(event) {
 
     if (!modoEdicao) return;
 
-    const empresaLogada = JSON.parse(localStorage.getItem('empresaLogada'));
+    const empresaLogada = obterEmpresaLogada();
+    if (!empresaLogada) {
+        showPopup('Você precisa fazer login primeiro!', { type: 'info' });
+        return;
+    }
     
     
     const dadosAtualizados = {
@@ -150,7 +168,7 @@ async function salvarAlteracoes(event) {
     console.log('📤 Enviando dados atualizados:', dadosAtualizados);
 
     try {
-        const response = await fetch(`http://localhost:8080/api/empresas/${empresaLogada.id}`, {
+        const response = await fetch('http://localhost:8080/api/empresas/me', {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -163,7 +181,11 @@ async function salvarAlteracoes(event) {
             console.log('✅ Perfil atualizado:', empresaAtualizada);
             
             
-            localStorage.setItem('empresaLogada', JSON.stringify(empresaAtualizada));
+            if (window.authApp && typeof window.authApp.persistirSessao === 'function') {
+                window.authApp.persistirSessao(empresaAtualizada);
+            } else {
+                localStorage.setItem('empresaLogada', JSON.stringify(empresaAtualizada));
+            }
             
             
             document.getElementById('senhaAtual').value = '';
@@ -192,8 +214,19 @@ async function salvarAlteracoes(event) {
 }
 
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', async function() {
     console.log('👤 Página de perfil inicializada');
+
+    if (window.authApp && typeof window.authApp.exigirSessao === 'function') {
+        const empresaLogada = await window.authApp.exigirSessao({
+            redirectPath: 'login.html',
+            message: 'Você precisa fazer login primeiro!'
+        });
+
+        if (!empresaLogada) {
+            return;
+        }
+    }
     
     carregarDadosUsuario();
 
@@ -244,28 +277,41 @@ function pedirSenhaParaExclusao() {
 
 
 async function excluirContaComSenha(senha) {
-    const empresaLogada = JSON.parse(localStorage.getItem('empresaLogada'));
+    const empresaLogada = obterEmpresaLogada();
     if (!empresaLogada) return;
 
     try {
         
-        const loginResp = await fetch('http://localhost:8080/api/auth/login', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email: empresaLogada.email, senha })
+        if (window.authApp && typeof window.authApp.autenticar === 'function') {
+            await window.authApp.autenticar({ email: empresaLogada.email, senha });
+        } else {
+            const loginResp = await fetch('http://localhost:8080/api/auth/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email: empresaLogada.email, senha })
+            });
+
+            if (!loginResp.ok) {
+                showPopup('Senha incorreta. Exclusão cancelada.', { type: 'error' });
+                return;
+            }
+        }
+
+        const response = await fetch('http://localhost:8080/api/empresas/me', {
+            method: 'DELETE'
         });
 
-        if (!loginResp.ok) {
+        if (response.status === 401) {
             showPopup('Senha incorreta. Exclusão cancelada.', { type: 'error' });
             return;
         }
 
-        const response = await fetch(`http://localhost:8080/api/empresas/${empresaLogada.id}`, {
-            method: 'DELETE'
-        });
-
         if (response.status === 204) {
-            localStorage.removeItem('empresaLogada');
+            if (window.authApp && typeof window.authApp.limparSessao === 'function') {
+                window.authApp.limparSessao();
+            } else {
+                localStorage.removeItem('empresaLogada');
+            }
             showPopup('Conta excluída com sucesso.', {
                 type: 'success',
                 buttons: [{ text: 'OK', onClick: () => { window.location.href = 'login.html'; } }]

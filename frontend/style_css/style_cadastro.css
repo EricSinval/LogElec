@@ -1,7 +1,6 @@
 body {
   font-family: Arial, Helvetica, sans-serif;
-  background: #a4e2ad; 
-  background-image: url("../img/fundo.png");
+  background: url("../img/fundo.png") no-repeat center center fixed;
   background-size: cover;
   
   margin: 0;

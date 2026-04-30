@@ -9,24 +9,42 @@ window.addEventListener('load', function() {
     inicializar();
 });
 
-function inicializar() {
-    verificarAutenticacao();
-    carregarPostagens();
-}
-
-function verificarAutenticacao() {
-    const empresaLogada = localStorage.getItem('empresaLogada');
-    if (!empresaLogada) {
-        window.location.href = 'login.html';
+async function inicializar() {
+    const autenticado = await verificarAutenticacao();
+    if (!autenticado) {
         return;
     }
 
-    const empresa = JSON.parse(empresaLogada);
-    empresaLogadaAtual = empresa;
-    document.getElementById('nomeEmpresa').value = empresa.nome || '';
+    carregarPostagens();
+}
+
+async function verificarAutenticacao() {
+    if (window.authApp && typeof window.authApp.exigirSessao === 'function') {
+        const empresa = await window.authApp.exigirSessao({
+            redirectPath: 'login.html',
+            message: 'Você precisa fazer login primeiro!'
+        });
+
+        if (!empresa) {
+            return false;
+        }
+
+        empresaLogadaAtual = empresa;
+    } else {
+        const empresaLogada = localStorage.getItem('empresaLogada');
+        if (!empresaLogada) {
+            window.location.href = 'login.html';
+            return false;
+        }
+
+        empresaLogadaAtual = JSON.parse(empresaLogada);
+    }
+
+    document.getElementById('nomeEmpresa').value = empresaLogadaAtual.nomeRazao || empresaLogadaAtual.nome || '';
     document.getElementById('linkPostagensTipo').textContent = 'Postagens';
 
     configurarCamposPorTipo();
+    return true;
 }
 
 function obterTipoEmpresa() {
@@ -76,12 +94,9 @@ function configurarCamposPorTipo() {
 
 async function carregarPostagens() {
     try {
-        const empresaLogada = JSON.parse(localStorage.getItem('empresaLogada'));
-        const empresaId = empresaLogada.id;
+        console.log('Carregando postagens da empresa autenticada');
 
-        console.log('Carregando postagens para empresa ID:', empresaId);
-
-        const response = await fetch(`http://localhost:8080/api/postagens/empresa/${empresaId}`, {
+        const response = await fetch('http://localhost:8080/api/postagens/empresa/me', {
             method: 'GET',
             headers: { 'Content-Type': 'application/json' }
         });
@@ -112,9 +127,20 @@ function exibirListaPostagens() {
     container.innerHTML = postagens.map((postagem, index) => `
         <div class="item-postagem" onclick="selecionarPostagem(${index})" data-id="${postagem.id}">
             <div class="item-postagem-titulo">${postagem.titulo || postagem.tipoResiduo || 'Postagem sem título'}</div>
-            <div class="item-postagem-tipo">${postagem.tipoResiduo || 'N/A'}</div>
+            <div class="item-postagem-tipo">${postagem.tipoResiduo || 'N/A'} | Moderação: ${normalizarStatusModeracao(postagem.statusModeracao)}</div>
         </div>
     `).join('');
+}
+
+function normalizarStatusModeracao(status) {
+    const valor = (status || 'PENDENTE').toString().toUpperCase();
+    const mapa = {
+        PENDENTE: 'Pendente',
+        APROVADA: 'Aprovada',
+        REJEITADA: 'Rejeitada',
+        BLOQUEADA: 'Bloqueada'
+    };
+    return mapa[valor] || 'Pendente';
 }
 
 function selecionarPostagem(index) {
@@ -259,7 +285,7 @@ document.getElementById('formEdicaoPostagem').addEventListener('submit', async f
             preencherFormulario(postagemAtualizada);
             exibirListaPostagens();
 
-            showPopup('Postagem atualizada com sucesso!', {
+            showPopup('Postagem atualizada com sucesso! Ela retornou para validação administrativa.', {
                 type: 'success',
                 buttons: [{ text: 'OK', onClick: () => {} }]
             });

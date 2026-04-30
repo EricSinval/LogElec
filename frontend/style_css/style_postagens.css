@@ -9,7 +9,8 @@
 
 body {
   font-family: 'Segoe UI', sans-serif;
-  background-color: #f8f1de;
+  background: url("../img/fundo.png") no-repeat center center fixed;
+  background-size: cover;
   min-height: 100vh;
 }
 

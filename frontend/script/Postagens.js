@@ -4,6 +4,11 @@ console.log('Postagens.js carregado!');
 let todasPostagens = [];
 let debounceTimer = null; 
 
+function postagemAprovadaParaVitrine(postagem) {
+    const statusModeracao = (postagem && postagem.statusModeracao ? postagem.statusModeracao : 'APROVADA').toString().toUpperCase();
+    return statusModeracao === 'APROVADA';
+}
+
 function truncarTexto(texto, limite = 140) {
     if (!texto) return '';
     if (texto.length <= limite) return texto;
@@ -16,10 +21,10 @@ function truncarTexto(texto, limite = 140) {
 }
 
 function formatarPeso(peso) {
-    if (peso === null || peso === undefined || peso === '') return 'Nao informado';
+    if (peso === null || peso === undefined || peso === '') return 'Não informado';
 
     const valor = Number(peso);
-    if (Number.isNaN(valor)) return 'Nao informado';
+    if (Number.isNaN(valor)) return 'Não informado';
 
     return `${valor.toLocaleString('pt-BR', {
         minimumFractionDigits: 0,
@@ -29,7 +34,9 @@ function formatarPeso(peso) {
 
 
 function verificarLogin() {
-    const empresaLogada = localStorage.getItem('empresaLogada');
+    const empresaLogada = window.authApp && typeof window.authApp.obterSessaoLogada === 'function'
+        ? window.authApp.obterSessaoLogada()
+        : localStorage.getItem('empresaLogada');
     if (!empresaLogada) {
         showPopup('⚠️ Você precisa fazer login primeiro!', { 
             type: 'info', 
@@ -40,7 +47,8 @@ function verificarLogin() {
         });
         return null;
     }
-    return JSON.parse(empresaLogada);
+
+    return typeof empresaLogada === 'string' ? JSON.parse(empresaLogada) : empresaLogada;
 }
 
 
@@ -51,7 +59,7 @@ async function carregarPostagens() {
         const response = await fetch('http://localhost:8080/api/postagens');
         
         if (response.ok) {
-            todasPostagens = await response.json();
+            todasPostagens = (await response.json()).filter(postagemAprovadaParaVitrine);
             console.log('Postagens carregadas:', todasPostagens);
             aplicarFiltro();
         } else {
@@ -100,7 +108,7 @@ function carregarPostagensMock() {
                 email: 'coleta@eco.com'
             }
         }
-    ];
+    ].filter(postagemAprovadaParaVitrine);
     aplicarFiltro();
 }
 
@@ -163,7 +171,7 @@ function exibirPostagens(postagens) {
                 <h3>${nomeEmpresa}</h3>
             </div>
             <div class="card-content">
-                <p><strong>Tipo de residuos:</strong> ${tipoResiduo}</p>
+                <p><strong>Tipo de resíduos:</strong> ${tipoResiduo}</p>
                 <p><strong>Peso:</strong> ${pesoFormatado}</p>
                 <p class="descricao-resumo"><strong>Descrição:</strong> ${descricaoResumo}</p>
                 <p class="status-linha"><strong>Status:</strong> <span class="status ${status.toLowerCase()}">${formatarStatus(status)}</span></p>
@@ -338,8 +346,16 @@ function toggleMenu() {
 }
 
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', async function() {
     console.log('Página de postagens inicializada');
+
+    if (window.authApp && typeof window.authApp.carregarSessao === 'function') {
+        try {
+            await window.authApp.carregarSessao();
+        } catch (error) {
+            console.warn('Não foi possível sincronizar a sessão na página de postagens:', error);
+        }
+    }
     
     const empresaLogada = verificarLogin();
     if (empresaLogada) {
@@ -568,7 +584,7 @@ async function preencherHorariosPopup(postagem) {
     
     let agendamentosExistentes = [];
     try {
-        const response = await fetch(`http://localhost:8080/api/agendamentos/postagem/${postagem.id}`);
+        const response = await fetch(`http://localhost:8080/api/agendamentos/postagem/${postagem.id}/horarios-ocupados`);
         if (response.ok) {
             agendamentosExistentes = await response.json();
         }
@@ -672,8 +688,6 @@ async function confirmarAgendamentoPopup() {
     }
     
     const payload = {
-        empresaSolicitanteId: empresaLogada.id,
-        empresaColetoraId: postagemAgendamento.empresa ? postagemAgendamento.empresa.id : postagemAgendamento.empresaId,
         postagemId: postagemAgendamento.id,
         dataAgendamento: dataAgendamentoDate.toISOString().slice(0,10),
         horaAgendamento: horarioSelecionado,

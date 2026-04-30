@@ -1,6 +1,15 @@
 
 console.log('CadastroPostagens.js carregado!');
 
+function obterEmpresaLogada() {
+    if (window.authApp && typeof window.authApp.obterSessaoLogada === 'function') {
+        return window.authApp.obterSessaoLogada();
+    }
+
+    const salvo = localStorage.getItem('empresaLogada');
+    return salvo ? JSON.parse(salvo) : null;
+}
+
 async function cadastrarPostagem(event) {
     event.preventDefault();
     console.log('Iniciando cadastro de postagem...');
@@ -21,7 +30,7 @@ async function cadastrarPostagem(event) {
         submitButton.textContent = 'Salvando...';
     }
     
-    const empresaLogada = JSON.parse(localStorage.getItem('empresaLogada'));
+    const empresaLogada = obterEmpresaLogada();
     if (!empresaLogada) {
         showPopup('⚠️ Você precisa fazer login primeiro!', { type: 'info', buttons: [ { text: 'Ir para login', onClick: () => { window.location.href = 'login.html'; } } ] });
         return;
@@ -53,8 +62,7 @@ async function cadastrarPostagem(event) {
         peso: parseFloat(document.getElementById('peso').value) || 0,
         diasDisponibilidade: diasSelecionados.join(','),
         horaInicio: horaInicio,
-        horaFim: horaFim,
-        empresa: { id: empresaLogada.id }
+        horaFim: horaFim
     };
 
     if (isColeta) {
@@ -82,7 +90,7 @@ async function cadastrarPostagem(event) {
         if (response.ok) {
             const postagem = await response.json();
             console.log('Postagem cadastrada:', postagem);
-            showPopup('Postagem cadastrada com sucesso!', { type: 'success', buttons: [ { text: 'Ver postagens', onClick: () => { window.location.href = 'postagens.html'; } } ] });
+            showPopup('Postagem cadastrada com sucesso! Ela ficará visível na vitrine após validação do administrador.', { type: 'success', buttons: [ { text: 'Gerenciar postagens', onClick: () => { window.location.href = 'editar_postagens.html'; } } ] });
         } else {
             const error = await response.text();
             console.error('Erro no cadastro:', error);
@@ -104,7 +112,7 @@ async function cadastrarPostagem(event) {
 
 
 function atualizarInterface() {
-    const empresaLogada = JSON.parse(localStorage.getItem('empresaLogada'));
+    const empresaLogada = obterEmpresaLogada();
     const userInfoElement = document.getElementById('userInfo');
     const subtitulo = document.getElementById('subtituloPostagem');
     
@@ -132,11 +140,18 @@ function atualizarInterface() {
     }
     
     
-    configurarCamposPorTipo(empresaLogada.tipo);
+    if (empresaLogada) {
+        configurarCamposPorTipo(empresaLogada.tipo);
+    }
 }
 
-function sair() {
-    localStorage.removeItem('empresaLogada');
+async function sair() {
+    if (window.authApp && typeof window.authApp.encerrarSessao === 'function') {
+        await window.authApp.encerrarSessao();
+    } else {
+        localStorage.removeItem('empresaLogada');
+    }
+
     window.location.href = 'login.html';
 }
 
@@ -154,14 +169,26 @@ function converterImagemBase64(arquivo) {
 }
 
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', async function() {
     console.log('Página de cadastro de postagens inicializada');
-    
-    const empresaLogada = JSON.parse(localStorage.getItem('empresaLogada'));
+
+    if (window.authApp && typeof window.authApp.exigirSessao === 'function') {
+        const usuario = await window.authApp.exigirSessao({
+            redirectPath: 'login.html',
+            message: 'Você precisa fazer login primeiro!'
+        });
+
+        if (!usuario) {
+            return;
+        }
+    }
+
+    const empresaLogada = obterEmpresaLogada();
     if (!empresaLogada) {
         showPopup('Você precisa fazer login primeiro!', { type: 'info', buttons: [ { text: 'Ir para login', onClick: () => { window.location.href = 'login.html'; } } ] });
         return;
     }
+
     atualizarInterface();
     
     const nomeEmpresa = empresaLogada.nomeRazao || empresaLogada.nome;

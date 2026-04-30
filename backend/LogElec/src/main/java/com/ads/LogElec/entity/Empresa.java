@@ -1,5 +1,6 @@
 package com.ads.LogElec.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
@@ -20,11 +21,20 @@ public class Empresa {
     private String email;
 
     @Column(name = "senha_hash", nullable = false)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String senha;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private TipoEmpresa tipo;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "perfil_acesso")
+    private PerfilAcesso perfilAcesso = PerfilAcesso.EMPRESA;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status_conta")
+    private StatusConta statusConta = StatusConta.ATIVA;
 
     @Column(nullable = false)
     private String endereco;
@@ -75,6 +85,12 @@ public class Empresa {
     public TipoEmpresa getTipo() { return tipo; }
     public void setTipo(TipoEmpresa tipo) { this.tipo = tipo; }
 
+    public PerfilAcesso getPerfilAcesso() { return perfilAcesso; }
+    public void setPerfilAcesso(PerfilAcesso perfilAcesso) { this.perfilAcesso = perfilAcesso; }
+
+    public StatusConta getStatusConta() { return statusConta; }
+    public void setStatusConta(StatusConta statusConta) { this.statusConta = statusConta; }
+
     public String getEndereco() { return endereco; }
     public void setEndereco(String endereco) { this.endereco = endereco; }
 
@@ -102,6 +118,14 @@ public class Empresa {
 
     public boolean isValido() {
         return isNomeValido() && isCnpjValido() && isEmailValido() && isSenhaValida() && isEnderecoValido() && isTipoValido();
+    }
+
+    public boolean isAdministrador() {
+        return perfilAcesso == PerfilAcesso.ADMIN;
+    }
+
+    public boolean isContaAtiva() {
+        return statusConta != StatusConta.BLOQUEADA;
     }
 
     

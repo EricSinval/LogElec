@@ -7,7 +7,8 @@
 body {
   font-family: 'Roboto', sans-serif;
   font-weight: 400;
-  background-color: #FAE5B759;
+  background: url("../img/fundo.png") no-repeat center center fixed;
+  background-size: cover;
   color: #163020;
   margin: 0;
   padding: 0;
@@ -242,7 +243,10 @@ body {
 
 
 .escolha-empresa {
-  background-color: #1F8D7C8A;
+  background: rgba(255, 255, 255, 0.34);
+  border: 1px solid rgba(255, 255, 255, 0.42);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.14);
   text-align: center;
   padding: 60px 20px;
   border-radius: 8px;
@@ -265,7 +269,9 @@ body {
 }
 
 .empresa-card {
-  background: #b0d0c1;
+  background: rgba(255, 255, 255, 0.88);
+  border: 1px solid rgba(255, 255, 255, 0.62);
+  box-shadow: 0 12px 26px rgba(0, 0, 0, 0.12);
   padding: 30px 20px;
   border-radius: 12px;
   text-align: center;
@@ -400,7 +406,9 @@ body {
 }
 
 .empresa-card {
-  background: #b0d0c1;
+  background: rgba(255, 255, 255, 0.88);
+  border: 1px solid rgba(255, 255, 255, 0.62);
+  box-shadow: 0 12px 26px rgba(0, 0, 0, 0.12);
   padding: 30px 20px;
   border-radius: 12px;
   text-align: center;

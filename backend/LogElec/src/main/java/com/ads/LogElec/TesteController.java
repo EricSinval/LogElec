@@ -16,6 +16,7 @@ public class TesteController {
     private EmpresaRepository empresaRepository;
 
     
+    
     @GetMapping("/teste")
     public String teste() {
         return "🎉 LogElec Backend está rodando perfeitamente!";

@@ -1,130 +1,147 @@
-# LogElec com Docker (guia simples para o grupo)
+# LogElec com Docker
 
-Este projeto roda com 3 serviços no Docker:
+Guia operacional do ambiente Docker usado pelo grupo.
 
-- `db` (MySQL)
-- `backend` (Spring Boot)
-- `frontend` (site)
+## Serviços do compose
 
----
+- `db`: MySQL 8
+- `backend`: API Spring Boot
+- `frontend`: Nginx servindo o frontend estático
 
-## 1) O que cada pessoa precisa instalar
+## Pré-requisitos
 
-- Docker Desktop (Windows)
-- WSL2 habilitado (o próprio Docker costuma pedir isso na instalação)
+- Docker Desktop instalado
+- WSL2 habilitado no Windows
+- PowerShell aberto na raiz do projeto
 
-Quando abrir o Docker Desktop, confirme que está ativo (`Engine running`).
+## Primeira execução
 
----
-
-## 2) Primeira vez na máquina (passo a passo)
-
-Abra PowerShell na pasta do projeto e rode:
+### 1. Criar `.env`
 
 ```powershell
 Copy-Item .env.example .env
-docker compose up --build -d
 ```
 
-Se subir sem erro, acessar:
-
-- Frontend: `http://localhost:8081`
-- Backend: `http://localhost:8080`
-- Banco (MySQL): `localhost:3307` (ou a porta definida no `.env`)
-
----
-
-## 3) Rotina diária (sem complicação)
-
-- **Ligar projeto**
+### 2. Subir o ambiente
 
 ```powershell
 docker compose up --build -d
 ```
 
-- **Ver logs (erros/mensagens)**
+### 3. Importar a base compartilhada
+
+Use este fluxo em vez de redirecionamento com `<` ou `>` no PowerShell:
+
+```powershell
+docker cp .\database\seed.sql logelec-db:/tmp/seed.sql
+docker exec logelec-db sh -c "mysql -uroot -p74123LogElec logelec < /tmp/seed.sql"
+docker compose restart backend
+```
+
+Por que esse passo existe:
+
+- o seed recria as tabelas do banco
+- o restart do backend recria a conta admin e reaplica normalizações de domínio
+- esse fluxo evita problema de redirecionamento e encoding no PowerShell
+
+### 4. Validar acesso
+
+- frontend: `http://localhost:8081`
+- login: `http://localhost:8081/index/login.html`
+- backend: `http://localhost:8080`
+- MySQL: `localhost:3307`
+
+## Rotina diária
+
+### Subir ou reconstruir
+
+```powershell
+docker compose up --build -d
+```
+
+### Ver logs
 
 ```powershell
 docker compose logs -f
 ```
 
-- **Parar projeto**
+### Parar containers
 
 ```powershell
 docker compose down
 ```
 
----
-
-## 4) Quando preciso rodar comando de novo?
-
-- Mudou código do backend ou frontend: rode `docker compose up --build -d`
-- Mudou só dados no banco (insert/update/delete): não precisa rodar nada
-- Quer apagar tudo do banco e recomeçar:
+### Apagar volumes e recomeçar do zero
 
 ```powershell
 docker compose down -v
 docker compose up --build -d
+docker cp .\database\seed.sql logelec-db:/tmp/seed.sql
+docker exec logelec-db sh -c "mysql -uroot -p74123LogElec logelec < /tmp/seed.sql"
+docker compose restart backend
 ```
 
----
+## Conta administrativa
 
-## 5) Erros comuns e solução rápida
+A aplicação recria automaticamente a conta administrativa no boot do backend:
 
-### Erro de porta ocupada (ex.: 3306, 8080, 8081)
+- email: `admin@logelec.com`
+- senha: `Admin123`
 
-Edite o arquivo `.env` e troque a porta, por exemplo:
+Se você acabou de importar o seed e não consegue entrar como admin, execute:
 
-- `MYSQL_PORT=3307`
+```powershell
+docker compose restart backend
+```
 
-Depois rode de novo:
+## Atualizar o seed compartilhado
+
+Se você ajustou dados importantes e quer publicar uma nova base para o grupo:
+
+```powershell
+docker exec logelec-db sh -c "mysqldump -uroot -p74123LogElec --databases logelec --routines --events --triggers > /tmp/logelec-seed.sql"
+docker cp logelec-db:/tmp/logelec-seed.sql .\database\seed.sql
+```
+
+Antes de commitar, confira se o seed:
+
+- importa sem erro em uma base vazia
+- não remove colunas atuais do domínio
+- não deixou texto corrompido por encoding
+- continua compatível com o fluxo de bootstrap do backend
+
+## Problemas comuns
+
+### Porta ocupada
+
+Edite `.env` e ajuste uma ou mais portas:
+
+- `MYSQL_PORT`
+- `BACKEND_PORT`
+- `FRONTEND_PORT`
+
+Depois:
 
 ```powershell
 docker compose up --build -d
 ```
 
-### Docker não responde
+### Docker Desktop não iniciou
 
-- Abra Docker Desktop
-- Confirme `Engine running`
-- Se preciso: `Troubleshoot` -> `Restart Docker Desktop`
+- abrir o Docker Desktop
+- confirmar `Engine running`
+- se necessário, reiniciar o Docker Desktop
 
----
+### Importei o seed e o admin sumiu
 
-## 6) Regras para trabalho em equipe
-
-- Versionar no Git: código + `docker-compose.yml` + `.env.example`
-- Não versionar: `.env` (cada colega usa o seu local)
-- Todos rodam os mesmos comandos para ter o mesmo ambiente
-
----
-
-## 7) Replicar dados do banco para a turma
-
-Este repositório inclui um snapshot do banco em `database/seed.sql`.
-
-### Importar o seed na máquina de cada colega
-
-Depois de subir os containers com `docker compose up -d`, rodar:
+Isso é esperado enquanto o backend não reinicia. Rode:
 
 ```powershell
-docker exec -i logelec-db mysql -uroot -p74123LogElec < database/seed.sql
+docker compose restart backend
 ```
 
-Depois validar:
+## Convenções do grupo
 
-```powershell
-docker exec logelec-db mysql -uroot -p74123LogElec -e "USE logelec; SELECT COUNT(*) AS total_empresas FROM empresas;"
-```
-
----
-
-## 8) Atualizar o seed antes de publicar mudanças
-
-Se você alterar dados importantes no seu banco Docker e quiser compartilhar para a turma:
-
-```powershell
-docker exec logelec-db mysqldump -uroot -p74123LogElec --databases logelec --routines --events --triggers > database/seed.sql
-```
-
-Depois faça commit do arquivo `database/seed.sql` junto com o código.
+- versionar `docker-compose.yml`, `.env.example`, `README.md`, `DOCKER.md` e `database/seed.sql`
+- não versionar `.env`
+- quando mudar fluxo de setup, atualizar a documentação no mesmo commit

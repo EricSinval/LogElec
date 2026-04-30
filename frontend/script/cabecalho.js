@@ -8,13 +8,17 @@ function toggleMenu() {
 }
 
 
-function sair() {
-    
-    try {
-        localStorage.removeItem('empresaLogada');
-    } catch (e) {
-        console.warn('Erro ao limpar localStorage:', e);
+async function sair() {
+    if (window.authApp && typeof window.authApp.encerrarSessao === 'function') {
+        await window.authApp.encerrarSessao();
+    } else {
+        try {
+            localStorage.removeItem('empresaLogada');
+        } catch (e) {
+            console.warn('Erro ao limpar localStorage:', e);
+        }
     }
+
     window.location.href = 'login.html';
 }
 

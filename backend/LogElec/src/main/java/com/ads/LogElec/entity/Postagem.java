@@ -54,6 +54,19 @@ public class Postagem {
     @Enumerated(EnumType.STRING)
     private StatusPostagem status = StatusPostagem.ABERTA;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status_moderacao")
+    private StatusModeracaoPostagem statusModeracao = StatusModeracaoPostagem.PENDENTE;
+
+    @Column(name = "motivo_moderacao", columnDefinition = "TEXT")
+    private String motivoModeracao;
+
+    @Column(name = "moderado_em")
+    private LocalDateTime moderadoEm;
+
+    @Column(name = "moderado_por")
+    private String moderadoPor;
+
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
@@ -120,6 +133,18 @@ public class Postagem {
     public StatusPostagem getStatus() { return status; }
     public void setStatus(StatusPostagem status) { this.status = status; }
 
+    public StatusModeracaoPostagem getStatusModeracao() { return statusModeracao; }
+    public void setStatusModeracao(StatusModeracaoPostagem statusModeracao) { this.statusModeracao = statusModeracao; }
+
+    public String getMotivoModeracao() { return motivoModeracao; }
+    public void setMotivoModeracao(String motivoModeracao) { this.motivoModeracao = motivoModeracao; }
+
+    public LocalDateTime getModeradoEm() { return moderadoEm; }
+    public void setModeradoEm(LocalDateTime moderadoEm) { this.moderadoEm = moderadoEm; }
+
+    public String getModeradoPor() { return moderadoPor; }
+    public void setModeradoPor(String moderadoPor) { this.moderadoPor = moderadoPor; }
+
     public LocalDateTime getCreatedAt() { return createdAt; }
     public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
 
@@ -129,5 +154,9 @@ public class Postagem {
     @PreUpdate
     public void preUpdate() {
         this.updatedAt = LocalDateTime.now();
+    }
+
+    public boolean isAprovadaParaPublicacao() {
+        return statusModeracao == StatusModeracaoPostagem.APROVADA;
     }
 }

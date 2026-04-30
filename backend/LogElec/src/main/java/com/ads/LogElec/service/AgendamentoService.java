@@ -6,6 +6,7 @@ import com.ads.LogElec.entity.Empresa;
 import com.ads.LogElec.entity.Postagem;
 import com.ads.LogElec.entity.StatusAgendamento;
 import com.ads.LogElec.entity.StatusPostagem;
+import com.ads.LogElec.entity.TipoEmpresa;
 import com.ads.LogElec.repository.AgendamentoRepository;
 import com.ads.LogElec.repository.EmpresaRepository;
 import com.ads.LogElec.repository.PostagemRepository;
@@ -82,9 +83,20 @@ public class AgendamentoService {
         Empresa empresaColetora = empresaRepository.findById(agendamentoDTO.getEmpresaColetoraId())
                 .orElseThrow(() -> new RuntimeException("Empresa coletora não encontrada"));
 
+        if (empresaSolicitante.getId().equals(empresaColetora.getId())) {
+            throw new RuntimeException("O agendamento deve envolver duas empresas diferentes");
+        }
+
+        if (empresaSolicitante.getTipo() == empresaColetora.getTipo()) {
+            throw new RuntimeException("O agendamento deve envolver uma empresa de descarte e uma empresa de coleta");
+        }
+
         
         Postagem postagem = postagemRepository.findById(agendamentoDTO.getPostagemId())
                 .orElseThrow(() -> new RuntimeException("Postagem não encontrada"));
+
+        Empresa empresaCliente = identificarEmpresaPorTipo(TipoEmpresa.DESCARTE, empresaSolicitante, empresaColetora);
+        Empresa empresaPrestadora = identificarEmpresaPorTipo(TipoEmpresa.COLETA, empresaSolicitante, empresaColetora);
 
         
         if (postagem.getEmpresa() == null || !postagem.getEmpresa().getId().equals(empresaColetora.getId())) {
@@ -118,8 +130,8 @@ public class AgendamentoService {
         agendamento.setPostagem(postagem);
         agendamento.setEmpresaSolicitante(empresaSolicitante);
         agendamento.setEmpresaColetora(empresaColetora);
-        agendamento.setEmpresaCliente(empresaSolicitante); 
-        agendamento.setEmpresaPrestadora(empresaColetora); 
+        agendamento.setEmpresaCliente(empresaCliente);
+        agendamento.setEmpresaPrestadora(empresaPrestadora);
         agendamento.setDataHora(dataHoraAgendamento);
         agendamento.setObservacoes(agendamentoDTO.getObservacoes());
         agendamento.setStatus(StatusAgendamento.AGENDADA);
@@ -163,15 +175,46 @@ public class AgendamentoService {
     }
     
     
-    public Agendamento concluirAgendamento(Long id) {
+    public Agendamento concluirAgendamento(Long id, Long empresaId) {
         Agendamento agendamento = findById(id);
+        Empresa empresaResponsavel = empresaRepository.findById(empresaId)
+                .orElseThrow(() -> new RuntimeException("Empresa não encontrada"));
+        Empresa empresaColeta = identificarEmpresaColeta(agendamento);
         
         if (agendamento.getStatus() != StatusAgendamento.CONFIRMADA) {
             throw new RuntimeException("Só é possível concluir agendamentos confirmados");
         }
+
+        if (empresaColeta == null) {
+            throw new RuntimeException("O agendamento não possui uma empresa de coleta válida");
+        }
+
+        if (empresaResponsavel.getTipo() != TipoEmpresa.COLETA || !empresaColeta.getId().equals(empresaResponsavel.getId())) {
+            throw new RuntimeException("Apenas a empresa de coleta pode concluir a coleta");
+        }
         
         agendamento.setStatus(StatusAgendamento.REALIZADA);
         return agendamentoRepository.save(agendamento);
+    }
+
+    private Empresa identificarEmpresaColeta(Agendamento agendamento) {
+        return identificarEmpresaPorTipo(
+                TipoEmpresa.COLETA,
+                agendamento.getEmpresaPrestadora(),
+                agendamento.getEmpresaColetora(),
+                agendamento.getEmpresaSolicitante(),
+                agendamento.getEmpresaCliente()
+        );
+    }
+
+    private Empresa identificarEmpresaPorTipo(TipoEmpresa tipoEsperado, Empresa... empresas) {
+        for (Empresa empresa : empresas) {
+            if (empresa != null && empresa.getTipo() == tipoEsperado) {
+                return empresa;
+            }
+        }
+
+        return null;
     }
     
     

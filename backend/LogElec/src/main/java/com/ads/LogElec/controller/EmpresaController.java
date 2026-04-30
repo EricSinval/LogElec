@@ -6,9 +6,11 @@ import com.ads.LogElec.repository.AgendamentoRepository;
 import com.ads.LogElec.repository.EmpresaRepository;
 import com.ads.LogElec.repository.MensagemRepository;
 import com.ads.LogElec.repository.PostagemRepository;
+import com.ads.LogElec.security.EmpresaSessionPrincipal;
 import com.ads.LogElec.service.EmpresaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -111,10 +113,29 @@ public class EmpresaController {
                     .orElse(ResponseEntity.notFound().build());
     }
 
+    @GetMapping("/me")
+    public ResponseEntity<?> getEmpresaLogada(@AuthenticationPrincipal EmpresaSessionPrincipal principal) {
+        if (principal == null) {
+            return naoAutenticado();
+        }
+
+        return empresaRepository.findById(principal.getId())
+            .<ResponseEntity<?>>map(ResponseEntity::ok)
+            .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
     
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateEmpresa(@PathVariable Long id, @RequestBody java.util.Map<String, Object> dadosAtualizados) {
+    public ResponseEntity<?> updateEmpresa(@PathVariable Long id, @AuthenticationPrincipal EmpresaSessionPrincipal principal, @RequestBody java.util.Map<String, Object> dadosAtualizados) {
         try {
+            if (principal == null) {
+                return naoAutenticado();
+            }
+
+            if (!podeGerenciarEmpresa(principal, id)) {
+                return acessoNegado("Você só pode atualizar a sua própria conta.");
+            }
+
             System.out.println("📥 Recebendo atualização de empresa ID: " + id);
             System.out.println("📋 Dados recebidos: " + dadosAtualizados);
             
@@ -171,9 +192,26 @@ public class EmpresaController {
         }
     }
 
+    @PutMapping("/me")
+    public ResponseEntity<?> updateMinhaEmpresa(@AuthenticationPrincipal EmpresaSessionPrincipal principal, @RequestBody java.util.Map<String, Object> dadosAtualizados) {
+        if (principal == null) {
+            return naoAutenticado();
+        }
+
+        return updateEmpresa(principal.getId(), principal, dadosAtualizados);
+    }
+
     
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteEmpresa(@PathVariable Long id) {
+    public ResponseEntity<?> deleteEmpresa(@PathVariable Long id, @AuthenticationPrincipal EmpresaSessionPrincipal principal) {
+        if (principal == null) {
+            return naoAutenticado();
+        }
+
+        if (!podeGerenciarEmpresa(principal, id)) {
+            return acessoNegado("Você só pode excluir a sua própria conta.");
+        }
+
         Optional<Empresa> empresaOpt = empresaRepository.findById(id);
         if (!empresaOpt.isPresent()) {
             return ResponseEntity.notFound().build();
@@ -193,5 +231,28 @@ public class EmpresaController {
 
         empresaRepository.deleteById(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/me")
+    public ResponseEntity<?> deleteMinhaEmpresa(@AuthenticationPrincipal EmpresaSessionPrincipal principal) {
+        if (principal == null) {
+            return naoAutenticado();
+        }
+
+        return deleteEmpresa(principal.getId(), principal);
+    }
+
+    private boolean podeGerenciarEmpresa(EmpresaSessionPrincipal principal, Long empresaId) {
+        return principal != null
+            && principal.getId() != null
+            && (principal.isAdministrador() || principal.getId().equals(empresaId));
+    }
+
+    private ResponseEntity<String> naoAutenticado() {
+        return ResponseEntity.status(401).body("Não autenticado.");
+    }
+
+    private ResponseEntity<String> acessoNegado(String mensagem) {
+        return ResponseEntity.status(403).body(mensagem);
     }
 }
