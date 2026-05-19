@@ -5,12 +5,15 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Repository
 public interface MensagemRepository extends JpaRepository<Mensagem, Long> {
     List<Mensagem> findByAgendamentoId(Long agendamentoId);
     List<Mensagem> findByEmpresaRemetenteIdOrEmpresaDestinatarioId(Long remetenteId, Long destinatarioId);
+    @Transactional
+    long deleteByEmpresaRemetenteIdOrEmpresaDestinatarioId(Long remetenteId, Long destinatarioId);
     List<Mensagem> findByEmpresaDestinatarioIdAndLidoFalse(Long destinatarioId);
     List<Mensagem> findByAgendamentoIdAndEmpresaDestinatarioId(Long agendamentoId, Long destinatarioId);
 

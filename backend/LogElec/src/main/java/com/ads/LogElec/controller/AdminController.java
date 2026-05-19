@@ -11,6 +11,7 @@ import com.ads.LogElec.repository.AgendamentoRepository;
 import com.ads.LogElec.repository.EmpresaRepository;
 import com.ads.LogElec.repository.MensagemRepository;
 import com.ads.LogElec.repository.PostagemRepository;
+import com.ads.LogElec.service.EmpresaService;
 import com.ads.LogElec.service.PostagemService;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +31,7 @@ public class AdminController {
     private final PostagemRepository postagemRepository;
     private final AgendamentoRepository agendamentoRepository;
     private final MensagemRepository mensagemRepository;
+    private final EmpresaService empresaService;
     private final PostagemService postagemService;
 
     public AdminController(
@@ -37,12 +39,14 @@ public class AdminController {
         PostagemRepository postagemRepository,
         AgendamentoRepository agendamentoRepository,
         MensagemRepository mensagemRepository,
+        EmpresaService empresaService,
         PostagemService postagemService
     ) {
         this.empresaRepository = empresaRepository;
         this.postagemRepository = postagemRepository;
         this.agendamentoRepository = agendamentoRepository;
         this.mensagemRepository = mensagemRepository;
+        this.empresaService = empresaService;
         this.postagemService = postagemService;
     }
 
@@ -182,18 +186,12 @@ public class AdminController {
 
         Empresa empresa = empresaOpt.get();
 
-        if (!postagemRepository.findByEmpresaId(id).isEmpty()) {
-            return ResponseEntity.status(409).body("Empresa possui postagens vinculadas e não pode ser removida.");
+        try {
+            empresaService.excluirEmpresaSemVinculosAtivos(empresa);
+            return ResponseEntity.noContent().build();
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(409).body(e.getMessage());
         }
-        if (!agendamentoRepository.findByEmpresaSolicitante(empresa).isEmpty() || !agendamentoRepository.findByEmpresaColetora(empresa).isEmpty()) {
-            return ResponseEntity.status(409).body("Empresa possui agendamentos vinculados e não pode ser removida.");
-        }
-        if (!mensagemRepository.findByEmpresaRemetenteIdOrEmpresaDestinatarioId(id, id).isEmpty()) {
-            return ResponseEntity.status(409).body("Empresa possui mensagens vinculadas e não pode ser removida.");
-        }
-
-        empresaRepository.delete(empresa);
-        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/postagens")

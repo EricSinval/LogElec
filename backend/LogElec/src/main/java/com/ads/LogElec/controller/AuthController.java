@@ -69,7 +69,9 @@ public class AuthController {
             return ResponseEntity.status(401).body("Não autenticado.");
         }
 
-        return ResponseEntity.ok(SessaoUsuarioDTO.fromPrincipal(principal));
+        return empresaRepository.findById(principal.getId())
+            .<ResponseEntity<?>>map(empresa -> ResponseEntity.ok(SessaoUsuarioDTO.fromEmpresa(empresa)))
+            .orElseGet(() -> ResponseEntity.status(401).body("Sessão inválida."));
     }
 
     @PostMapping("/logout")

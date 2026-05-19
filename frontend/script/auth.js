@@ -4,8 +4,247 @@
   const useSameOriginApi = PROXIED_FRONTEND_PORTS.has(window.location.port);
   const API_ORIGIN = useSameOriginApi ? window.location.origin : FALLBACK_API_ORIGIN;
   const SESSION_STORAGE_KEY = 'empresaLogada';
+  const MODERATION_NOTIFICATION_STORAGE_PREFIX = 'logelecModeracaoVista';
+  const MODERATION_CHECK_INTERVAL_MS = 30_000;
   const nativeFetch = window.fetch.bind(window);
   let sessionPromise = null;
+  let moderationIntervalId = null;
+  let moderationCheckPromise = null;
+
+  function escapeHtml(value) {
+    return String(value == null ? '' : value)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  function truncateText(value, limit = 180) {
+    const text = String(value == null ? '' : value).trim();
+    if (text.length <= limit) {
+      return text;
+    }
+
+    return `${text.slice(0, limit - 3).trim()}...`;
+  }
+
+  function formatarDataHora(valor) {
+    if (!valor) {
+      return 'Nao informada';
+    }
+
+    const data = new Date(valor);
+    if (Number.isNaN(data.getTime())) {
+      return String(valor);
+    }
+
+    return data.toLocaleString('pt-BR');
+  }
+
+  function labelModeracao(status) {
+    const normalizado = String(status || '').toUpperCase();
+
+    if (normalizado === 'REJEITADA') {
+      return 'Rejeitada';
+    }
+
+    if (normalizado === 'BLOQUEADA') {
+      return 'Bloqueada';
+    }
+
+    return normalizado || 'Pendente';
+  }
+
+  function getModerationStorageKey(usuarioId) {
+    return `${MODERATION_NOTIFICATION_STORAGE_PREFIX}:${usuarioId}`;
+  }
+
+  function readSeenModerations(usuarioId) {
+    if (!usuarioId) {
+      return {};
+    }
+
+    try {
+      const raw = localStorage.getItem(getModerationStorageKey(usuarioId));
+      if (!raw) {
+        return {};
+      }
+
+      const parsed = JSON.parse(raw);
+      return parsed && typeof parsed === 'object' ? parsed : {};
+    } catch (error) {
+      console.warn('Nao foi possivel ler o cache de moderacao:', error);
+      return {};
+    }
+  }
+
+  function writeSeenModerations(usuarioId, payload) {
+    if (!usuarioId) {
+      return;
+    }
+
+    try {
+      localStorage.setItem(getModerationStorageKey(usuarioId), JSON.stringify(payload || {}));
+    } catch (error) {
+      console.warn('Nao foi possivel salvar o cache de moderacao:', error);
+    }
+  }
+
+  function buildModerationFingerprint(postagem) {
+    return [
+      postagem && postagem.id,
+      postagem && postagem.statusModeracao,
+      postagem && postagem.motivoModeracao,
+      postagem && postagem.updatedAt,
+      postagem && postagem.createdAt
+    ].join('|');
+  }
+
+  function isRejectedOrBlocked(postagem) {
+    const status = String(postagem && postagem.statusModeracao ? postagem.statusModeracao : '').toUpperCase();
+    return status === 'REJEITADA' || status === 'BLOQUEADA';
+  }
+
+  function buildModerationPopupMessage(postagens) {
+    return `
+      <div class="ui-popup-form">
+        <p>O administrador atualizou a moderacao das postagens abaixo. Revise os detalhes antes de publicar novamente.</p>
+        ${postagens.map((postagem) => `
+          <div class="ui-popup-form" style="margin-top: 12px; text-align: left;">
+            <p><strong>Titulo:</strong> ${escapeHtml(postagem.titulo || 'Postagem sem titulo')}</p>
+            <p><strong>Tipo de resíduo:</strong> ${escapeHtml(postagem.tipoResiduo || 'Nao informado')}</p>
+            <p><strong>Status da moderacao:</strong> ${escapeHtml(labelModeracao(postagem.statusModeracao))}</p>
+            <p><strong>Descricao:</strong> ${escapeHtml(truncateText(postagem.descricao || 'Sem descricao cadastrada.'))}</p>
+            <p><strong>Motivo informado pelo administrador:</strong> ${escapeHtml(postagem.motivoModeracao || 'Sem observacoes.')}</p>
+            <p><strong>Ultima atualizacao:</strong> ${escapeHtml(formatarDataHora(postagem.updatedAt || postagem.createdAt))}</p>
+          </div>
+        `).join('')}
+      </div>
+    `;
+  }
+
+  function stopModerationMonitor() {
+    if (moderationIntervalId !== null) {
+      window.clearInterval(moderationIntervalId);
+      moderationIntervalId = null;
+    }
+
+    document.removeEventListener('visibilitychange', handleModerationVisibilityChange);
+  }
+
+  function markModerationsAsSeen(usuarioId, postagens) {
+    const seen = readSeenModerations(usuarioId);
+
+    postagens.forEach((postagem) => {
+      seen[String(postagem.id)] = buildModerationFingerprint(postagem);
+    });
+
+    writeSeenModerations(usuarioId, seen);
+  }
+
+  async function checkModerationNotifications() {
+    if (moderationCheckPromise) {
+      return moderationCheckPromise;
+    }
+
+    moderationCheckPromise = (async function loadModerationNotifications() {
+      const usuario = obterSessaoLogada();
+      if (!usuario || usuario.perfilAcesso === 'ADMIN') {
+        stopModerationMonitor();
+        return [];
+      }
+
+      if (document.querySelector('.ui-popup-overlay')) {
+        return [];
+      }
+
+      let postagens = [];
+
+      try {
+        postagens = await fetchApi('/api/postagens/empresa/me', { method: 'GET' });
+      } catch (error) {
+        if (error && error.status === 401) {
+          limparSessao();
+          return [];
+        }
+
+        console.warn('Falha ao consultar postagens moderadas da sessao:', error);
+        return [];
+      }
+
+      if (!Array.isArray(postagens) || postagens.length === 0) {
+        return [];
+      }
+
+      const seen = readSeenModerations(usuario.id);
+      const novidades = postagens.filter((postagem) => {
+        if (!isRejectedOrBlocked(postagem)) {
+          return false;
+        }
+
+        return seen[String(postagem.id)] !== buildModerationFingerprint(postagem);
+      });
+
+      if (!novidades.length) {
+        return [];
+      }
+
+      markModerationsAsSeen(usuario.id, novidades);
+
+      if (typeof window.showPopup === 'function') {
+        window.showPopup(buildModerationPopupMessage(novidades), {
+          type: 'warning',
+          title: novidades.length === 1
+            ? 'Sua postagem foi moderada'
+            : 'Suas postagens foram moderadas',
+          subtitle: novidades.length === 1
+            ? 'Veja o motivo informado pelo administrador.'
+            : 'Veja os motivos informados pelo administrador para cada postagem.',
+          buttons: [
+            {
+              text: 'Ver minhas postagens',
+              onClick: () => {
+                window.location.href = window.resolveFrontendPath
+                  ? window.resolveFrontendPath('editar_postagens.html')
+                  : 'editar_postagens.html';
+              }
+            },
+            { text: 'Fechar' }
+          ]
+        });
+      }
+
+      return novidades;
+    })().finally(() => {
+      moderationCheckPromise = null;
+    });
+
+    return moderationCheckPromise;
+  }
+
+  function handleModerationVisibilityChange() {
+    if (!document.hidden) {
+      void checkModerationNotifications();
+    }
+  }
+
+  function activateModerationMonitor(usuario) {
+    if (!usuario || usuario.perfilAcesso === 'ADMIN') {
+      stopModerationMonitor();
+      return;
+    }
+
+    if (moderationIntervalId === null) {
+      moderationIntervalId = window.setInterval(() => {
+        void checkModerationNotifications();
+      }, MODERATION_CHECK_INTERVAL_MS);
+
+      document.addEventListener('visibilitychange', handleModerationVisibilityChange);
+    }
+
+    void checkModerationNotifications();
+  }
 
   function isApiPath(url) {
     return url.pathname.startsWith('/api/');
@@ -60,6 +299,7 @@
   }
 
   function limparSessao() {
+    stopModerationMonitor();
     localStorage.removeItem(SESSION_STORAGE_KEY);
   }
 
@@ -171,6 +411,7 @@
       }
 
       persistirSessao(payload);
+      activateModerationMonitor(payload);
       return payload;
     })();
 
@@ -249,6 +490,7 @@
     exigirSessao,
     autenticar,
     encerrarSessao,
-    obterDestinoPosLogin
+    obterDestinoPosLogin,
+    checkModerationNotifications
   };
 })();

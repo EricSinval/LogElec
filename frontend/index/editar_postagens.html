@@ -131,6 +131,16 @@
                 <option value="CANCELADA">Cancelada</option>
               </select>
 
+              <section id="painelModeracao" class="painel-moderacao" hidden>
+                <div class="painel-moderacao-header">
+                  <h4>Histórico de moderação</h4>
+                  <p>Acompanhe o status atual e, abaixo, apenas as decisões anteriores do administrador para esta postagem.</p>
+                </div>
+
+                <div id="resumoModeracaoAtual" class="resumo-moderacao-atual"></div>
+                <div id="historicoModeracaoLista" class="historico-moderacao-lista"></div>
+              </section>
+
               <div class="botoes-acao">
                 <button type="submit" class="btn-salvar">Salvar Alterações</button>
                 <button type="button" class="btn-deletar" onclick="confirmarDelecao()">Deletar Postagem</button>

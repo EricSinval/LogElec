@@ -15,7 +15,34 @@
         },
         ".\\mvnw.cmd": true,
         "java": true,
-        "docker compose": true
+        "docker compose": true,
+        "Get-ValidCnpj": true,
+        "Set-Content": true,
+        "Push-Location": true,
+        "Pop-Location": true,
+        "New-Cnpj": true,
+        "npx playwright": true,
+        "/^node \\./e2e/prepare-environment\\.cjs --reset-db; npx playwright test -g \"empresa recebe popup ao entrar quando a postagem e rejeitada pela moderacao\"$/": {
+            "approve": true,
+            "matchCommandLine": true
+        },
+        "Out-Null": true,
+        "wsl": true,
+        "Test-Path": true,
+        "Get-NetTCPConnection": true,
+        "ConvertTo-Json": true,
+        "/^node \\./e2e/prepare-environment\\.cjs --reset-db; npx playwright test e2e/tests/workflow-flows\\.spec\\.js$/": {
+            "approve": true,
+            "matchCommandLine": true
+        },
+        "/^node \\./e2e/prepare-environment\\.cjs --reset-db; npx playwright test e2e/tests/company-flows\\.spec\\.js$/": {
+            "approve": true,
+            "matchCommandLine": true
+        },
+        "/^Get-Process -Id 19068,9324 \\| Select-Object Id,ProcessName,Path \\| Format-Table -AutoSize$/": {
+            "approve": true,
+            "matchCommandLine": true
+        }
     },
     "java.compile.nullAnalysis.mode": "disabled"
 }

@@ -134,6 +134,43 @@ class AdminControllerIntegrationTest {
     }
 
     @Test
+    void minhasPostagensRetornamHistoricoDeModeracaoParaEmpresaDona() throws Exception {
+        Empresa admin = salvarAdministrador("admin.historico@logelec.com", 24);
+        Empresa empresa = salvarEmpresa("empresa.historico@logelec.com", StatusConta.ATIVA, TipoEmpresa.DESCARTE, 25);
+        Postagem postagem = salvarPostagem(empresa, StatusModeracaoPostagem.PENDENTE, "Lote com histórico", 33);
+
+        MockHttpSession adminSession = autenticar(admin.getEmail(), "Senha123");
+        MockHttpSession empresaSession = autenticar(empresa.getEmail(), "Senha123");
+
+        mockMvc.perform(put("/api/admin/postagens/{id}/moderar", postagem.getId())
+                .session(adminSession)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{" +
+                    "\"statusModeracao\":\"REJEITADA\"," +
+                    "\"motivoModeracao\":\"Primeira revisão\"" +
+                    "}"))
+            .andExpect(status().isOk());
+
+        mockMvc.perform(put("/api/admin/postagens/{id}/moderar", postagem.getId())
+                .session(adminSession)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{" +
+                    "\"statusModeracao\":\"BLOQUEADA\"," +
+                    "\"motivoModeracao\":\"Segunda revisão\"" +
+                    "}"))
+            .andExpect(status().isOk());
+
+        mockMvc.perform(get("/api/postagens/empresa/me").session(empresaSession))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$[0].id").value(postagem.getId()))
+            .andExpect(jsonPath("$[0].historicoModeracao.length()").value(2))
+            .andExpect(jsonPath("$[0].historicoModeracao[0].statusModeracao").value("BLOQUEADA"))
+            .andExpect(jsonPath("$[0].historicoModeracao[0].motivoModeracao").value("Segunda revisão"))
+            .andExpect(jsonPath("$[0].historicoModeracao[1].statusModeracao").value("REJEITADA"))
+            .andExpect(jsonPath("$[0].historicoModeracao[1].motivoModeracao").value("Primeira revisão"));
+    }
+
+    @Test
     void resumoRetorna401SemSessao() throws Exception {
         mockMvc.perform(get("/api/admin/resumo"))
             .andExpect(status().isUnauthorized())

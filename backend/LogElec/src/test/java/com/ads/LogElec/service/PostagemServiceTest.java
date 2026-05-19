@@ -3,11 +3,13 @@ package com.ads.LogElec.service;
 import com.ads.LogElec.entity.Empresa;
 import com.ads.LogElec.entity.PerfilAcesso;
 import com.ads.LogElec.entity.Postagem;
+import com.ads.LogElec.entity.PostagemModeracaoHistorico;
 import com.ads.LogElec.entity.StatusConta;
 import com.ads.LogElec.entity.StatusModeracaoPostagem;
 import com.ads.LogElec.entity.StatusPostagem;
 import com.ads.LogElec.entity.TipoEmpresa;
 import com.ads.LogElec.repository.AgendamentoRepository;
+import com.ads.LogElec.repository.PostagemModeracaoHistoricoRepository;
 import com.ads.LogElec.repository.PostagemRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -21,6 +23,7 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -31,6 +34,9 @@ class PostagemServiceTest {
 
     @Mock
     private AgendamentoRepository agendamentoRepository;
+
+    @Mock
+    private PostagemModeracaoHistoricoRepository postagemModeracaoHistoricoRepository;
 
     @InjectMocks
     private PostagemService postagemService;
@@ -78,6 +84,7 @@ class PostagemServiceTest {
         existente.setId(20L);
 
         when(postagemRepository.findById(20L)).thenReturn(Optional.of(existente));
+        when(postagemModeracaoHistoricoRepository.save(any(PostagemModeracaoHistorico.class))).thenAnswer(invocation -> invocation.getArgument(0));
         when(postagemRepository.save(any(Postagem.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
         Postagem moderada = postagemService.moderarPostagem(20L, StatusModeracaoPostagem.REJEITADA, "Conteúdo incompleto", "Administrador LogElec");
@@ -86,6 +93,7 @@ class PostagemServiceTest {
         assertThat(moderada.getMotivoModeracao()).isEqualTo("Conteúdo incompleto");
         assertThat(moderada.getModeradoPor()).isEqualTo("Administrador LogElec");
         assertThat(moderada.getModeradoEm()).isNotNull();
+        verify(postagemModeracaoHistoricoRepository).save(any(PostagemModeracaoHistorico.class));
     }
 
     private Postagem novaPostagem() {

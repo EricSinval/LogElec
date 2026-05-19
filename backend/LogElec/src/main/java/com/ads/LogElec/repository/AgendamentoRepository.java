@@ -71,8 +71,14 @@ public interface AgendamentoRepository extends JpaRepository<Agendamento, Long> 
     @Query("SELECT a FROM Agendamento a WHERE a.status = :status AND ((a.empresaSolicitante.id = :empresaAId AND a.empresaColetora.id = :empresaBId) OR (a.empresaSolicitante.id = :empresaBId AND a.empresaColetora.id = :empresaAId)) ORDER BY a.dataHora DESC")
     List<Agendamento> findByEmpresasAndStatusOrderByDataHoraDesc(@Param("empresaAId") Long empresaAId, @Param("empresaBId") Long empresaBId, @Param("status") StatusAgendamento status);
 
+    @Query("SELECT COUNT(a) > 0 FROM Agendamento a WHERE (a.empresaSolicitante.id = :empresaId OR a.empresaColetora.id = :empresaId) AND a.status IN :statuses")
+    boolean existsByEmpresaIdAndStatusIn(@Param("empresaId") Long empresaId, @Param("statuses") List<StatusAgendamento> statuses);
+
     
     Optional<Agendamento> findById(Long id);
+
+    @Transactional
+    long deleteByEmpresaSolicitanteIdOrEmpresaColetoraId(Long empresaSolicitanteId, Long empresaColetoraId);
 
     @Transactional
     @Modifying

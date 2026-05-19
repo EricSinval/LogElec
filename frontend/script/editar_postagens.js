@@ -4,6 +4,34 @@ let postagemSelecionada = null;
 let postagens = [];
 let empresaLogadaAtual = null;
 
+function formatarDataHora(valor) {
+    if (!valor) return 'Não informado';
+
+    const data = new Date(valor);
+    if (Number.isNaN(data.getTime())) return valor;
+
+    return data.toLocaleString('pt-BR', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+    });
+}
+
+function classeStatusModeracao(status) {
+    const valor = (status || 'PENDENTE').toString().toUpperCase();
+
+    if (valor === 'APROVADA') return 'aprovada';
+    if (valor === 'REJEITADA') return 'rejeitada';
+    if (valor === 'BLOQUEADA') return 'bloqueada';
+    return 'pendente';
+}
+
+function encontrarIndicePostagemPorId(id) {
+    return postagens.findIndex((postagem) => Number(postagem.id) === Number(id));
+}
+
 window.addEventListener('load', function() {
     console.log('Página carregada, inicializando...');
     inicializar();
@@ -199,7 +227,65 @@ function preencherFormulario(postagem) {
 
     
     document.getElementById('foto').value = '';
+        renderizarPainelModeracao(postagem);
 }
+
+    function renderizarPainelModeracao(postagem) {
+        const painel = document.getElementById('painelModeracao');
+        const resumo = document.getElementById('resumoModeracaoAtual');
+        const historicoLista = document.getElementById('historicoModeracaoLista');
+
+        if (!painel || !resumo || !historicoLista) {
+            return;
+        }
+
+        painel.hidden = false;
+
+        const statusAtual = normalizarStatusModeracao(postagem.statusModeracao);
+        const classeAtual = classeStatusModeracao(postagem.statusModeracao);
+        const historico = Array.isArray(postagem.historicoModeracao) ? postagem.historicoModeracao : [];
+        const decisoesAnteriores = historico.slice(1);
+        const motivoAtual = postagem.motivoModeracao || '';
+        const moderadoPorAtual = postagem.moderadoPor || 'Administrador não informado';
+        const moderadoEmAtual = postagem.moderadoEm ? formatarDataHora(postagem.moderadoEm) : 'Ainda sem decisão administrativa';
+
+        resumo.classList.toggle('sem-historico', historico.length === 0 && classeAtual === 'pendente');
+        resumo.innerHTML = `
+            <div class="resumo-moderacao-topo">
+                <strong>Status atual da moderação</strong>
+                <span class="moderacao-status-badge ${classeAtual}">${statusAtual}</span>
+            </div>
+            <div class="resumo-moderacao-meta">
+                <span><strong>Administrador:</strong> ${moderadoPorAtual}</span>
+                <span><strong>Data da última decisão:</strong> ${moderadoEmAtual}</span>
+            </div>
+            ${motivoAtual ? `<div class="resumo-moderacao-motivo"><strong>Motivo atual:</strong> ${motivoAtual}</div>` : '<div class="resumo-moderacao-motivo"><strong>Motivo atual:</strong> Nenhuma observação ativa no momento.</div>'}
+        `;
+
+        if (!historico.length) {
+            historicoLista.innerHTML = '<div class="historico-moderacao-vazio">Ainda não há decisões de moderação registradas para esta postagem.</div>';
+            return;
+        }
+
+        if (!decisoesAnteriores.length) {
+            historicoLista.innerHTML = '<div class="historico-moderacao-vazio">Esta é a primeira decisão registrada para esta postagem. Quando houver novas revisões, as anteriores aparecerão aqui.</div>';
+            return;
+        }
+
+        historicoLista.innerHTML = decisoesAnteriores.map((item, index) => `
+            <article class="moderacao-item">
+                <div class="moderacao-item-topo">
+                    <span class="moderacao-item-titulo">Decisão anterior ${index + 1}</span>
+                    <span class="moderacao-status-badge ${classeStatusModeracao(item.statusModeracao)}">${normalizarStatusModeracao(item.statusModeracao)}</span>
+                </div>
+                <div class="moderacao-item-meta">
+                    <span><strong>Administrador:</strong> ${item.moderadoPor || 'Administrador não informado'}</span>
+                    <span><strong>Data:</strong> ${formatarDataHora(item.moderadoEm)}</span>
+                </div>
+                <div class="moderacao-item-motivo"><strong>Motivo:</strong> ${item.motivoModeracao || 'Sem observações.'}</div>
+            </article>
+        `).join('');
+    }
 
 document.getElementById('formEdicaoPostagem').addEventListener('submit', async function(e) {
     e.preventDefault();
@@ -274,16 +360,12 @@ document.getElementById('formEdicaoPostagem').addEventListener('submit', async f
         if (response.ok) {
             const postagemAtualizada = await response.json();
             console.log('Postagem atualizada:', postagemAtualizada);
-            
-            
-            const index = postagens.findIndex(p => p.id === postagemSelecionada.id);
-            if (index !== -1) {
-                postagens[index] = postagemAtualizada;
-            }
 
-            postagemSelecionada = postagemAtualizada;
-            preencherFormulario(postagemAtualizada);
-            exibirListaPostagens();
+            await carregarPostagens();
+            const indiceAtualizado = encontrarIndicePostagemPorId(postagemAtualizada.id);
+            if (indiceAtualizado !== -1) {
+                selecionarPostagem(indiceAtualizado);
+            }
 
             showPopup('Postagem atualizada com sucesso! Ela retornou para validação administrativa.', {
                 type: 'success',
@@ -376,6 +458,7 @@ function cancelarEdicao() {
         item.classList.remove('ativo');
     });
     document.getElementById('formEdicaoPostagem').reset();
+    document.getElementById('painelModeracao').hidden = true;
 }
 
 function converterImagemBase64(arquivo) {

@@ -288,6 +288,127 @@ body {
   margin-top: 4px;
 }
 
+.painel-moderacao {
+  margin-top: 18px;
+  padding: 18px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: linear-gradient(180deg, #f9fafb 0%, #ffffff 100%);
+}
+
+.painel-moderacao-header h4 {
+  font-size: 16px;
+  margin-bottom: 6px;
+}
+
+.painel-moderacao-header p {
+  font-size: 13px;
+  color: var(--muted);
+  margin-bottom: 14px;
+}
+
+.resumo-moderacao-atual {
+  padding: 14px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: #ffffff;
+  margin-bottom: 14px;
+}
+
+.resumo-moderacao-atual.sem-historico {
+  background: #f8fafc;
+}
+
+.resumo-moderacao-topo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+}
+
+.moderacao-status-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.moderacao-status-badge.pendente {
+  background: #fff7ed;
+  color: #c2410c;
+}
+
+.moderacao-status-badge.aprovada {
+  background: #ecfdf5;
+  color: #047857;
+}
+
+.moderacao-status-badge.rejeitada,
+.moderacao-status-badge.bloqueada {
+  background: #fef2f2;
+  color: #b91c1c;
+}
+
+.resumo-moderacao-meta,
+.moderacao-item-meta {
+  display: grid;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--text);
+}
+
+.resumo-moderacao-motivo,
+.moderacao-item-motivo {
+  margin-top: 10px;
+  padding: 10px 12px;
+  border-left: 4px solid var(--primary);
+  border-radius: 6px;
+  background: #f8fafc;
+  font-size: 13px;
+  color: var(--text);
+}
+
+.historico-moderacao-lista {
+  display: grid;
+  gap: 10px;
+}
+
+.historico-moderacao-vazio {
+  padding: 14px;
+  border: 1px dashed var(--border);
+  border-radius: 8px;
+  color: var(--muted);
+  font-size: 13px;
+  background: #ffffff;
+}
+
+.moderacao-item {
+  padding: 14px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.moderacao-item-topo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+}
+
+.moderacao-item-titulo {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+}
+
 #imagePreviewContainer {
   margin: 12px 0;
 }

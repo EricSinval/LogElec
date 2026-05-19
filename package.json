@@ -1,0 +1,14 @@
+{
+  "name": "logelec-e2e",
+  "private": true,
+  "scripts": {
+    "test:e2e": "playwright test",
+    "test:e2e:headed": "playwright test --headed",
+    "test:e2e:install": "playwright install",
+    "test:e2e:docker": "node ./e2e/prepare-environment.cjs --reset-db && playwright test",
+    "test:e2e:docker:headed": "node ./e2e/prepare-environment.cjs --reset-db && playwright test --headed"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.52.0"
+  }
+}

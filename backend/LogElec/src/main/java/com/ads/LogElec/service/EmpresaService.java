@@ -3,13 +3,18 @@ package com.ads.LogElec.service;
 
 import com.ads.LogElec.entity.Empresa;
 import com.ads.LogElec.entity.PerfilAcesso;
+import com.ads.LogElec.entity.StatusAgendamento;
 import com.ads.LogElec.entity.StatusConta;
 import com.ads.LogElec.entity.TipoEmpresa;
+import com.ads.LogElec.repository.AgendamentoRepository;
 import com.ads.LogElec.repository.EmpresaRepository;
+import com.ads.LogElec.repository.MensagemRepository;
+import com.ads.LogElec.repository.PostagemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
 import jakarta.validation.Valid;
@@ -22,6 +27,15 @@ public class EmpresaService {
 
     @Autowired
     private EmpresaRepository empresaRepository;
+
+    @Autowired
+    private PostagemRepository postagemRepository;
+
+    @Autowired
+    private AgendamentoRepository agendamentoRepository;
+
+    @Autowired
+    private MensagemRepository mensagemRepository;
 
     private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
@@ -89,5 +103,24 @@ public class EmpresaService {
         }
         String senhaHash = passwordEncoder.encode(novaSenha);
         empresa.setSenha(senhaHash);
+    }
+
+    @Transactional
+    public void excluirEmpresaSemVinculosAtivos(Empresa empresa) {
+        Long empresaId = empresa.getId();
+
+        if (!postagemRepository.findByEmpresaId(empresaId).isEmpty()) {
+            throw new RuntimeException("Empresa possui postagens vinculadas e não pode ser removida.");
+        }
+
+        if (agendamentoRepository.existsByEmpresaIdAndStatusIn(
+                empresaId,
+                List.of(StatusAgendamento.AGENDADA, StatusAgendamento.CONFIRMADA))) {
+            throw new RuntimeException("Empresa possui agendamentos ativos vinculados e não pode ser removida.");
+        }
+
+        mensagemRepository.deleteByEmpresaRemetenteIdOrEmpresaDestinatarioId(empresaId, empresaId);
+        agendamentoRepository.deleteByEmpresaSolicitanteIdOrEmpresaColetoraId(empresaId, empresaId);
+        empresaRepository.delete(empresa);
     }
 }

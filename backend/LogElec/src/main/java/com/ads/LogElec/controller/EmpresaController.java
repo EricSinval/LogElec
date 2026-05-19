@@ -2,10 +2,7 @@ package com.ads.LogElec.controller;
 
 import com.ads.LogElec.entity.Empresa;
 import com.ads.LogElec.entity.TipoEmpresa;
-import com.ads.LogElec.repository.AgendamentoRepository;
 import com.ads.LogElec.repository.EmpresaRepository;
-import com.ads.LogElec.repository.MensagemRepository;
-import com.ads.LogElec.repository.PostagemRepository;
 import com.ads.LogElec.security.EmpresaSessionPrincipal;
 import com.ads.LogElec.service.EmpresaService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,15 +35,6 @@ public class EmpresaController {
 
     @Autowired
     private EmpresaService empresaService;
-
-    @Autowired
-    private PostagemRepository postagemRepository;
-
-    @Autowired
-    private AgendamentoRepository agendamentoRepository;
-
-    @Autowired
-    private MensagemRepository mensagemRepository;
 
     
     @PostMapping
@@ -218,19 +206,12 @@ public class EmpresaController {
         }
         Empresa empresa = empresaOpt.get();
 
-        if (!postagemRepository.findByEmpresaId(id).isEmpty()) {
-            return ResponseEntity.status(409).body("Empresa possui postagens vinculadas e não pode ser removida.");
+        try {
+            empresaService.excluirEmpresaSemVinculosAtivos(empresa);
+            return ResponseEntity.noContent().build();
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(409).body(e.getMessage());
         }
-        if (!agendamentoRepository.findByEmpresaSolicitante(empresa).isEmpty() ||
-                !agendamentoRepository.findByEmpresaColetora(empresa).isEmpty()) {
-            return ResponseEntity.status(409).body("Empresa possui agendamentos vinculados e não pode ser removida.");
-        }
-        if (!mensagemRepository.findByEmpresaRemetenteIdOrEmpresaDestinatarioId(id, id).isEmpty()) {
-            return ResponseEntity.status(409).body("Empresa possui mensagens vinculadas e não pode ser removida.");
-        }
-
-        empresaRepository.deleteById(id);
-        return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/me")

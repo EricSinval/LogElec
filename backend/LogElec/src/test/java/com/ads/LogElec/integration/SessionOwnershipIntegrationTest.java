@@ -29,6 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -83,6 +84,13 @@ class SessionOwnershipIntegrationTest {
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.id").value(empresa.getId()))
             .andExpect(jsonPath("$.email").value("empresa.perfil.atualizada@logelec.com"));
+
+        mockMvc.perform(get("/api/auth/me").session(session))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.id").value(empresa.getId()))
+            .andExpect(jsonPath("$.email").value("empresa.perfil.atualizada@logelec.com"))
+            .andExpect(jsonPath("$.telefone").value("11999990000"))
+            .andExpect(jsonPath("$.endereco").value("Rua Atualizada, 40"));
 
         Empresa atualizada = empresaRepository.findById(empresa.getId()).orElseThrow();
         assertThat(atualizada.getTelefone()).isEqualTo("11999990000");
@@ -206,6 +214,39 @@ class SessionOwnershipIntegrationTest {
             .andExpect(content().string("Acesso restrito à empresa dona da postagem."));
     }
 
+    @Test
+    void exclusaoDaContaPermiteRemocaoQuandoRestamApenasAgendamentosCancelados() throws Exception {
+        Empresa solicitante = salvarEmpresa("empresa.exclusao.cancelada@logelec.com", TipoEmpresa.DESCARTE, 61);
+        Empresa coletora = salvarEmpresa("empresa.exclusao.coletora@logelec.com", TipoEmpresa.COLETA, 62);
+        Postagem postagem = salvarPostagem(coletora, 63);
+        salvarAgendamento(solicitante, coletora, postagem, 64, StatusAgendamento.CANCELADA);
+        MockHttpSession session = autenticar(solicitante.getEmail(), "Senha123");
+
+        mockMvc.perform(delete("/api/empresas/me").session(session))
+            .andExpect(status().isNoContent());
+
+        assertThat(empresaRepository.findById(solicitante.getId())).isEmpty();
+        assertThat(agendamentoRepository.findAll())
+            .noneMatch(agendamento ->
+                (agendamento.getEmpresaSolicitante() != null && solicitante.getId().equals(agendamento.getEmpresaSolicitante().getId()))
+                    || (agendamento.getEmpresaColetora() != null && solicitante.getId().equals(agendamento.getEmpresaColetora().getId())));
+    }
+
+    @Test
+    void exclusaoDaContaContinuaBloqueadaQuandoExisteAgendamentoAtivo() throws Exception {
+        Empresa solicitante = salvarEmpresa("empresa.exclusao.ativa@logelec.com", TipoEmpresa.DESCARTE, 65);
+        Empresa coletora = salvarEmpresa("empresa.exclusao.ativa.coletora@logelec.com", TipoEmpresa.COLETA, 66);
+        Postagem postagem = salvarPostagem(coletora, 67);
+        salvarAgendamento(solicitante, coletora, postagem, 68, StatusAgendamento.CONFIRMADA);
+        MockHttpSession session = autenticar(solicitante.getEmail(), "Senha123");
+
+        mockMvc.perform(delete("/api/empresas/me").session(session))
+            .andExpect(status().isConflict())
+            .andExpect(content().string("Empresa possui agendamentos ativos vinculados e não pode ser removida."));
+
+        assertThat(empresaRepository.findById(solicitante.getId())).isPresent();
+    }
+
     private MockHttpSession autenticar(String email, String senha) throws Exception {
         MvcResult loginResult = mockMvc.perform(post("/api/auth/login")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -246,6 +287,10 @@ class SessionOwnershipIntegrationTest {
     }
 
     private Agendamento salvarAgendamentoConfirmado(Empresa solicitante, Empresa coletora, Postagem postagem, int sequencia) {
+        return salvarAgendamento(solicitante, coletora, postagem, sequencia, StatusAgendamento.CONFIRMADA);
+    }
+
+    private Agendamento salvarAgendamento(Empresa solicitante, Empresa coletora, Postagem postagem, int sequencia, StatusAgendamento status) {
         Agendamento agendamento = new Agendamento();
         agendamento.setPostagem(postagem);
         agendamento.setEmpresaSolicitante(solicitante);
@@ -253,8 +298,8 @@ class SessionOwnershipIntegrationTest {
         agendamento.setEmpresaCliente(solicitante);
         agendamento.setEmpresaPrestadora(coletora);
         agendamento.setDataHora(LocalDateTime.now().plusDays(2).plusHours(sequencia));
-        agendamento.setStatus(StatusAgendamento.CONFIRMADA);
-        agendamento.setObservacoes("Agendamento confirmado para teste " + sequencia);
+        agendamento.setStatus(status);
+        agendamento.setObservacoes("Agendamento de teste " + sequencia + " com status " + status);
         return agendamentoRepository.save(agendamento);
     }
 

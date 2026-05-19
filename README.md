@@ -28,8 +28,8 @@ O LogElec conecta empresas do tipo `DESCARTE`, que possuem resíduos para retira
 
 | Camada | Tecnologia |
 |--------|------------|
-| Backend | Java 25 |
-| Framework backend | Spring Boot 4.0.0-SNAPSHOT |
+| Backend | Java 21 |
+| Framework backend | Spring Boot 4.0.0 |
 | Persistência | Spring Data JPA |
 | Banco de dados | MySQL 8 |
 | Criptografia de senha | BCrypt |
@@ -43,6 +43,7 @@ O LogElec conecta empresas do tipo `DESCARTE`, que possuem resíduos para retira
 LogElec/
 ├── backend/LogElec/        # API Spring Boot
 ├── database/seed.sql       # base SQL compartilhada do projeto
+├── docs/                   # validação, homologação e arquitetura alvo
 ├── frontend/               # telas estáticas e scripts do cliente
 ├── docker-compose.yml      # orquestração local
 ├── DOCKER.md               # guia operacional do ambiente Docker
@@ -52,6 +53,8 @@ LogElec/
 
 ## Requisitos
 
+Para recuperação rápida do projeto em outro computador antes da banca, use o guia dedicado em `docs/pre-banca-recuperacao.md`.
+
 ### Fluxo recomendado
 
 - Docker Desktop
@@ -59,7 +62,7 @@ LogElec/
 
 ### Fluxo local sem containerizar o backend/frontend
 
-- Java 25 instalado
+- Java 21 instalado
 - Python 3 para servir o frontend estático, ou outro servidor HTTP equivalente
 - MySQL 8 local ou em container
 
@@ -163,6 +166,46 @@ Depois acesse:
 
 - `http://localhost:5500/index/login.html`
 
+## Testes E2E com Playwright
+
+### Instalação
+
+Na raiz do projeto:
+
+```powershell
+npm install
+npm run test:e2e:install
+```
+
+### Execução contra ambiente já ativo
+
+Use este comando quando o stack já estiver disponível em `http://localhost:8081` e `http://localhost:8080`:
+
+```powershell
+npm run test:e2e
+```
+
+### Execução com Docker + reset da base compartilhada
+
+Se quiser subir os containers, reimportar `database/seed.sql` e rodar a suíte em seguida:
+
+```powershell
+npm run test:e2e:docker
+```
+
+Se quiser fazer o mesmo fluxo com o navegador visível para smoke visual/manual assistido:
+
+```powershell
+npm run test:e2e:docker:headed
+```
+
+Observações importantes:
+
+- `test:e2e:docker` reinicializa os dados locais com o `seed.sql` compartilhado
+- `test:e2e:docker:headed` usa o mesmo bootstrap, mas abre o Chromium visível durante a execução
+- a suíte cobre cadastro, login, recuperação de senha, proposta de agendamento, persistência do perfil após reload, moderação com revisão/aprovação e fluxo completo de agendamento até a conclusão da coleta
+- os testes usam Chromium e assumem as portas padrão do projeto (`8080` e `8081`)
+
 ## Módulos e rotas principais
 
 ### Frontend
@@ -203,8 +246,18 @@ Depois acesse:
 
 - `README.md`: visão geral, execução e acessos
 - `DOCKER.md`: rotina operacional com containers
+- `docs/pre-banca-recuperacao.md`: roteiro curto para baixar, subir o ambiente e rodar os testes em outra máquina
+- `docs/matriz-testes.md`: matriz de homologação por tela e por perfil
+- `docs/checklist-homologacao-local.md`: roteiro técnico para validação local completa
+- `docs/aws-arquitetura-minima.md`: desenho mínimo de staging/produção na AWS
 - `database/seed.sql`: snapshot compartilhado do banco para demonstração e testes manuais
 - `.env.example`: portas e credenciais padrão do ambiente local
+
+## Documentação de validação e publicação
+
+- matriz de testes: `docs/matriz-testes.md`
+- checklist técnico local: `docs/checklist-homologacao-local.md`
+- arquitetura mínima AWS: `docs/aws-arquitetura-minima.md`
 
 ## Situação atual
 

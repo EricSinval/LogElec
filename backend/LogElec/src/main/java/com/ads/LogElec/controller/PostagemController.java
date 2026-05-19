@@ -1,5 +1,6 @@
 package com.ads.LogElec.controller;
 
+import com.ads.LogElec.dto.PostagemEmpresaDTO;
 import com.ads.LogElec.entity.Empresa;
 import com.ads.LogElec.entity.Postagem;
 import com.ads.LogElec.entity.StatusPostagem;
@@ -64,7 +65,7 @@ public class PostagemController {
             return naoAutenticado();
         }
 
-        return ResponseEntity.ok(postagemService.findByEmpresaId(principal.getId()));
+        return ResponseEntity.ok(postagemService.findResumoByEmpresaId(principal.getId()));
     }
 
     @GetMapping("/empresa/{empresaId}")
@@ -77,7 +78,7 @@ public class PostagemController {
             return acessoNegado("Acesso restrito às suas próprias postagens.");
         }
 
-        return ResponseEntity.ok(postagemService.findByEmpresaId(empresaId));
+        return ResponseEntity.ok(postagemService.findResumoByEmpresaId(empresaId));
     }
 
     @GetMapping("/status/{status}")
