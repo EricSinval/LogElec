@@ -49,7 +49,7 @@ async function carregarContatos() {
   const lista = document.getElementById('listaContatos');
 
   try {
-    const response = await fetch('http://localhost:8080/api/mensagens/contatos-confirmados/me');
+    const response = await fetch('/api/mensagens/contatos-confirmados/me');
     if (!response.ok) {
       if (response.status === 404) {
         lista.innerHTML = '<p class="vazio">Sem contatos disponíveis. Confirme um agendamento para liberar mensagens.</p>';
@@ -94,7 +94,7 @@ async function carregarConversa() {
   const lista = document.getElementById('listaMensagens');
 
   try {
-    const response = await fetch(`http://localhost:8080/api/mensagens/conversa/${contatoAtivo.empresaId}`);
+    const response = await fetch(`/api/mensagens/conversa/${contatoAtivo.empresaId}`);
     if (!response.ok) {
       if (response.status === 404) {
         lista.innerHTML = '<div class="estado-inicial">Conversa indisponível no momento.</div>';
@@ -146,7 +146,7 @@ async function enviarMensagem(event) {
   if (!conteudo) return;
 
   try {
-    const response = await fetch('http://localhost:8080/api/mensagens/enviar', {
+    const response = await fetch('/api/mensagens/enviar', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({

@@ -124,7 +124,7 @@ async function carregarPostagens() {
     try {
         console.log('Carregando postagens da empresa autenticada');
 
-        const response = await fetch('http://localhost:8080/api/postagens/empresa/me', {
+        const response = await fetch('/api/postagens/empresa/me', {
             method: 'GET',
             headers: { 'Content-Type': 'application/json' }
         });
@@ -349,7 +349,7 @@ document.getElementById('formEdicaoPostagem').addEventListener('submit', async f
             btn.disabled = true;
         }
 
-        const response = await fetch(`http://localhost:8080/api/postagens/${postagemSelecionada.id}`, {
+        const response = await fetch(`/api/postagens/${postagemSelecionada.id}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(dadosAtualizados)
@@ -417,7 +417,7 @@ async function deletarPostagem() {
     console.log('Deletando postagem ID:', postagemId);
 
     try {
-        const response = await fetch(`http://localhost:8080/api/postagens/${postagemId}`, {
+        const response = await fetch(`/api/postagens/${postagemId}`, {
             method: 'DELETE',
             headers: { 'Content-Type': 'application/json' }
         });

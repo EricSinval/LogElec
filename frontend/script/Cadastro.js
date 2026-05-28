@@ -362,7 +362,7 @@ async function fazerLoginAutomatico(email, senha) {
             return true;
         }
 
-        const response = await fetch('http://localhost:8080/api/auth/login', {
+        const response = await fetch('/api/auth/login', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(loginData)
@@ -423,7 +423,7 @@ async function executarCadastro(tipo, formCadastro) {
     
     try {
         console.log('Enviando requisição para o servidor...');
-        const response = await fetch('http://localhost:8080/api/empresas', {
+        const response = await fetch('/api/empresas', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

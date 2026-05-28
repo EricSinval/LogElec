@@ -56,7 +56,7 @@ async function carregarPostagens() {
     console.log('Carregando postagens...');
     
     try {
-        const response = await fetch('http://localhost:8080/api/postagens');
+        const response = await fetch('/api/postagens');
         
         if (response.ok) {
             todasPostagens = (await response.json()).filter(postagemAprovadaParaVitrine);
@@ -455,7 +455,7 @@ function filtrarPorBusca(termo) {
 
 async function buscarPeloBackend(termo) {
     try {
-        const response = await fetch(`http://localhost:8080/api/postagens/search?q=${encodeURIComponent(termo)}`);
+        const response = await fetch(`/api/postagens/search?q=${encodeURIComponent(termo)}`);
         
         if (response.ok) {
             let resultados = await response.json();
@@ -491,7 +491,7 @@ let postagemAgendamento = null;
 async function abrirPopupAgendamento(postagemId) {
     
     try {
-        const response = await fetch(`http://localhost:8080/api/postagens/${postagemId}`);
+        const response = await fetch(`/api/postagens/${postagemId}`);
         if (!response.ok) throw new Error('Erro ao carregar postagem');
         
         const postagem = await response.json();
@@ -584,7 +584,7 @@ async function preencherHorariosPopup(postagem) {
     
     let agendamentosExistentes = [];
     try {
-        const response = await fetch(`http://localhost:8080/api/agendamentos/postagem/${postagem.id}/horarios-ocupados`);
+        const response = await fetch(`/api/agendamentos/postagem/${postagem.id}/horarios-ocupados`);
         if (response.ok) {
             agendamentosExistentes = await response.json();
         }
@@ -695,7 +695,7 @@ async function confirmarAgendamentoPopup() {
     };
     
     try {
-        const response = await fetch('http://localhost:8080/api/agendamentos', {
+        const response = await fetch('/api/agendamentos', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload)

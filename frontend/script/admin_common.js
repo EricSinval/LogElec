@@ -1,4 +1,4 @@
-const ADMIN_API_BASE = 'http://localhost:8080/api/admin';
+const ADMIN_API_BASE = '/api/admin';
 
 function obterSessaoLogada() {
   if (window.authApp && typeof window.authApp.obterSessaoLogada === 'function') {
@@ -83,7 +83,7 @@ async function requisicaoAdmin(path, options = {}) {
       headers['Content-Type'] = 'application/json';
     }
 
-    return window.authApp.fetchApi(`${ADMIN_API_BASE.replace('http://localhost:8080', '')}${path}`, Object.assign({}, options, {
+    return window.authApp.fetchApi(`${ADMIN_API_BASE}${path}`, Object.assign({}, options, {
       headers
     }));
   }

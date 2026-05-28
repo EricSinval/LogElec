@@ -168,7 +168,7 @@ async function salvarAlteracoes(event) {
     console.log('📤 Enviando dados atualizados:', dadosAtualizados);
 
     try {
-        const response = await fetch('http://localhost:8080/api/empresas/me', {
+        const response = await fetch('/api/empresas/me', {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -285,7 +285,7 @@ async function excluirContaComSenha(senha) {
         if (window.authApp && typeof window.authApp.autenticar === 'function') {
             await window.authApp.autenticar({ email: empresaLogada.email, senha });
         } else {
-            const loginResp = await fetch('http://localhost:8080/api/auth/login', {
+            const loginResp = await fetch('/api/auth/login', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email: empresaLogada.email, senha })
@@ -297,7 +297,7 @@ async function excluirContaComSenha(senha) {
             }
         }
 
-        const response = await fetch('http://localhost:8080/api/empresas/me', {
+        const response = await fetch('/api/empresas/me', {
             method: 'DELETE'
         });
 

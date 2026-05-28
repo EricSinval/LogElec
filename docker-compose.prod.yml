@@ -1,0 +1,25 @@
+services:
+  db:
+    ports: !reset []
+    volumes: !override
+      - db_data_prod:/var/lib/mysql
+
+  backend:
+    environment:
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE:-prod}
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/${MYSQL_DATABASE:-logelec}?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME}
+      SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
+      APP_CORS_ALLOWED_ORIGIN_PATTERNS: ${APP_CORS_ALLOWED_ORIGIN_PATTERNS}
+      APP_ADMIN_BOOTSTRAP_ENABLED: ${APP_ADMIN_BOOTSTRAP_ENABLED:-true}
+      APP_ADMIN_EMAIL: ${APP_ADMIN_EMAIL}
+      APP_ADMIN_PASSWORD: ${APP_ADMIN_PASSWORD}
+      SERVER_PORT: ${SERVER_PORT:-8080}
+    ports: !reset []
+
+  frontend:
+    ports: !override
+      - "${FRONTEND_BIND_ADDRESS:-127.0.0.1}:${FRONTEND_PORT:-8081}:80"
+
+volumes:
+  db_data_prod:

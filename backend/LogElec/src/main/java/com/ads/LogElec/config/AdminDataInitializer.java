@@ -8,6 +8,7 @@ import com.ads.LogElec.entity.StatusModeracaoPostagem;
 import com.ads.LogElec.entity.TipoEmpresa;
 import com.ads.LogElec.repository.EmpresaRepository;
 import com.ads.LogElec.repository.PostagemRepository;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -21,18 +22,33 @@ public class AdminDataInitializer implements CommandLineRunner {
 
     private final EmpresaRepository empresaRepository;
     private final PostagemRepository postagemRepository;
+    private final boolean bootstrapEnabled;
+    private final String adminEmail;
+    private final String adminPassword;
     private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-    public AdminDataInitializer(EmpresaRepository empresaRepository, PostagemRepository postagemRepository) {
+    public AdminDataInitializer(
+        EmpresaRepository empresaRepository,
+        PostagemRepository postagemRepository,
+        @Value("${app.admin.bootstrap-enabled:true}") boolean bootstrapEnabled,
+        @Value("${app.admin.email:admin@logelec.com}") String adminEmail,
+        @Value("${app.admin.password:Admin123}") String adminPassword
+    ) {
         this.empresaRepository = empresaRepository;
         this.postagemRepository = postagemRepository;
+        this.bootstrapEnabled = bootstrapEnabled;
+        this.adminEmail = adminEmail;
+        this.adminPassword = adminPassword;
     }
 
     @Override
     public void run(String... args) {
         normalizarEmpresasExistentes();
         normalizarPostagensExistentes();
-        garantirContaAdministrador();
+
+        if (bootstrapEnabled) {
+            garantirContaAdministrador();
+        }
     }
 
     private void normalizarEmpresasExistentes() {
@@ -79,7 +95,7 @@ public class AdminDataInitializer implements CommandLineRunner {
     }
 
     private void garantirContaAdministrador() {
-        Empresa adminExistente = empresaRepository.findByEmail("admin@logelec.com").orElse(null);
+        Empresa adminExistente = empresaRepository.findByEmail(adminEmail).orElse(null);
         String cnpjAdmin = resolverCnpjAdministrador(adminExistente);
 
         if (adminExistente != null) {
@@ -123,8 +139,8 @@ public class AdminDataInitializer implements CommandLineRunner {
         Empresa admin = new Empresa();
         admin.setNome("Administrador LogElec");
         admin.setCnpj(cnpjAdmin);
-        admin.setEmail("admin@logelec.com");
-        admin.setSenha(passwordEncoder.encode("Admin123"));
+        admin.setEmail(adminEmail);
+        admin.setSenha(passwordEncoder.encode(adminPassword));
         admin.setTipo(TipoEmpresa.COLETA);
         admin.setPerfilAcesso(PerfilAcesso.ADMIN);
         admin.setStatusConta(StatusConta.ATIVA);

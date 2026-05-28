@@ -145,3 +145,9 @@ docker compose restart backend
 - versionar `docker-compose.yml`, `.env.example`, `README.md`, `DOCKER.md` e `database/seed.sql`
 - não versionar `.env`
 - quando mudar fluxo de setup, atualizar a documentação no mesmo commit
+
+## Produção em AWS
+
+Para o fluxo recomendado de publicação em Amazon Lightsail com HTTPS e `docker-compose.prod.yml`, consulte:
+
+- `docs/aws-lightsail-deploy.md`

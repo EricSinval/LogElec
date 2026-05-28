@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:8080/api/auth/recuperar-senha';
+const API_URL = '/api/auth/recuperar-senha';
 
 
 document.getElementById('cnpj').addEventListener('input', function () {

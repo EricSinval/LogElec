@@ -55,6 +55,36 @@ LogElec/
 
 Para recuperação rápida do projeto em outro computador antes da banca, use o guia dedicado em `docs/pre-banca-recuperacao.md`.
 
+## Preparação para produção
+
+O projeto agora suporta um perfil dedicado de produção no backend: `prod`.
+
+Antes de publicar a aplicação em um servidor com domínio próprio, configure estes pontos:
+
+- use o frontend e o backend no mesmo domínio, com o frontend servindo `/api` via proxy reverso
+- ative `SPRING_PROFILES_ACTIVE=prod`
+- configure `APP_CORS_ALLOWED_ORIGIN_PATTERNS` com o domínio público real
+- defina `APP_ADMIN_EMAIL` e `APP_ADMIN_PASSWORD` para a conta administrativa inicial
+- defina credenciais fortes para MySQL e para o datasource do backend
+
+Arquivo de referência para variáveis de produção:
+
+- `.env.prod.example`
+- `docs/aws-lightsail-deploy.md`
+
+Fluxo recomendado para subir o stack em modo produção com Docker Compose:
+
+- copie `.env.prod.example` para um arquivo real de ambiente, como `.env.prod`
+- revise domínio, senhas e credenciais administrativas
+- use `docker compose -f docker-compose.yml -f docker-compose.prod.yml --env-file .env.prod up --build -d`
+- no Lightsail, a publicação do frontend fica em `127.0.0.1:8081` para um proxy HTTPS no host, evitando expor a aplicação sem TLS
+
+Observações importantes para esse modo:
+
+- o frontend foi ajustado para usar rotas relativas `/api`, evitando dependência de `localhost`
+- o backend deixa de depender de CORS hardcoded e passa a ler as origens permitidas por variável de ambiente
+- o perfil `prod` desliga `debug`, reduz logs verbosos do Hibernate e exige variáveis críticas para banco, CORS e bootstrap administrativo
+
 ### Fluxo recomendado
 
 - Docker Desktop
@@ -165,6 +195,42 @@ python -m http.server 5500 --directory frontend
 Depois acesse:
 
 - `http://localhost:5500/index/login.html`
+
+## Testes do backend
+
+### Testes unitários
+
+Na raiz do projeto:
+
+```powershell
+npm run test:unit
+```
+
+Esse comando executa apenas os testes unitários do backend, sem os testes de integração.
+
+Se preferir rodar diretamente na pasta do backend:
+
+```powershell
+cd backend/LogElec
+.\mvnw.cmd test
+```
+
+### Backend completo: unitário + integração
+
+Na raiz do projeto:
+
+```powershell
+npm run test:backend
+```
+
+Esse comando executa o backend completo com `verify`: primeiro os testes unitários e depois os testes de integração.
+
+Se preferir rodar diretamente na pasta do backend:
+
+```powershell
+cd backend/LogElec
+.\mvnw.cmd verify
+```
 
 ## Testes E2E com Playwright
 
