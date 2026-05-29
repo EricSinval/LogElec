@@ -22,6 +22,7 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -94,6 +95,31 @@ class PostagemServiceTest {
         assertThat(moderada.getModeradoPor()).isEqualTo("Administrador LogElec");
         assertThat(moderada.getModeradoEm()).isNotNull();
         verify(postagemModeracaoHistoricoRepository).save(any(PostagemModeracaoHistorico.class));
+    }
+
+    @Test
+    void saveRejeitaTipoResiduoAcimaDoLimite() {
+        Postagem postagem = novaPostagem();
+        postagem.setTipoResiduo("A".repeat(Postagem.MAX_TIPO_RESIDUO_LENGTH + 1));
+
+        assertThatThrownBy(() -> postagemService.save(postagem))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("Tipos de resíduos podem ter no máximo 500 caracteres.");
+    }
+
+    @Test
+    void updateRejeitaTipoResiduoAcimaDoLimite() {
+        Postagem existente = novaPostagem();
+        existente.setId(30L);
+
+        Postagem alteracoes = new Postagem();
+        alteracoes.setTipoResiduo("A".repeat(Postagem.MAX_TIPO_RESIDUO_LENGTH + 1));
+
+        when(postagemRepository.findById(30L)).thenReturn(Optional.of(existente));
+
+        assertThatThrownBy(() -> postagemService.update(30L, alteracoes))
+            .isInstanceOf(IllegalArgumentException.class)
+            .hasMessage("Tipos de resíduos podem ter no máximo 500 caracteres.");
     }
 
     private Postagem novaPostagem() {

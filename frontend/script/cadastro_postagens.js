@@ -257,14 +257,14 @@ function configurarMicroDicas(isColeta) {
     
     if (isColeta) {
         if (hintDescricao) hintDescricao.textContent = 'Explique quais tipos de resíduos você coleta e como funciona o serviço.';
-        if (hintTipoResiduo) hintTipoResiduo.textContent = 'Liste os principais tipos de resíduos eletrônicos que sua empresa coleta.';
+        if (hintTipoResiduo) hintTipoResiduo.textContent = 'Liste os principais tipos de resíduos eletrônicos que sua empresa coleta. Máximo de 500 caracteres.';
         if (hintPeso) hintPeso.textContent = 'Indique o peso máximo que sua empresa consegue coletar por vez.';
         if (hintEndereco) hintEndereco.style.display = 'none';
         if (hintFoto) hintFoto.textContent = 'Envie uma foto da sua empresa ou logo para identificação.';
         if (hintHorario) hintHorario.textContent = 'Defina os dias e horários em que sua empresa está disponível para realizar coletas.';
     } else {
         if (hintDescricao) hintDescricao.textContent = 'Descreva os resíduos que você deseja descartar e seu estado.';
-        if (hintTipoResiduo) hintTipoResiduo.textContent = 'Especifique o tipo de resíduo eletrônico (ex: computadores, cabos, baterias).';
+        if (hintTipoResiduo) hintTipoResiduo.textContent = 'Especifique o tipo de resíduo eletrônico (ex: computadores, cabos, baterias). Máximo de 500 caracteres.';
         if (hintPeso) hintPeso.textContent = 'Informe o peso aproximado do material a ser descartado.';
         if (hintEndereco) {
             hintEndereco.style.display = '';

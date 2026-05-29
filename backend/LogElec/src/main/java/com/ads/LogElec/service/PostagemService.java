@@ -19,6 +19,8 @@ import java.util.stream.Collectors;
 
 @Service
 public class PostagemService {
+    private static final String TIPO_RESIDUO_LENGTH_ERROR =
+        "Tipos de resíduos podem ter no máximo " + Postagem.MAX_TIPO_RESIDUO_LENGTH + " caracteres.";
 
     @Autowired
     private PostagemRepository postagemRepository;
@@ -57,6 +59,8 @@ public class PostagemService {
     }
 
     public Postagem save(Postagem postagem) {
+        postagem.setTipoResiduo(normalizarTipoResiduo(postagem.getTipoResiduo()));
+
         if (postagem.getStatusModeracao() == null) {
             postagem.setStatusModeracao(StatusModeracaoPostagem.PENDENTE);
         }
@@ -78,7 +82,7 @@ public class PostagemService {
             conteudoAlterado = true;
         }
         if (postagemDetails.getTipoResiduo() != null) {
-            postagem.setTipoResiduo(postagemDetails.getTipoResiduo());
+            postagem.setTipoResiduo(normalizarTipoResiduo(postagemDetails.getTipoResiduo()));
             conteudoAlterado = true;
         }
         if (postagemDetails.getPeso() != null) {
@@ -169,5 +173,18 @@ public class PostagemService {
         return postagemModeracaoHistoricoRepository.findByPostagemIdOrderByModeradoEmDescIdDesc(postagemId).stream()
             .map(PostagemModeracaoHistoricoDTO::fromEntity)
             .collect(Collectors.toList());
+    }
+
+    private String normalizarTipoResiduo(String tipoResiduo) {
+        if (tipoResiduo == null) {
+            return null;
+        }
+
+        String tipoResiduoNormalizado = tipoResiduo.trim();
+        if (tipoResiduoNormalizado.length() > Postagem.MAX_TIPO_RESIDUO_LENGTH) {
+            throw new IllegalArgumentException(TIPO_RESIDUO_LENGTH_ERROR);
+        }
+
+        return tipoResiduoNormalizado;
     }
 }

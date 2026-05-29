@@ -160,7 +160,7 @@ CREATE TABLE `postagens` (
   `tipo_postagem` enum('OFERTA_RESIDUO','OFERTA_SERVICO') NOT NULL,
   `titulo` varchar(255) NOT NULL,
   `descricao` text,
-  `tipo_residuo` varchar(150) DEFAULT NULL,
+  `tipo_residuo` varchar(500) DEFAULT NULL,
   `area_cobertura` varchar(150) DEFAULT NULL,
   `peso` decimal(10,2) DEFAULT '0.00',
   `capacidade_coleta` decimal(10,2) DEFAULT '0.00',

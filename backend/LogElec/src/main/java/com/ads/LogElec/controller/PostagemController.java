@@ -148,10 +148,12 @@ public class PostagemController {
                     + ", horaInicio=" + saved.getHoraInicio()
                     + ", horaFim=" + saved.getHoraFim());
             return ResponseEntity.ok(saved);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("[ERROR] Erro ao criar postagem: " + e.getMessage());
-            return ResponseEntity.status(org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR).body("Erro ao criar postagem: " + e.getMessage());
+            return ResponseEntity.status(org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR).body("Erro interno ao criar postagem.");
         }
     }
 

@@ -9,6 +9,8 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 @Entity
 @Table(name = "postagens")
 public class Postagem {
+    public static final int MAX_TIPO_RESIDUO_LENGTH = 500;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -22,7 +24,7 @@ public class Postagem {
     @Column(columnDefinition = "TEXT")
     private String descricao;
 
-    @Column(name = "tipo_residuo", length = 150)
+    @Column(name = "tipo_residuo", length = MAX_TIPO_RESIDUO_LENGTH)
     private String tipoResiduo;
 
     @Column(precision = 10, scale = 2)
