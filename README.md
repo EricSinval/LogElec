@@ -1,104 +1,110 @@
 # LogElec
 
-Sistema web acadêmico para intermediação entre empresas que desejam descartar resíduos eletroeletrônicos e empresas especializadas em coleta desses materiais.
+Sistema web acadêmico para intermediar a relação entre empresas que precisam descartar resíduos eletroeletrônicos e empresas especializadas em coleta e logística reversa.
+## Status do projeto
 
-## Visão geral
+O projeto está na fase final de entrega acadêmica, com os principais fluxos integrados:
+- frontend estático funcional
+- backend Spring Boot com autenticação por sessão
+- banco MySQL com seed de demonstração
+- painel administrativo para moderação e gestão
+- testes automatizados de backend e E2E
+- documentação de execução local e publicação em produção
+## Objetivo da aplicação
 
-O LogElec conecta empresas do tipo `DESCARTE`, que possuem resíduos para retirada, com empresas do tipo `COLETA`, que oferecem o serviço. O sistema cobre o fluxo completo de cadastro, autenticação, publicação de oportunidades, negociação de agendamentos, troca de mensagens e apoio administrativo.
-
+O LogElec conecta empresas do tipo `DESCARTE`, que precisam disponibilizar resíduos para retirada, com empresas do tipo `COLETA`, que prestam o serviço de coleta. O sistema cobre o fluxo de cadastro, autenticação, publicação de postagens, moderação administrativa, negociação de agendamentos, troca de mensagens e acompanhamento operacional.
 ## Funcionalidades principais
 
 - cadastro de empresas com perfil `DESCARTE` ou `COLETA`
-- login e recuperação de senha por email + CNPJ
-- edição de perfil e exclusão de conta com validações de vínculo
+- login, logout e recuperação de senha por e-mail + CNPJ
+- edição de perfil e exclusão de conta com validações de integridade
 - criação, edição, busca e filtragem de postagens
-- gestão de propostas e confirmações de agendamento
-- chat liberado apenas após agendamento confirmado
-- painel administrativo para visão geral, gestão de contas, moderação de publicações e acompanhamento de agendamentos
+- moderação administrativa de publicações
+- agendamentos entre empresas interessadas
+- troca de mensagens vinculada ao fluxo de agendamento
+- painel administrativo com visão geral, gestão de empresas, publicações e agendamentos
+## Regras de negócio relevantes
 
-## Arquitetura
+- postagens novas passam por moderação antes de entrarem na vitrine
+- o chat entre empresas só é liberado após um agendamento confirmado
+- os status canônicos de postagem são `ABERTA`, `PAUSADA`, `ENCERRADA` e `CANCELADA`
+- o frontend foi ajustado para consumir a API por rotas relativas `/api`, o que simplifica o uso com proxy reverso no mesmo domínio
+- em produção, o backend roda com perfil `prod`, cookies seguros e configuração de CORS por variável de ambiente
+## Arquitetura atual
 
-- frontend estático em HTML, CSS e JavaScript puro
-- backend REST em Spring Boot
-- banco de dados MySQL 8
-- execução conteinerizada com Docker Compose
-- frontend servido por Nginx no ambiente Docker
-
-## Stack atual
-
-| Camada | Tecnologia |
-|--------|------------|
-| Backend | Java 21 |
-| Framework backend | Spring Boot 4.0.0 |
-| Persistência | Spring Data JPA |
-| Banco de dados | MySQL 8 |
-| Criptografia de senha | BCrypt |
-| Frontend | HTML5, CSS3 e JavaScript puro |
-| Build | Maven Wrapper (`mvnw`) |
-| Containerização | Docker e Docker Compose |
-
-## Estrutura do projeto
+| Camada | Tecnologia | Observação |
+| --- | --- | --- |
+| Frontend | HTML5, CSS3 e JavaScript puro | páginas estáticas servidas por Nginx |
+| Backend | Java 21 + Spring Boot 4.0.0 | API REST com autenticação por sessão |
+| Persistência | Spring Data JPA + MySQL 8 | schema atualizado via `ddl-auto=update` |
+| Segurança | Spring Security + BCrypt | bootstrap administrativo configurável |
+| Testes backend | Maven Wrapper | unitários com Surefire, integração com Failsafe |
+| Testes E2E | Playwright | fluxos executados contra o stack local |
+| Infra local | Docker Compose | serviços `db`, `backend` e `frontend` |
+| Infra de produção | Docker Compose + Caddy | fluxo recomendado para AWS Lightsail |
+## Estrutura principal do repositório
 
 ```text
 LogElec/
-├── backend/LogElec/        # API Spring Boot
-├── database/seed.sql       # base SQL compartilhada do projeto
-├── docs/                   # validação, homologação e arquitetura alvo
-├── frontend/               # telas estáticas e scripts do cliente
-├── docker-compose.yml      # orquestração local
-├── DOCKER.md               # guia operacional do ambiente Docker
-├── README.md               # visão geral do projeto
-└── .env.example            # portas e credenciais padrão do ambiente local
+├── backend/
+│   └── LogElec/
+│       ├── src/main/java/com/ads/LogElec/
+│       │   ├── config/
+│       │   ├── controller/
+│       │   ├── dto/
+│       │   ├── entity/
+│       │   ├── repository/
+│       │   ├── security/
+│       │   └── service/
+│       ├── src/main/resources/
+│       ├── src/test/java/com/ads/LogElec/
+│       ├── mvnw
+│       ├── mvnw.cmd
+│       └── pom.xml
+├── database/
+│   └── seed.sql
+├── docs/
+│   ├── aws-lightsail-deploy.md
+│   └── Caddyfile.lightsail.example
+├── e2e/
+│   ├── global-setup.cjs
+│   ├── prepare-environment.cjs
+│   └── tests/
+├── frontend/
+│   ├── img/
+│   ├── index/
+│   ├── nginx/
+│   ├── script/
+│   └── style_css/
+├── scripts/
+│   └── run-backend-maven.cjs
+├── docs/demo-assets/
+│   └── logos-empresas/
+├── docker-compose.yml
+├── docker-compose.prod.yml
+├── DOCKER.md
+├── package.json
+├── playwright.config.js
+└── README.md
 ```
 
-## Requisitos
+## Pré-requisitos
 
-Para recuperação rápida do projeto em outro computador antes da banca, use o guia dedicado em `docs/pre-banca-recuperacao.md`.
+### Fluxo local recomendado
 
-## Preparação para produção
-
-O projeto agora suporta um perfil dedicado de produção no backend: `prod`.
-
-Antes de publicar a aplicação em um servidor com domínio próprio, configure estes pontos:
-
-- use o frontend e o backend no mesmo domínio, com o frontend servindo `/api` via proxy reverso
-- ative `SPRING_PROFILES_ACTIVE=prod`
-- configure `APP_CORS_ALLOWED_ORIGIN_PATTERNS` com o domínio público real
-- defina `APP_ADMIN_EMAIL` e `APP_ADMIN_PASSWORD` para a conta administrativa inicial
-- defina credenciais fortes para MySQL e para o datasource do backend
-
-Arquivo de referência para variáveis de produção:
-
-- `.env.prod.example`
-- `docs/aws-lightsail-deploy.md`
-
-Fluxo recomendado para subir o stack em modo produção com Docker Compose:
-
-- copie `.env.prod.example` para um arquivo real de ambiente, como `.env.prod`
-- revise domínio, senhas e credenciais administrativas
-- use `docker compose -f docker-compose.yml -f docker-compose.prod.yml --env-file .env.prod up --build -d`
-- no Lightsail, a publicação do frontend fica em `127.0.0.1:8081` para um proxy HTTPS no host, evitando expor a aplicação sem TLS
-
-Observações importantes para esse modo:
-
-- o frontend foi ajustado para usar rotas relativas `/api`, evitando dependência de `localhost`
-- o backend deixa de depender de CORS hardcoded e passa a ler as origens permitidas por variável de ambiente
-- o perfil `prod` desliga `debug`, reduz logs verbosos do Hibernate e exige variáveis críticas para banco, CORS e bootstrap administrativo
-
-### Fluxo recomendado
-
-- Docker Desktop
+- Docker Desktop instalado
 - WSL2 habilitado no Windows
+- PowerShell aberto na raiz do projeto
 
-### Fluxo local sem containerizar o backend/frontend
+### Fluxos opcionais
 
-- Java 21 instalado
-- Python 3 para servir o frontend estático, ou outro servidor HTTP equivalente
-- MySQL 8 local ou em container
+- Java 21, caso queira rodar o backend fora do Docker
+- Node.js + npm, para usar os scripts da raiz e a suíte Playwright
+- Python 3 ou outro servidor estático, caso queira servir o frontend sem Nginx
 
-## Subida rápida com Docker
+## Execução local recomendada com Docker
 
-### 1. Criar o arquivo `.env`
+### 1. Criar o arquivo de ambiente
 
 Na raiz do projeto:
 
@@ -106,13 +112,13 @@ Na raiz do projeto:
 Copy-Item .env.example .env
 ```
 
-Valores padrão do `.env.example`:
+Portas padrão do ambiente local:
 
 - MySQL: `3307`
 - backend: `8080`
 - frontend: `8081`
 
-### 2. Subir os containers
+### 2. Subir os serviços
 
 ```powershell
 docker compose up --build -d
@@ -120,7 +126,7 @@ docker compose up --build -d
 
 ### 3. Importar a base compartilhada
 
-O arquivo `database/seed.sql` é um snapshot com empresas, postagens, agendamentos e mensagens iniciais. Para evitar problemas de redirecionamento no PowerShell, use cópia para dentro do container:
+Use o fluxo abaixo para evitar problemas de redirecionamento no PowerShell:
 
 ```powershell
 docker cp .\database\seed.sql logelec-db:/tmp/seed.sql
@@ -128,48 +134,46 @@ docker exec logelec-db sh -c "mysql -uroot -p74123LogElec logelec < /tmp/seed.sq
 docker compose restart backend
 ```
 
-Observações importantes:
+Esse passo é importante porque:
 
-- o `seed.sql` recria as tabelas, então o restart do backend é intencional
-- a conta administrativa não é persistida no seed; ela é recriada automaticamente no boot do backend
-- a reinicialização também normaliza colunas novas do domínio administrativo quando necessário
+- o `seed.sql` recria tabelas e dados de demonstração
+- o restart do backend reaplica o bootstrap administrativo e normalizações necessárias
+- esse fluxo evita quebra com `<` e `>` diretamente no PowerShell
 
-### 4. Acessos padrão
+### 4. Validar os acessos locais
 
-- frontend: `http://localhost:8081`
+- home: `http://localhost:8081/index/home.html`
 - login: `http://localhost:8081/index/login.html`
 - backend: `http://localhost:8080`
-- banco MySQL: `localhost:3307`
+- MySQL: `localhost:3307`
 
-## Acessos e dados base
+Para a rotina diária com containers, consulte também [DOCKER.md](DOCKER.md).
 
-### Conta administrativa
+## Conta administrativa e dados de demonstração
 
-A conta administrativa é criada automaticamente pelo backend em toda subida limpa ou após o restart do serviço:
+### Conta administrativa local
 
-- email: `admin@logelec.com`
+No ambiente local padrão, a conta administrativa é criada automaticamente pelo backend:
+
+- e-mail: `admin@logelec.com`
 - senha: `Admin123`
+
+Em produção, esses valores devem ser sobrescritos com `APP_ADMIN_EMAIL` e `APP_ADMIN_PASSWORD`.
 
 ### Empresas do seed
 
-O seed foi pensado para povoar a aplicação com dados de navegação e teste manual. Como a base pode ter sido regenerada várias vezes ao longo do projeto, o caminho mais seguro para entrar com uma empresa sem conhecer a senha atual é usar a tela `Esqueci a senha` com email + CNPJ.
+O seed foi preparado para navegação, demonstração e teste manual. Como as senhas das empresas podem variar conforme a base foi recriada ao longo do projeto, o caminho mais seguro para acessar uma conta do seed é usar a tela `Esqueci a senha` com e-mail + CNPJ.
 
-Exemplos úteis do seed:
+Exemplos úteis:
 
-- empresa de coleta: `biocolet@coleta.logelec.com` / CNPJ `12345678000195`
-- empresa de descarte: `codebase@descarte.logelec.com` / CNPJ `12345678003534`
+- coleta: `biocolet@coleta.logelec.com` / CNPJ `12345678000195`
+- descarte: `codebase@descarte.logelec.com` / CNPJ `12345678003534`
 
-## Execução local
+## Execução local sem Docker completo
+
+Esse fluxo é útil quando você quer subir apenas o banco em container e rodar backend e frontend separadamente.
 
 ### Banco de dados
-
-O backend está configurado por padrão para usar:
-
-- URL: `jdbc:mysql://localhost:3307/logelec?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC`
-- usuário: `root`
-- senha: `74123LogElec`
-
-Se quiser usar o MySQL em container e rodar apenas backend/frontend fora do Docker:
 
 ```powershell
 docker compose up -d db
@@ -194,137 +198,115 @@ python -m http.server 5500 --directory frontend
 
 Depois acesse:
 
+- `http://localhost:5500/index/home.html`
 - `http://localhost:5500/index/login.html`
 
-## Testes do backend
+## Testes automatizados
 
-### Testes unitários
+O `package.json` da raiz existe para orquestrar testes. Ele não é um pipeline de build do frontend.
 
-Na raiz do projeto:
+### Instalação das dependências de teste
 
 ```powershell
-npm run test:unit
+npm install
 ```
 
-Esse comando executa apenas os testes unitários do backend, sem os testes de integração.
+### Comandos disponíveis na raiz
 
-Se preferir rodar diretamente na pasta do backend:
+| Comando | Finalidade |
+| --- | --- |
+| `npm run test:unit` | executa apenas os testes unitários do backend |
+| `npm run test:backend` | executa `verify`, cobrindo testes unitários e de integração |
+| `npm run test:e2e:install` | instala o navegador usado pelo Playwright |
+| `npm run test:e2e` | roda a suíte E2E contra um ambiente já ativo |
+| `npm run test:e2e:docker` | reinicia o ambiente local com seed e roda a suíte E2E |
+| `npm run test:e2e:docker:headed` | mesmo fluxo anterior, mas com o navegador visível |
+| `npm run test:all` | executa backend completo e E2E em sequência |
+
+### Comandos diretos do backend
 
 ```powershell
 cd backend/LogElec
 .\mvnw.cmd test
-```
-
-### Backend completo: unitário + integração
-
-Na raiz do projeto:
-
-```powershell
-npm run test:backend
-```
-
-Esse comando executa o backend completo com `verify`: primeiro os testes unitários e depois os testes de integração.
-
-Se preferir rodar diretamente na pasta do backend:
-
-```powershell
-cd backend/LogElec
 .\mvnw.cmd verify
-```
-
-## Testes E2E com Playwright
-
-### Instalação
-
-Na raiz do projeto:
-
-```powershell
-npm install
-npm run test:e2e:install
-```
-
-### Execução contra ambiente já ativo
-
-Use este comando quando o stack já estiver disponível em `http://localhost:8081` e `http://localhost:8080`:
-
-```powershell
-npm run test:e2e
-```
-
-### Execução com Docker + reset da base compartilhada
-
-Se quiser subir os containers, reimportar `database/seed.sql` e rodar a suíte em seguida:
-
-```powershell
-npm run test:e2e:docker
-```
-
-Se quiser fazer o mesmo fluxo com o navegador visível para smoke visual/manual assistido:
-
-```powershell
-npm run test:e2e:docker:headed
 ```
 
 Observações importantes:
 
-- `test:e2e:docker` reinicializa os dados locais com o `seed.sql` compartilhado
-- `test:e2e:docker:headed` usa o mesmo bootstrap, mas abre o Chromium visível durante a execução
-- a suíte cobre cadastro, login, recuperação de senha, proposta de agendamento, persistência do perfil após reload, moderação com revisão/aprovação e fluxo completo de agendamento até a conclusão da coleta
-- os testes usam Chromium e assumem as portas padrão do projeto (`8080` e `8081`)
+- `test` roda apenas os testes unitários configurados no Surefire
+- `verify` roda os testes unitários e, em seguida, os testes de integração pelo Failsafe
+- `npm run test:e2e:docker` usa `e2e/prepare-environment.cjs --reset-db`, reaplica `database/seed.sql` e executa a suíte Playwright
+- a configuração E2E atual assume `frontend` em `http://localhost:8081`
 
-## Módulos e rotas principais
+## Produção
 
-### Frontend
+O projeto já possui suporte a produção com backend em perfil `prod`, frontend atrás de proxy reverso e configuração por variáveis de ambiente.
 
-- autenticação: `frontend/index/login.html`
-- recuperação de senha: `frontend/index/esqueci_senha.html`
-- cadastro: `frontend/index/cadastro.html`
-- home: `frontend/index/home.html`
-- perfil: `frontend/index/perfil.html`
-- postagens: `frontend/index/postagens.html`
-- cadastro de postagens: `frontend/index/cadastro_postagens.html`
-- edição de postagens: `frontend/index/editar_postagens.html`
-- agendamentos: `frontend/index/agendamento.html`
-- mensagens: `frontend/index/mensagens.html`
-- admin dashboard: `frontend/index/admin_dashboard.html`
-- admin empresas: `frontend/index/admin_empresas.html`
-- admin publicações: `frontend/index/admin_publicacoes.html`
-- admin agendamentos: `frontend/index/admin_agendamentos.html`
+Arquivos principais desse fluxo:
 
-### API
+- `.env.prod.example`
+- `docker-compose.prod.yml`
+- [docs/aws-lightsail-deploy.md](docs/aws-lightsail-deploy.md)
+- [docs/Caddyfile.lightsail.example](docs/Caddyfile.lightsail.example)
 
-- autenticação: `/api/auth/*`
-- empresas: `/api/empresas/*`
-- postagens: `/api/postagens/*`
-- agendamentos: `/api/agendamentos/*`
-- mensagens: `/api/mensagens/*`
-- administração: `/api/admin/*`
+### Resumo do fluxo recomendado
 
-## Regras de negócio importantes
+1. copiar `.env.prod.example` para `.env.prod`
+2. ajustar credenciais do banco, domínio, CORS e conta administrativa
+3. subir o stack com `docker compose -f docker-compose.yml -f docker-compose.prod.yml --env-file .env.prod up --build -d`
+4. manter o frontend exposto apenas em `127.0.0.1:8081`
+5. publicar `80/443` com Caddy no host, apontando o domínio real para o frontend
 
-- o chat entre empresas só é liberado quando existe agendamento `CONFIRMADA`
-- contas bloqueadas não devem autenticar no sistema
-- postagens novas entram em fluxo de moderação; o seed marca o conteúdo compartilhado como aprovado
-- os status canônicos de postagem são `ABERTA`, `PAUSADA`, `ENCERRADA` e `CANCELADA`
-- os status de agendamento usados no fluxo atual são `AGENDADA`, `CONFIRMADA`, `RECUSADO`, `CANCELADA` e `REALIZADA`
+### Pontos importantes do ambiente de produção
 
-## Arquivos-base para a equipe
+- o frontend e a API devem permanecer no mesmo domínio
+- o frontend usa proxy `/api`, evitando dependência de `localhost`
+- o perfil `prod` desliga `debug`, reduz logs verbosos e exige variáveis críticas
+- os cookies de sessão são configurados com segurança adequada para HTTPS
 
-- `README.md`: visão geral, execução e acessos
-- `DOCKER.md`: rotina operacional com containers
-- `docs/pre-banca-recuperacao.md`: roteiro curto para baixar, subir o ambiente e rodar os testes em outra máquina
-- `docs/matriz-testes.md`: matriz de homologação por tela e por perfil
-- `docs/checklist-homologacao-local.md`: roteiro técnico para validação local completa
-- `docs/aws-arquitetura-minima.md`: desenho mínimo de staging/produção na AWS
-- `database/seed.sql`: snapshot compartilhado do banco para demonstração e testes manuais
-- `.env.example`: portas e credenciais padrão do ambiente local
+## Checklist rápido para apresentação final
 
-## Documentação de validação e publicação
+Se o objetivo for preparar a demonstração local para a banca, este é o fluxo mais curto:
 
-- matriz de testes: `docs/matriz-testes.md`
-- checklist técnico local: `docs/checklist-homologacao-local.md`
-- arquitetura mínima AWS: `docs/aws-arquitetura-minima.md`
+1. criar `.env` a partir de `.env.example`
+2. subir o stack com `docker compose up --build -d`
+3. importar `database/seed.sql`
+4. reiniciar o backend
+5. validar home, login, cadastro, postagens, painel admin, mensagens e agendamentos
+6. opcionalmente rodar `npm run test:backend`
+7. opcionalmente rodar `npm run test:e2e:docker`
 
-## Situação atual
+## Organização do repositório e utilidade dos arquivos
 
-O LogElec está pronto para uso acadêmico e demonstração, com backend, frontend, banco e painel administrativo integrados. Para manter o ambiente da equipe consistente, atualize `database/seed.sql`, `README.md`, `DOCKER.md` e `.env.example` sempre que houver mudança de fluxo operacional, credenciais padrão, portas ou dados base relevantes.
+### Arquivos e pastas que fazem parte do fluxo atual
+
+- `backend/LogElec/`: aplicação principal do backend
+- `frontend/`: telas, scripts e estilos utilizados pela aplicação
+- `database/seed.sql`: base compartilhada para demonstração e testes
+- `e2e/` e `playwright.config.js`: automação de testes end-to-end
+- `scripts/run-backend-maven.cjs`: helper usado pelos scripts npm da raiz
+- `docker-compose.yml` e `docker-compose.prod.yml`: orquestração local e produção
+- `docs/`: documentação operacional da publicação em AWS
+
+### Material auxiliar
+
+- `docs/demo-assets/logos-empresas/` contém ativos visuais de apoio e referência de identidade para empresas do domínio; não participa diretamente do runtime da aplicação
+
+### Artefatos gerados localmente
+
+Esses diretórios e arquivos podem ser removidos a qualquer momento, pois são recriados quando necessário:
+
+- `backend/LogElec/target/`
+- `node_modules/`
+- `playwright-report/`
+- `test-results/`
+
+## Documentação complementar
+
+- [DOCKER.md](DOCKER.md): rotina operacional com Docker
+- [docs/aws-lightsail-deploy.md](docs/aws-lightsail-deploy.md): guia completo de publicação na AWS Lightsail
+- [docs/Caddyfile.lightsail.example](docs/Caddyfile.lightsail.example): exemplo de proxy HTTPS com Caddy
+
+## Observação final
+
+O LogElec está pronto para demonstração acadêmica, validação local e publicação temporária em nuvem com custo baixo. Sempre que houver mudança de fluxo operacional, portas, credenciais padrão, seed ou publicação, atualize este README, o [DOCKER.md](DOCKER.md) e os arquivos de ambiente de referência no mesmo ciclo de alteração.

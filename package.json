@@ -2,6 +2,9 @@
   "name": "logelec-e2e",
   "private": true,
   "scripts": {
+    "test:unit": "node ./scripts/run-backend-maven.cjs test",
+    "test:backend": "node ./scripts/run-backend-maven.cjs verify",
+    "test:all": "npm run test:backend && npm run test:e2e:docker",
     "test:e2e": "playwright test",
     "test:e2e:headed": "playwright test --headed",
     "test:e2e:install": "playwright install",
