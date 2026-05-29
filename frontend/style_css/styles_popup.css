@@ -23,6 +23,7 @@
   border: 1px solid rgba(218, 228, 231, 0.92);
   max-width: 560px;
   width: 100%;
+  max-height: min(720px, calc(100vh - 48px));
   border-radius: 22px;
   box-shadow: 0 26px 60px rgba(8, 30, 36, 0.22);
   overflow: hidden;
@@ -58,6 +59,9 @@
   align-items: stretch;
   justify-content: flex-start;
   text-align: left;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
 }
 .ui-popup-stack {
   width: 100%;
@@ -231,6 +235,16 @@
 @keyframes ui-fade-out { from { opacity: 1; } to { opacity: 0; transform: translateY(6px); } }
 
 @media (max-width: 640px) {
+  .ui-popup-overlay {
+    padding: 16px;
+    align-items: flex-start;
+  }
+
+  .ui-popup-modal {
+    max-height: calc(100vh - 32px);
+    border-radius: 18px;
+  }
+
   .ui-popup-content {
     padding: 24px 20px 18px;
   }

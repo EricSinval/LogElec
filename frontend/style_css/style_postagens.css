@@ -661,6 +661,7 @@ h1 {
     text-align: right;
     white-space: normal;
     word-break: break-word;
+  overflow-wrap: anywhere;
 }
 
 .detalhes-label {
@@ -698,6 +699,21 @@ h1 {
     .cards {
         grid-template-columns: 1fr;
     }
+
+  .detalhes-postagem {
+    max-width: 100%;
+  }
+
+  .detalhes-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 6px;
+  }
+
+  .detalhes-card span:not(.detalhes-label):not(.status),
+  .detalhes-row.detalhes-descricao span:last-child {
+    text-align: left;
+  }
     
     .filtros {
         flex-direction: column;
