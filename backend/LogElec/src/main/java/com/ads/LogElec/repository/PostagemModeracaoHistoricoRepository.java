@@ -7,5 +7,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface PostagemModeracaoHistoricoRepository extends JpaRepository<PostagemModeracaoHistorico, Long> {
+    long deleteByPostagemId(Long postagemId);
+
     List<PostagemModeracaoHistorico> findByPostagemIdOrderByModeradoEmDescIdDesc(Long postagemId);
 }

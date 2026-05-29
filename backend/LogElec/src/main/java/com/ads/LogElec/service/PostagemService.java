@@ -157,6 +157,7 @@ public class PostagemService {
             throw new RuntimeException("Postagem não encontrada com id: " + id);
         }
 
+        postagemModeracaoHistoricoRepository.deleteByPostagemId(id);
         agendamentoRepository.deleteByPostagemId(id);
         postagemRepository.deleteById(id);
     }

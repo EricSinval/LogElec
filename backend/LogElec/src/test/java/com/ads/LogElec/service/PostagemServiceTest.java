@@ -13,6 +13,7 @@ import com.ads.LogElec.repository.PostagemModeracaoHistoricoRepository;
 import com.ads.LogElec.repository.PostagemRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InOrder;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -24,6 +25,7 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.inOrder;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -120,6 +122,18 @@ class PostagemServiceTest {
         assertThatThrownBy(() -> postagemService.update(30L, alteracoes))
             .isInstanceOf(IllegalArgumentException.class)
             .hasMessage("Tipos de resíduos podem ter no máximo 500 caracteres.");
+    }
+
+    @Test
+    void deleteByIdRemoveHistoricoAntesDeExcluirPostagem() {
+        when(postagemRepository.existsById(40L)).thenReturn(true);
+
+        postagemService.deleteById(40L);
+
+        InOrder inOrder = inOrder(postagemModeracaoHistoricoRepository, agendamentoRepository, postagemRepository);
+        inOrder.verify(postagemModeracaoHistoricoRepository).deleteByPostagemId(40L);
+        inOrder.verify(agendamentoRepository).deleteByPostagemId(40L);
+        inOrder.verify(postagemRepository).deleteById(40L);
     }
 
     private Postagem novaPostagem() {
