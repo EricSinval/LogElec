@@ -795,9 +795,36 @@ footer {
     margin-bottom: 15px;
     font-size: 1.2rem;
   }
+
+  .footer-text,
+  .footer-note,
+  .footer-copy,
+  .footer-list li {
+    color: rgba(255, 255, 255, 0.9);
+    line-height: 1.6;
+  }
+
+  .footer-text,
+  .footer-note {
+    margin: 0;
+  }
+
+  .footer-note {
+    margin-top: 12px;
+    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.75);
+  }
+
+  .footer-copy {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 0.95rem;
+  }
   
   .footer-section ul {
     list-style: none;
+    padding: 0;
+    margin: 0;
   }
   
   .footer-section ul li {
