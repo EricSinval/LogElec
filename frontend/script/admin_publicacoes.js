@@ -63,6 +63,7 @@ function renderizarPublicacoes() {
         <button type="button" class="btn-primary" onclick="moderarPublicacao(${postagem.id}, 'APROVADA')">Aprovar</button>
         <button type="button" class="btn-secondary" onclick="moderarPublicacao(${postagem.id}, 'REJEITADA')">Rejeitar</button>
         <button type="button" class="btn-danger" onclick="moderarPublicacao(${postagem.id}, 'BLOQUEADA')">Bloquear</button>
+        <button type="button" class="btn-danger" onclick="excluirPublicacaoAdmin(${postagem.id})">Excluir</button>
       </div>
     </div>
   `).join('');
@@ -147,6 +148,49 @@ async function aplicarModeracao(id, statusModeracao, motivoModeracao) {
   }
 }
 
+function excluirPublicacaoAdmin(id) {
+  const postagem = publicacoesAdmin.find((item) => item.id === id);
+  if (!postagem) return;
+
+  const nomeEmpresa = window.adminApp.obterNomeEmpresa(postagem.empresa);
+  const titulo = postagem.titulo || 'Postagem sem título';
+
+  showPopup(`Deseja excluir permanentemente a publicação "${titulo}" da empresa ${nomeEmpresa}?`, {
+    type: 'warning',
+    subtitle: 'Essa ação remove a postagem da moderação e da vitrine da plataforma.',
+    buttons: [
+      { text: 'Cancelar', className: 'ui-btn-secondary', onClick: () => {} },
+      {
+        text: 'Excluir publicação',
+        className: 'ui-btn-danger',
+        onClick: async () => {
+          try {
+            if (window.authApp && typeof window.authApp.fetchApi === 'function') {
+              await window.authApp.fetchApi(`/api/postagens/${id}`, { method: 'DELETE' });
+            } else {
+              const response = await fetch(`/api/postagens/${id}`, {
+                method: 'DELETE',
+                credentials: 'include'
+              });
+
+              if (!response.ok) {
+                const mensagem = await response.text();
+                throw new Error(mensagem || 'Não foi possível excluir a publicação.');
+              }
+            }
+
+            publicacoesAdmin = publicacoesAdmin.filter((item) => item.id !== id);
+            renderizarPublicacoes();
+            showPopup('Publicação excluída com sucesso.', { type: 'success' });
+          } catch (error) {
+            showPopup(error.message, { type: 'error' });
+          }
+        }
+      }
+    ]
+  });
+}
+
 function badgeModeracao(statusModeracao) {
   const mapa = {
     APROVADA: ['Aprovada', 'success'],
@@ -159,3 +203,4 @@ function badgeModeracao(statusModeracao) {
 }
 
 window.moderarPublicacao = moderarPublicacao;
+window.excluirPublicacaoAdmin = excluirPublicacaoAdmin;
