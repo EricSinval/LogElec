@@ -174,4 +174,4 @@ Boas praticas recomendadas:
 
 ## Licenca
 
-Este repositorio nao possui uma licenca de uso e distribuicao definida ate o momento. Enquanto nao houver uma definicao formal, o projeto deve ser tratado como material academico de uso restrito.
+Este projeto adota uma licenca de uso academico restrito. Os termos de utilizacao, modificacao e redistribuicao estao descritos em [LICENSE](LICENSE).

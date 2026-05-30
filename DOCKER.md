@@ -1,36 +1,36 @@
 # LogElec com Docker
 
-Guia operacional do ambiente Docker usado pelo grupo.
+Este documento apresenta o procedimento padrao para executar o projeto LogElec com Docker em ambiente local e para apoiar rotinas operacionais de desenvolvimento.
 
-## Serviços do compose
+## Servicos
 
-- `db`: MySQL 8
-- `backend`: API Spring Boot
-- `frontend`: Nginx servindo o frontend estático
+O arquivo `docker-compose.yml` define os seguintes servicos:
 
-## Pré-requisitos
+- `db`: banco de dados MySQL 8
+- `backend`: aplicacao Spring Boot
+- `frontend`: servidor Nginx responsavel pelo frontend estatico
 
-- Docker Desktop instalado
-- WSL2 habilitado no Windows
-- PowerShell aberto na raiz do projeto
+## Pre-requisitos
 
-## Primeira execução
+- Docker Desktop
+- PowerShell
+- Git
 
-### 1. Criar `.env`
+## Instalacao do Ambiente Local
+
+### 1. Criar o arquivo de ambiente
 
 ```powershell
 Copy-Item .env.example .env
 ```
 
-### 2. Subir o ambiente
+### 2. Subir os containers
 
 ```powershell
 docker compose up --build -d
 ```
 
-### 3. Importar a base compartilhada
-
-Use este fluxo em vez de redirecionamento com `<` ou `>` no PowerShell:
+### 3. Importar a base de demonstracao
 
 ```powershell
 docker cp .\database\seed.sql logelec-db:/tmp/seed.sql
@@ -38,40 +38,36 @@ docker exec logelec-db sh -c "mysql -uroot -p74123LogElec logelec < /tmp/seed.sq
 docker compose restart backend
 ```
 
-Por que esse passo existe:
+Esse fluxo evita problemas de redirecionamento com PowerShell e garante a reaplicacao das inicializacoes do backend apos a carga da base.
 
-- o seed recria as tabelas do banco
-- o restart do backend recria a conta admin e reaplica normalizações de domínio
-- esse fluxo evita problema de redirecionamento e encoding no PowerShell
+### 4. Validar os acessos
 
-### 4. Validar acesso
-
-- frontend: `http://localhost:8081`
+- frontend: `http://localhost:8081/index/home.html`
 - login: `http://localhost:8081/index/login.html`
 - backend: `http://localhost:8080`
 - MySQL: `localhost:3307`
 
-## Rotina diária
+## Operacao do Ambiente
 
-### Subir ou reconstruir
+### Subir ou reconstruir o ambiente
 
 ```powershell
 docker compose up --build -d
 ```
 
-### Ver logs
+### Consultar logs
 
 ```powershell
 docker compose logs -f
 ```
 
-### Parar containers
+### Parar os containers
 
 ```powershell
 docker compose down
 ```
 
-### Apagar volumes e recomeçar do zero
+### Recriar o ambiente do zero
 
 ```powershell
 docker compose down -v
@@ -81,73 +77,72 @@ docker exec logelec-db sh -c "mysql -uroot -p74123LogElec logelec < /tmp/seed.sq
 docker compose restart backend
 ```
 
-## Conta administrativa
+## Conta Administrativa Local
 
-A aplicação recria automaticamente a conta administrativa no boot do backend:
+No ambiente local, o backend recria automaticamente uma conta administrativa padrao:
 
-- email: `admin@logelec.com`
+- e-mail: `admin@logelec.com`
 - senha: `Admin123`
 
-Se você acabou de importar o seed e não consegue entrar como admin, execute:
+Caso a autenticacao administrativa nao funcione logo apos a importacao do `seed.sql`, execute:
 
 ```powershell
 docker compose restart backend
 ```
 
-## Atualizar o seed compartilhado
+## Atualizacao do Seed Compartilhado
 
-Se você ajustou dados importantes e quer publicar uma nova base para o grupo:
+Para gerar uma nova versao do arquivo `database/seed.sql` a partir do banco local:
 
 ```powershell
 docker exec logelec-db sh -c "mysqldump -uroot -p74123LogElec --databases logelec --routines --events --triggers > /tmp/logelec-seed.sql"
 docker cp logelec-db:/tmp/logelec-seed.sql .\database\seed.sql
 ```
 
-Antes de commitar, confira se o seed:
+Antes de versionar a nova base, recomenda-se verificar:
 
-- importa sem erro em uma base vazia
-- não remove colunas atuais do domínio
-- não deixou texto corrompido por encoding
-- continua compatível com o fluxo de bootstrap do backend
+- importacao sem erros em uma base vazia
+- compatibilidade com o modelo atual do dominio
+- integridade de textos e caracteres
+- compatibilidade com o bootstrap administrativo do backend
 
-## Problemas comuns
+## Solucao de Problemas
 
-### Porta ocupada
+### Portas ocupadas
 
-Edite `.env` e ajuste uma ou mais portas:
+Se houver conflito de portas, ajuste no arquivo `.env`:
 
 - `MYSQL_PORT`
 - `BACKEND_PORT`
 - `FRONTEND_PORT`
 
-Depois:
+Em seguida, reconstrua o ambiente:
 
 ```powershell
 docker compose up --build -d
 ```
 
-### Docker Desktop não iniciou
+### Docker Desktop indisponivel
 
-- abrir o Docker Desktop
-- confirmar `Engine running`
-- se necessário, reiniciar o Docker Desktop
+Verifique se o Docker Desktop esta em execucao e se o mecanismo de containers foi iniciado corretamente.
 
-### Importei o seed e o admin sumiu
+### Base importada sem acesso administrativo
 
-Isso é esperado enquanto o backend não reinicia. Rode:
+Esse comportamento pode ocorrer antes do reinicio do backend apos a importacao do `seed.sql`. Execute:
 
 ```powershell
 docker compose restart backend
 ```
 
-## Convenções do grupo
+## Convencoes de Versionamento
 
 - versionar `docker-compose.yml`, `.env.example`, `README.md`, `DOCKER.md` e `database/seed.sql`
-- não versionar `.env`
-- quando mudar fluxo de setup, atualizar a documentação no mesmo commit
+- nao versionar `.env`
+- atualizar a documentacao no mesmo commit sempre que houver mudanca no fluxo operacional
 
-## Produção em AWS
+## Producao
 
-Para o fluxo recomendado de publicação em Amazon Lightsail com HTTPS e `docker-compose.prod.yml`, consulte:
+Para o fluxo de publicacao em AWS Lightsail com `docker-compose.prod.yml`, HTTPS e proxy reverso, consulte:
 
-- `docs/aws-lightsail-deploy.md`
+- [docs/aws-lightsail-deploy.md](docs/aws-lightsail-deploy.md)
+- [docs/Caddyfile.lightsail.example](docs/Caddyfile.lightsail.example)
